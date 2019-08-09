@@ -3,7 +3,9 @@ module.exports = {
     '@vue/app'
   ],
   sourceType: 'unambiguous',
-  ignore: [
-    './ckeditor/build/ckeditor.js'
+  babelrcRoots: [
+    '.',
+    'packages/*',
+    'utils/*'
   ]
 }

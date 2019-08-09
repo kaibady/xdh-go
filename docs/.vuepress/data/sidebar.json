@@ -1,0 +1,10 @@
+{
+  "/api": null,
+  "/": [
+    {
+      "title": "使用指南",
+      "collapsable": false,
+      "children": ["", "go"]
+    }
+  ]
+}

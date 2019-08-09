@@ -1,28 +1,34 @@
 const path = require('path')
-const fs = require('fs')
-const config = require('./config/index')
 
-const VueConfig = require('./config/vue/config')
-const VueLibsConfig = require('./config/vue/libs.config')
-const VueDocsConfig = require('./config/vue/docs.config')
-const VueAppConfig = require('./config/vue/app.config')
-const VueBridgeConfig = require('./config/vue/bridge.config')
-
-const appsDir = `./${config.appsConfigDir}`
-const appsPath = path.join(__dirname, appsDir)
-
-let configs = {
-  bridge: VueBridgeConfig,
-  libs: VueLibsConfig,
-  docs: VueDocsConfig,
-  default: VueConfig
+function resolve(dir) {
+  return path.join(__dirname, dir)
 }
 
-if (fs.existsSync(appsPath)) {
-  const appConfigFiles = fs.readdirSync(appsPath)
-  appConfigFiles.forEach(name => {
-    configs[`app/${name}`] = VueAppConfig(require(`${appsDir}/${name}`))
-  })
-}
+module.exports = {
+  publicPath: '/xdh-go/',
+  pages: {
+    index: {
+      entry: 'examples/main.js',
+      template: 'public/index.html',
+      filename: 'index.html'
+    }
+  },
+  chainWebpack: config => {
 
-module.exports = configs[process.env.CMD] || VueConfig
+  },
+  configureWebpack: {
+    // 不显示文件过大优化建议
+    performance: {
+      hints: false
+    },
+    resolve: {
+      alias: {
+        'utils': resolve('utils'),
+        'packages': resolve('packages'),
+        'sources': resolve('sources'),
+        '@': resolve('src'),
+        'vue$': process.env.NODE_ENV === 'production' ? 'vue' : 'vue/dist/vue.esm.js'
+      }
+    }
+  }
+}

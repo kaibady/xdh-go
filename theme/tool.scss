@@ -1,0 +1,55 @@
+$primary-color: #409eff;
+.xdh-go-tool {
+  position: fixed;
+  left: 250px;
+  top: 100px;
+  z-index: 101;
+  background-color: #fff;
+  transition: border-radius 800ms ease;
+  transition: background-color 800ms ease;
+  // transition: all 800ms ease;
+  color: #fff;
+  &.collapsed {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(73, 164, 230, 0.8);
+    color: #fff;
+    .title {
+      display: none;
+    }
+    .expand {
+      display: block;
+    }
+    .xdh-go-tool__handle {
+      display: none;
+    }
+    .xdh-go-tool__container {
+      display: none;
+    }
+  }
+  .expand {
+    display: none;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    .btn {
+      font-size: 20px;
+    }
+  }
+  &__handle {
+    .title .btn {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    background-color: $primary-color;
+    color: #fff;
+    width: 150px;
+    padding: 10px;
+  }
+  &__container {
+    padding: 10px;
+    border: 2px solid $primary-color;
+  }
+}
