@@ -13,7 +13,7 @@ Vue.use(ElementUI);
 Vue.use(XdhGo);
 Vue.component('Example', Example);
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
 
 new Vue({
   router,

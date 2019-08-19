@@ -206,12 +206,12 @@ export default {
       }
     },
     findNode(item) {
-      console.log(item)
       let nodeData = this.diagram.model.nodeDataArray.find(
         r => r.key === item.data.key
       )
       if (nodeData) {
         let node = this.diagram.findNodeForData(nodeData)
+        console.log(node)
         this.diagram.clearSelection()
         node.isSelected = true
         let rect = node.actualBounds

@@ -32,6 +32,18 @@
       <dt>
         <router-link to="/view">视图</router-link>
       </dt>
+      <dt>
+        <router-link to="/select">选择</router-link>
+      </dt>
+      <dt>
+        <router-link to="/search">搜索</router-link>
+      </dt>
+      <dt>
+        <router-link to="/nodes">通用节点定义</router-link>
+      </dt>
+      <dt>
+        <router-link to="/links">通用连线定义</router-link>
+      </dt>
     </dl>
     <div class="copyright">Powered by XDH FE Team.</div>
   </div>
