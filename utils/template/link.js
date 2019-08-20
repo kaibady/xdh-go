@@ -9,12 +9,57 @@ let defaultProps = ($, go) => {
     smoothness: 0.5
   };
 };
+function arrowBinding(name, options) {
+  let binding = {
+    visible: {
+      key: 'arrows',
+      handler(d) {
+        if (
+          (typeof d === 'string' && d.includes(name)) ||
+          (typeof d === 'object' && d[name])
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    },
+    scale: {
+      key: 'arrows',
+      handler(d) {
+        if (typeof d === 'object' && d[name] && d[name].scaleFactor) {
+          return d[name].scaleFactor;
+        } else {
+          return 1;
+        }
+      }
+    }
+  };
+  let type = {
+    key: 'arrows',
+    handler(d) {
+      if (typeof d === 'object' && d[name] && d[name].type) {
+        console.log('from arrow', d[name].type);
+        return d[name].type;
+      } else {
+        return 'Standard';
+      }
+    }
+  };
+  if (name === 'from') {
+    binding.fromArrow = type;
+  } else if (name === 'to') {
+    binding.toArrow = type;
+  }
+  return binding;
+}
 export default function($, go, options) {
-  let defaultArrow = go.Geometry.parse('F1 m 0,0 l 8,4 -8,4 2,-4 z');
-  let arrow = defaultArrow;
   let _options = genOption(defaultProps($, go), options);
-  console.log(_options)
+  console.log(_options);
   return link($, go, {
+    props: {
+      ..._options.props
+    },
     parts: [
       // 连线
       $(
@@ -39,29 +84,15 @@ export default function($, go, options) {
       // 末尾箭头
       $(
         go.Shape,
-        { toArrow: 'Standard', fill: 'gray', stroke: null },
-        ...binding($, go, {
-          visible: {
-            key: 'arrows',
-            handler(d) {
-              console.log(d, typeof d === 'string' && d.includes('to'));
-              if (typeof d === 'string' && d.includes('to')) {
-                return true;
-              } else {
-                return false;
-              }
-            }
-          }
-        })
+        { fill: 'black', stroke: null },
+        ...binding($, go, arrowBinding('to', _options.props))
       ),
       // 起始箭头
-      $(go.Shape, { fromArrow: 'Standard', fill: 'gray', stroke: null }),
-      // 中间箭头
-      $(go.Shape, {
-        segmentOffset: new go.Point(0, 0),
-        segmentOrientation: go.Link.OrientUpright,
-        geometry: arrow
-      })
+      $(
+        go.Shape,
+        { fill: 'black', stroke: null },
+        ...binding($, go, arrowBinding('from', _options.props))
+      )
     ],
     binding: binding($, go, {
       curve: {
@@ -75,14 +106,14 @@ export default function($, go, options) {
         }
       },
       curviness: {
-          key: '',
-          handler(d) {
-            if (d.curve !== undefined) {
-                return d.curve;
-              } else {
-                return _options.props.curve;
-              }
+        key: '',
+        handler(d) {
+          if (d.curve !== undefined) {
+            return d.curve;
+          } else {
+            return _options.props.curve;
           }
+        }
       }
     })
   });

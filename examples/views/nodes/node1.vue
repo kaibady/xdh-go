@@ -30,51 +30,51 @@ export default {
           key: 1,
           shape: 'circularImage',
           image: DIR + '1.png',
-          label: '1pngfsdfsdfsdafsdaf'
+          label: '1'
         },
         {
           key: 2,
           shape: 'circularImage',
           image: DIR + '2.png',
-          label: '1pngfsdfsdfsdafsdaf'
+          label: '2'
         },
         {
           key: 3,
           shape: 'circularImage',
           image: DIR + '3.png',
-          label: '1pngfsdfsdfsdafsdaf'
+          label: '3'
         },
         {
           key: 4,
           shape: 'circularImage',
           image: DIR + '4.png',
-          label: 'pictures by this guy!'
+          label: '4'
         },
         {
           key: 5,
           shape: 'circularImage',
           image: DIR + 'missing.png',
           brokenImage: DIR + 'missingBrokenImage.png',
-          label: 'when images\nfail\nto load'
+          label: '5'
         },
         {
           key: 6,
           shape: 'circularImage',
           image: DIR + 'anotherMissing.png',
           brokenImage: DIR + '9.png',
-          label: 'fallback image in action'
+          label: '6'
         },
         {
           key: 7,
           shape: 'circularImage',
           image: DIR + '3.png',
-          label: '1pngfsdfsdfsdafsdaf'
+          label: '7'
         },
         {
           key: 8,
           shape: 'circularImage',
           image: DIR + '4.png',
-          label: 'pictures by this guy!'
+          label: '8'
         }
       ],
       links: [
@@ -83,8 +83,12 @@ export default {
         { from: 1, to: 2, arrows: 'to, from' },
         { from: 2, to: 4, arrows: 'to, middle' },
         { from: 2, to: 5, arrows: 'to, middle, from' },
-        { from: 5, to: 6, arrows: { to: { scaleFactor: 2 } } },
-        { from: 6, to: 7, arrows: { middle: { scaleFactor: 0.5 }, from: true } }
+        { from: 5, to: 6, arrows: { from: { scaleFactor: 4, type: 'Triangle' }, to: { scaleFactor: 4, type: 'Triangle' } } },
+        {
+          from: 6,
+          to: 7,
+          arrows: { from: { scaleFactor: 3, type: 'Boomerang' } }
+        }
       ]
     }
   },
@@ -96,7 +100,7 @@ export default {
       }
     },
     layout($, go) {
-      return new go.TreeLayout()
+      return $(go.ForceDirectedLayout, {})
     },
     diagramReady(diagram, $, go) {
       this.diagram = diagram
