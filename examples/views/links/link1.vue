@@ -56,39 +56,18 @@ export default {
           image: DIR + 'missing.png',
           brokenImage: DIR + 'missingBrokenImage.png',
           label: '5'
-        },
-        {
-          key: 6,
-          shape: 'circularImage',
-          image: DIR + 'anotherMissing.png',
-          brokenImage: DIR + '9.png',
-          label: '6'
-        },
-        {
-          key: 7,
-          shape: 'circularImage',
-          image: DIR + '3.png',
-          label: '7'
-        },
-        {
-          key: 8,
-          shape: 'circularImage',
-          image: DIR + '4.png',
-          label: '8'
         }
       ],
       links: [
-        { from: 1, to: 8, arrows: 'to', dashes: true },
-        { from: 1, to: 3, arrows: 'to' },
-        { from: 1, to: 2, arrows: 'to, from' },
-        { from: 2, to: 4, arrows: 'to, middle' },
-        { from: 2, to: 5, arrows: 'to, middle, from' },
-        { from: 5, to: 6, arrows: { to: { scaleFactor: 2, type: 'Triangle' } } },
+        { from: 1, to: 4, arrows: 'to', dashes: true, hidden: true },
+        { from: 1, to: 3, arrows: 'to', color: { color: 'red' } },
         {
-          from: 6,
-          to: 7,
-          arrows: { from: { scaleFactor: 3, type: 'Boomerang' } }
-        }
+          from: 1,
+          to: 2,
+          arrows: 'to, from',
+          color: { color: 'rgba(30,30,30,0.2)', highlight: 'blue' }
+        },
+        { from: 2, to: 5, arrows: 'to, middle' }
       ]
     }
   },
@@ -104,6 +83,10 @@ export default {
     },
     diagramReady(diagram, $, go) {
       this.diagram = diagram
+      setTimeout(() => {
+         let link = this.diagram.findLinkForData(this.links[2])
+         link.isHighlighted = true
+      }, 2000)
     },
     nodeTemplate($, go) {
       return node($, go)

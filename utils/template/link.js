@@ -1,4 +1,4 @@
-import { link, binding } from '../node-parts';
+import { link, binding, textBlock } from '../node-parts';
 import { genOption } from '../node-parts/util/fun';
 let defaultProps = ($, go) => {
   return {
@@ -6,7 +6,10 @@ let defaultProps = ($, go) => {
     curviness: 10,
     corner: 0,
     routing: go.Link.Normal,
-    smoothness: 0.5
+    smoothness: 0.5,
+    color: 'red',
+    hidden: false,
+    font: '13px sans-serif'
   };
 };
 function arrowBinding(name, options) {
@@ -58,13 +61,20 @@ export default function($, go, options) {
   console.log(_options);
   return link($, go, {
     props: {
-      ..._options.props
+      curve: _options.props.curve,
+      curviness: _options.props.curviness,
+      corner: _options.props.corner,
+      routing: _options.props.routing,
+      smoothness: _options.props.smoothness
+     
     },
     parts: [
       // 连线
       $(
         go.Shape,
-        {},
+        {
+          stroke: _options.props.color
+        },
         ...binding($, go, {
           strokeDashArray: {
             key: 'dashes',
@@ -76,6 +86,21 @@ export default function($, go, options) {
                 return [4, 4, 4, 4];
               } else {
                 return null;
+              }
+            }
+          },
+          stroke: {
+            type: 'ofObject',
+            key: '',
+            handler(n) {
+              if (typeof n.data.color === 'string') {
+                return n.data.color;
+              } else if (typeof n.data.color === 'object' && n.data.color.color && !n.isHighlighted) {
+                return n.data.color.color;
+              } else if (typeof n.data.color === 'object' && n.data.color.highlight && n.isHighlighted) {
+                return n.data.color.highlight;
+              } else {
+                return _options.props.color;
               }
             }
           }
@@ -92,7 +117,22 @@ export default function($, go, options) {
         go.Shape,
         { fill: 'black', stroke: null },
         ...binding($, go, arrowBinding('from', _options.props))
-      )
+      ),
+      // label 文字
+      textBlock($, go, {
+        binding: binding($, go, {
+          // font: {
+          //   key: 'font',
+          //   handler(d) {
+          //     if(d) {
+          //       return d;
+          //     } else {
+          //       return _options.props.font;
+          //     }
+          //   }
+          // }
+        })
+      })
     ],
     binding: binding($, go, {
       curve: {
@@ -112,6 +152,16 @@ export default function($, go, options) {
             return d.curve;
           } else {
             return _options.props.curve;
+          }
+        }
+      },
+      opacity: {
+        key: '',
+        handler(d) {
+          if(d.hidden) {
+            return 0;
+          } else {
+            return 1;
           }
         }
       }
