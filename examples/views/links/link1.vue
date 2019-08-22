@@ -18,7 +18,7 @@
 <script>
 import node from '../../../utils/template/node'
 import link from '../../../utils/template/link'
-let DIR = '/docs/node/'
+let DIR = '/docs/node/circleimage/'
 export default {
   components: {},
   data() {
