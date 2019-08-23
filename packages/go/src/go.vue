@@ -538,18 +538,15 @@ export default {
       this.diagram.requestUpdate()
     },
     getHtmlInfo() {
-        this.$children.forEach(el => {
-          if(el.name === 'XdhGoHtml') {
-            console.log(el)
-            this.htmlInfo[el.menuName] = el.bindMenu()
-            if(el.appendToBody) {
-              this.$el.parentNode.appendChild(el.$el)
-            }
-          } 
-          // else if(el.name === 'XdhGoOverview') {
-          //     this.$el.parentNode.appendChild(el.$el)
-          // }
-        })
+      this.$children.forEach(el => {
+        if (el.name === 'XdhGoHtml') {
+          console.log(el)
+          this.htmlInfo[el.menuName] = el.bindMenu()
+          if (el.appendToBody) {
+            this.$el.parentNode.appendChild(el.$el)
+          }
+        }
+      })
     }
   },
   mounted() {
@@ -589,7 +586,7 @@ export default {
      *  @param {object} go GoJS命名空间
      */
     this.$emit('on-ready', this.diagram, $, go)
-  
+
     // addResizeListener(this.$el, this.proxyResize)
   },
   beforeDestroy() {

@@ -1,12 +1,12 @@
 
 <template>
-  <div class="xdh-go__select" @keyup.enter="search">
+  <div class="xdh-go-search" @keyup.enter="search">
     <slot>
       <el-input
         placeholder="输入检索内容"
         v-model="keyword"
         size="small"
-        class="input-with-select"
+        class="xdh-go-search__input"
         clearable
       >
         <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
@@ -169,30 +169,5 @@ export default {
 }
 </script>
 <style type="text/scss" lang="scss" scoped>
-.input-with-select {
-  float: left;
-  width: 300px;
-  margin-left: 25px;
-  & /deep/ .el-input__inner {
-    border: 1px solid #151929;
-    background-color: #1c2237;
-    border-right-width: 0;
-    color: #fff;
-    &::-webkit-input-placeholder {
-      color: #fff;
-    }
-  }
-  & /deep/ .el-input-group__append {
-    border: 1px solid #151929;
-    background-color: #1c2237;
-    border-left-width: 0;
-    color: #fff;
-    font-size: 18px;
-  }
-}
-.xdh-go__select {
-  position: fixed;
-  z-index: 999;
-  top: 100px;
-}
+
 </style>

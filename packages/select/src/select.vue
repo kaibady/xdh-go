@@ -6,14 +6,14 @@
       v-show="['rect', 'multi'].includes(selectMode)"
       :closable="false"
       type="warning"
-      class="select-tips"
+      class="xdh-go__tips"
     ></el-alert>
     <slot>
-      <div class="tab-menu">
+      <div class="xdh-go__menu">
         <div
           v-for="(item, idx) in menus"
           :key="idx"
-          :class="{'box-wrapper': true, disabled: item.disabled || disabledAll}"
+          :class="{'xdh-go__box': true, disabled: item.disabled || disabledAll}"
         >
           <div v-if="!item.subMenu" @click="menuClick(item.name)">
             <div class="icon-con">
@@ -30,7 +30,7 @@
                 {{item.name}}
                 <i class="iconfont icon-bold-arrow-down" style="margin-left: 5px;"></i>
               </span>
-              <el-dropdown-menu slot="dropdown">
+              <el-dropdown-menu slot="dropdown" class="xdh-go__dropdown">
                 <el-dropdown-item
                   :class="{active: item1.name === selectModeMap[selectMode]}"
                   :key="idx"
@@ -289,77 +289,5 @@ export default {
 }
 </script>
 <style type="text/scss" lang="scss" scoped>
-.tab-menu {
-  background: #3d4c63;
-  color: #fff;
-  position: fixed;
-  z-index: 999;
-  left: 250px;
-  top: 50px;
-  border-radius: 5px;
-}
-.box-wrapper {
-  cursor: pointer;
-  background-color: #1c2237;
-  padding: 0;
-  margin: 10px;
-  min-width: 65px;
-  border-radius: 5px;
-  border: 1px solid #151929;
-  font-size: 14px;
-  display: inline-block;
-  padding: 5px 10px;
-  text-align: center;
-  .icon-con {
-    height: 40px;
-    line-height: 40px;
-  }
-  &.disabled {
-    cursor: not-allowed;
-    color: #888;
-  }
-  .submenu {
-    color: #fff;
-    display: block;
-    margin-top: -8px;
-    .disabled {
-      cursor: not-allowed;
-      color: #888;
-      pointer-events: none;
-    }
-  }
-}
-.box {
-  margin-top: -8px;
-}
-.el-dropdown-menu {
-  padding: 5px 0;
-  border: 1px solid #3d4c63;
-  background-color: #1c2237;
-  .el-dropdown-menu__item {
-    line-height: 25px;
-    color: #fff;
-    &.is-disabled {
-      color: #666;
-    }
-    &:not(.is-disabled):hover, &.active {
-      background-color: #2d69f7;
-      color: #fff;
-    }
-  }
-  & /deep/ .popper__arrow {
-    border-bottom-color: #3d4c63;
-    &:after {
-      border-bottom-color: #1c2237;
-    }
-  }
-}
-.select-tips {
-  position: fixed;
-  top: 10px;
-  z-index: 999;
-  width: 400px;
-  left: 50%;
-  margin-left: -200px;
-}
+
 </style>

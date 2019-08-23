@@ -2,11 +2,11 @@
   <!-- 视图组件 -->
   <div>
     <slot>
-      <div class="tab-menu">
+      <div class="xdh-go__menu">
         <div
           v-for="(item, idx) in menus"
           :key="idx"
-          :class="{'box-wrapper': true, disabled: item.disabled || disabledAll}"
+          :class="{'xdh-go__box': true, disabled: item.disabled || disabledAll}"
         >
           <div v-if="!item.subMenu" @click="menuClick(item.name)">
             <div class="icon-con">
@@ -23,7 +23,7 @@
                 {{item.name}}
                 <i class="iconfont icon-bold-arrow-down" style="margin-left: 5px;"></i>
               </span>
-              <el-dropdown-menu slot="dropdown">
+              <el-dropdown-menu slot="dropdown" class="xdh-go__dropdown">
                 <el-dropdown-item
                   :key="idx"
                   v-for="(item1, idx) in item.subMenu"

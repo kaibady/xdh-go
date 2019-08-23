@@ -1,6 +1,6 @@
 <template>
   <!-- 布局组件 -->
-  <div class="layout-menu">
+  <div class="xdh-go-layout__menu">
     <slot>
       <ul>
         <li @click="toggleLock()">
@@ -8,7 +8,6 @@
             :content="'固定布局切换'"
             placement="left"
             effect="light"
-            popper-class="invest-graph"
           >
             <i class="iconfont icon-pin icon" v-if="lock"></i>
             <i class="iconfont icon-map-thumbtack icon" v-if="!lock"></i>
@@ -327,64 +326,5 @@ export default {
 }
 </script>
 <style type="text/scss" lang="scss" scoped>
-.layout-menu {
-  position: fixed;
-  z-index: 4;
-  left: 250px;
-  top: 100px;
-  width: 40px;
-  & > ul {
-    list-style: none;
-    padding: 0;
-    & > li {
-      background-color: rgba(28, 34, 55, 0.8);
-      color: #fff;
-      padding: 10px 9px;
-      border-color: #121417;
-      border-style: solid;
-      border-width: 0 1px;
-      position: relative;
-      cursor: pointer;
-      & > ul {
-        display: none;
-      }
-      &:hover > ul {
-        display: block;
-        position: absolute;
-        top: 0px;
-        left: 40px;
-        list-style: none;
-        padding: 0;
-        & > li {
-          background-color: rgba(28, 34, 55, 0.8);
-          color: #fff;
-          padding: 10px 9px;
-          border-color: #121417;
-          border-style: solid;
-          border-width: 0 1px;
-          position: relative;
-          cursor: pointer;
-        }
-        li + li {
-          border-top-width: 1px;
-        }
-      }
-      .icon {
-        font-size: 20px;
-      }
-    }
-    li + li {
-      border-top-width: 1px;
-    }
-    li:first-child {
-      border-top-width: 1px;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-    }
-    li:last-child {
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
-  }
-}
+
 </style>

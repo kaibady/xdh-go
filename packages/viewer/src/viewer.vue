@@ -127,6 +127,7 @@ export default {
         this.unbindEvents()
         setTimeout(() => {
           this.bindEvents()
+          this.reloadDiagram()
         }, 100)
       }
     }
