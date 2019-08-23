@@ -60,7 +60,7 @@ export default {
       ],
       links: [
         { from: 1, to: 4, arrows: 'to', dashes: true, hidden: true },
-        { from: 1, to: 3, arrows: 'to', color: { color: 'red' } },
+        { from: 1, to: 3, arrows: 'to', color: { color: 'red' }, text: 'label1' },
         {
           from: 1,
           to: 2,

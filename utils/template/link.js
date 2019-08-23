@@ -7,7 +7,7 @@ let defaultProps = ($, go) => {
     corner: 0,
     routing: go.Link.Normal,
     smoothness: 0.5,
-    color: 'red',
+    color: '#000',
     hidden: false,
     font: '13px sans-serif'
   };
@@ -120,17 +120,31 @@ export default function($, go, options) {
       ),
       // label 文字
       textBlock($, go, {
+        props: {
+           stroke: '#000'
+        },
         binding: binding($, go, {
-          // font: {
-          //   key: 'font',
-          //   handler(d) {
-          //     if(d) {
-          //       return d;
-          //     } else {
-          //       return _options.props.font;
-          //     }
-          //   }
-          // }
+          font: {
+            key: 'font',
+            handler(d) {
+              if(d) {
+                return d;
+              } else {
+                return _options.props.font;
+              }
+            }
+          },
+          text: 'text',
+          visible: {
+            key: '',
+            handler(d) {
+              if(d.text) {
+                return true
+              } else {
+                return false
+              }
+            }
+          }
         })
       })
     ],
