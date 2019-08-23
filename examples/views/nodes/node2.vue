@@ -11,7 +11,7 @@
       :layout="layout"
       @on-ready="diagramReady"
       height="600px"
-       ref="go"
+      ref="go"
     ></xdh-go>
   </div>
 </template>
@@ -19,6 +19,7 @@
 import node from '../../../utils/template/node'
 import link from '../../../utils/template/link'
 let DIR = '/docs/node/circleimage/'
+let DIR2 = '/docs/node/image/'
 export default {
   components: {},
   data() {
@@ -28,26 +29,29 @@ export default {
       nodes: [
         {
           key: 1,
-          shape: 'circularImage',
+          shape: 'Rectangle',
+          fill: 'yellow',
+          stroke: 'blue',
           image: DIR + '1.png',
-          label: '1'
+          label: '1',
+          size: 60
         },
         {
           key: 2,
-          shape: 'circularImage',
-          image: DIR + '2.png',
+          shape: 'image',
+          image: DIR2 + '1.png',
           label: '2'
         },
         {
           key: 3,
-          shape: 'circularImage',
-          image: DIR + '3.png',
+          shape: 'image',
+          image: DIR2 + '2.png',
           label: '3'
         },
         {
           key: 4,
-          shape: 'circularImage',
-          image: DIR + '4.png',
+          shape: 'icon',
+          icon: '\uE7BD',
           label: '4'
         },
         {
@@ -55,7 +59,8 @@ export default {
           shape: 'circularImage',
           image: DIR + 'missing.png',
           brokenImage: DIR + 'missingBrokenImage.png',
-          label: '5'
+          label: '5',
+          hidden: true
         },
         {
           key: 6,
@@ -74,7 +79,8 @@ export default {
           key: 8,
           shape: 'circularImage',
           image: DIR + '4.png',
-          label: '8'
+          label: '8',
+          shadow: true
         }
       ],
       links: [
@@ -108,10 +114,13 @@ export default {
     },
     diagramReady(diagram, $, go) {
       this.diagram = diagram
-      this.$emit('diagram-change', this.diagram)  
     },
     nodeTemplate($, go) {
-      return node($, go)
+      return node($, go, {
+        props: {
+          font: `30px "iconfont"`
+        }
+      })
     },
     linkTemplate($, go) {
       return link($, go)

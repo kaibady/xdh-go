@@ -9,6 +9,7 @@ export default function($, go, options) {
         strokeWidth: 1,
         portId: 'picture'
       }),
+      isClipping: true,
       props: {},
       parts: [],
       events: {},
@@ -25,13 +26,13 @@ export default function($, go, options) {
     height: _options.shape.height
   };
   _options.props = Object.assign({}, defaultProps, options.props);
-
+  console.log('clipping', _options)
   return $(
     go.Panel,
     'Spot',
     {
-      name: 'ICON',
-      isClipping: true,
+      name: 'image',
+      isClipping: _options.isClipping,
       scale: 1
     },
     _options.shape,

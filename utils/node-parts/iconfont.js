@@ -15,10 +15,16 @@ export default function($, go, options) {
       icon: '\uE7BD',
       props: {},
       parts: [],
+      binding: [],
       events: {}
     },
     options
   );
   _options.props = Object.assign({}, defaultProps, options.props);
-    return $(go.TextBlock, `${_options.icon}`, _options.props);
+  return $(
+    go.TextBlock,
+    `${_options.icon}`,
+    _options.props,
+    ..._options.binding
+  );
 }
