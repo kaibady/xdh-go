@@ -2,14 +2,31 @@ import { link, binding, textBlock } from '../node-parts';
 import { genOption } from '../node-parts/util/fun';
 let defaultProps = ($, go) => {
   return {
+    arrows: 'to',
     curve: go.Link.Bezier,
     curviness: 10,
     corner: 0,
     routing: go.Link.Normal,
     smoothness: 0.5,
-    color: '#000',
+    dashes: false,
+    color: {
+      normal: '#000',
+      hover: 'blue',
+      highlight: 'blue',
+      select: 'blue'
+    },
+    stroke: {
+      normal: 1,
+      hover: 2,
+      highlight: 2,
+      select: 2
+    },
     hidden: false,
-    font: '13px sans-serif'
+    label: {
+      text: '',
+      font: '13px sans-serif',
+      scale: 1
+    }
   };
 };
 function arrowBinding(name, options) {
