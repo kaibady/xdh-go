@@ -222,7 +222,7 @@ function shapeBinding($, go, _options) {
           ) {
             return d.stroke.width.highlight;
           } else {
-            return _props.stroke.width.highlight;
+            return props.stroke.width.highlight;
           }
         } else if (n.isSelected) {
           if (typeof d.stroke === 'string') {

@@ -31,7 +31,6 @@ export default {
           key: 1,
           shape: 'Rectangle',
           fill: 'yellow',
-          stroke: 'blue',
           image: DIR + '1.png',
           label: '1',
           size: 60,
