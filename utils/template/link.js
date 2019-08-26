@@ -9,17 +9,19 @@ let defaultProps = ($, go) => {
     routing: go.Link.Normal,
     smoothness: 0.5,
     dashes: false,
-    color: {
-      normal: '#000',
-      hover: 'blue',
-      highlight: 'blue',
-      select: 'blue'
-    },
     stroke: {
-      normal: 1,
-      hover: 2,
-      highlight: 2,
-      select: 2
+      color: {
+        normal: '#000',
+        hover: 'blue',
+        highlight: 'blue',
+        select: 'blue'
+      },
+      width: {
+        normal: 1,
+        hover: 2,
+        highlight: 2,
+        select: 2
+      }
     },
     hidden: false,
     label: {
@@ -29,8 +31,82 @@ let defaultProps = ($, go) => {
     }
   };
 };
-function arrowBinding(name, options) {
-  let binding = {
+function linkBinding($, go, _options) {
+  return binding($, go, {
+    curve: {
+      key: '',
+      handler(d) {
+        if (d.curve !== undefined) {
+          return d.curve;
+        } else {
+          return _options.props.curve;
+        }
+      }
+    },
+    curviness: {
+      key: '',
+      handler(d) {
+        if (d.curve !== undefined) {
+          return d.curve;
+        } else {
+          return _options.props.curve;
+        }
+      }
+    },
+    opacity: {
+      key: '',
+      handler(d) {
+        if (d.hidden) {
+          return 0;
+        } else {
+          return 1;
+        }
+      }
+    }
+  });
+}
+function lineBinding($, go, _options) {
+  return binding($, go, {
+    strokeDashArray: {
+      key: 'dashes',
+      handler(d) {
+        console.log(typeof d);
+        if (d instanceof Array) {
+          return d;
+        } else if (d) {
+          return [4, 4, 4, 4];
+        } else {
+          return null;
+        }
+      }
+    },
+    stroke: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        if (typeof n.data.color === 'string') {
+          return n.data.color;
+        } else if (
+          typeof n.data.color === 'object' &&
+          n.data.color.color &&
+          !n.isHighlighted
+        ) {
+          return n.data.color.color;
+        } else if (
+          typeof n.data.color === 'object' &&
+          n.data.color.highlight &&
+          n.isHighlighted
+        ) {
+          return n.data.color.highlight;
+        } else {
+          return _options.props.color;
+        }
+      }
+    }
+  });
+}
+function arrowBinding($, go, name, _options) {
+  let bindOpt = {
     visible: {
       key: 'arrows',
       handler(d) {
@@ -67,11 +143,36 @@ function arrowBinding(name, options) {
     }
   };
   if (name === 'from') {
-    binding.fromArrow = type;
+    bindOpt.fromArrow = type;
   } else if (name === 'to') {
-    binding.toArrow = type;
+    bindOpt.toArrow = type;
   }
-  return binding;
+  return binding($, go, bindOpt);
+}
+function textBlockBinding($, go, _options) {
+  return binding($, go, {
+    font: {
+      key: 'font',
+      handler(d) {
+        if (d) {
+          return d;
+        } else {
+          return _options.props.font;
+        }
+      }
+    },
+    text: 'text',
+    visible: {
+      key: '',
+      handler(d) {
+        if (d.text) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  });
 }
 export default function($, go, options) {
   let _options = genOption(defaultProps($, go), options);
@@ -83,119 +184,30 @@ export default function($, go, options) {
       corner: _options.props.corner,
       routing: _options.props.routing,
       smoothness: _options.props.smoothness
-     
     },
     parts: [
       // 连线
-      $(
-        go.Shape,
-        {
-          stroke: _options.props.color
-        },
-        ...binding($, go, {
-          strokeDashArray: {
-            key: 'dashes',
-            handler(d) {
-              console.log(typeof d);
-              if (d instanceof Array) {
-                return d;
-              } else if (d) {
-                return [4, 4, 4, 4];
-              } else {
-                return null;
-              }
-            }
-          },
-          stroke: {
-            type: 'ofObject',
-            key: '',
-            handler(n) {
-              if (typeof n.data.color === 'string') {
-                return n.data.color;
-              } else if (typeof n.data.color === 'object' && n.data.color.color && !n.isHighlighted) {
-                return n.data.color.color;
-              } else if (typeof n.data.color === 'object' && n.data.color.highlight && n.isHighlighted) {
-                return n.data.color.highlight;
-              } else {
-                return _options.props.color;
-              }
-            }
-          }
-        })
-      ),
+      $(go.Shape, ...lineBinding($, go, _options)),
       // 末尾箭头
       $(
         go.Shape,
         { fill: 'black', stroke: null },
-        ...binding($, go, arrowBinding('to', _options.props))
+        ...arrowBinding($, go, 'to', _options.props)
       ),
       // 起始箭头
       $(
         go.Shape,
         { fill: 'black', stroke: null },
-        ...binding($, go, arrowBinding('from', _options.props))
+        ...arrowBinding($, go, 'from', _options.props)
       ),
       // label 文字
       textBlock($, go, {
         props: {
-           stroke: '#000'
+          stroke: '#000'
         },
-        binding: binding($, go, {
-          font: {
-            key: 'font',
-            handler(d) {
-              if(d) {
-                return d;
-              } else {
-                return _options.props.font;
-              }
-            }
-          },
-          text: 'text',
-          visible: {
-            key: '',
-            handler(d) {
-              if(d.text) {
-                return true
-              } else {
-                return false
-              }
-            }
-          }
-        })
+        binding: textBlockBinding($, go, _options)
       })
     ],
-    binding: binding($, go, {
-      curve: {
-        key: '',
-        handler(d) {
-          if (d.curve !== undefined) {
-            return d.curve;
-          } else {
-            return _options.props.curve;
-          }
-        }
-      },
-      curviness: {
-        key: '',
-        handler(d) {
-          if (d.curve !== undefined) {
-            return d.curve;
-          } else {
-            return _options.props.curve;
-          }
-        }
-      },
-      opacity: {
-        key: '',
-        handler(d) {
-          if(d.hidden) {
-            return 0;
-          } else {
-            return 1;
-          }
-        }
-      }
-    })
+    binding: linkBinding($, go, _options)
   });
 }

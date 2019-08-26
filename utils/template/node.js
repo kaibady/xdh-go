@@ -26,7 +26,7 @@ let defaultProps = ($, go) => {
       font: '14px "iconfont"'
     },
     shape: 'Rectangle',
-    color: {
+    background: {
       normal: 'yellow',
       highlight: '#66b1ff',
       hover: '#66b1ff',
@@ -102,8 +102,145 @@ function shapeBinding($, go, _options) {
       }
     },
     figure: 'shape',
-    fill: 'fill',
-    stroke: 'stroke',
+    fill: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        let d = n.data;
+        let props = _options.props;
+        if (!n.isHighlighted && !n.isSelected) {
+          if (typeof d.background === 'string') {
+            return d.background;
+          } else if (
+            typeof d.background === 'object' &&
+            d.background.normal
+          ) {
+            return d.background.normal;
+          } else {
+            return props.background.normal;
+          }
+        } else if (n.isHighlighted) {
+          if (typeof d.background === 'string') {
+            return d.background;
+          } else if (
+            typeof d.background === 'object' &&
+            d.background.highlight
+          ) {
+            return d.background.highlight;
+          } else {
+            return props.background.highlight;
+          }
+        } else if (n.isSelected) {
+          if (typeof d.background === 'string') {
+            return d.background;
+          } else if (
+            typeof d.background === 'object' &&
+            d.background.select
+          ) {
+            return d.background.select;
+          } else {
+            return props.background.select;
+          }
+        } else {
+          return props.background.normal;
+        }
+      }
+    },
+    stroke: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        let d = n.data;
+        let props = _options.props;
+        if (!n.isHighlighted && !n.isSelected) {
+          if (typeof d.stroke === 'string') {
+            return d.stroke;
+          } else if (
+            typeof d.stroke === 'object' &&
+            d.stroke.color &&
+            d.stroke.color.normal
+          ) {
+            return d.stroke.color.normal;
+          } else {
+            return props.stroke.color.normal;
+          }
+        } else if (n.isHighlighted) {
+          if (typeof d.stroke === 'string') {
+            return d.stroke;
+          } else if (
+            typeof d.stroke === 'object' &&
+            d.stroke.color &&
+            d.stroke.color.highlight
+          ) {
+            return d.stroke.color.highlight;
+          } else {
+            return props.stroke.color.highlight;
+          }
+        } else if (n.isSelected) {
+          if (typeof d.stroke === 'string') {
+            return d.stroke;
+          } else if (
+            typeof d.stroke === 'object' &&
+            d.stroke.color &&
+            d.stroke.color.select
+          ) {
+            return d.stroke.color.select;
+          } else {
+            return props.stroke.color.select;
+          }
+        } else {
+          return props.stroke.color.normal;
+        }
+      }
+    },
+    strokeWidth: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        let d = n.data;
+        let props = _options.props;
+        console.log('strokeWidth', d)
+        if (!n.isHighlighted && !n.isSelected) {
+          if (typeof d.stroke === 'string') {
+            return d.stroke;
+          } else if (
+            typeof d.stroke === 'object' &&
+            d.stroke.width &&
+            d.stroke.width.normal
+          ) {
+            return d.stroke.width.normal;
+          } else {
+            return props.stroke.width.normal;
+          }
+        } else if (n.isHighlighted) {
+          if (typeof d.stroke === 'string') {
+            return d.stroke;
+          } else if (
+            typeof d.stroke === 'object' &&
+            d.stroke.width &&
+            d.stroke.width.highlight
+          ) {
+            return d.stroke.width.highlight;
+          } else {
+            return _props.stroke.width.highlight;
+          }
+        } else if (n.isSelected) {
+          if (typeof d.stroke === 'string') {
+            return d.stroke;
+          } else if (
+            typeof d.stroke === 'object' &&
+            d.stroke.width &&
+            d.stroke.width.select
+          ) {
+            return d.stroke.width.select;
+          } else {
+            return props.stroke.width.select;
+          }
+        } else {
+          return props.stroke.width.normal;
+        }
+      }
+    },
     width: {
       key: '',
       handler(d) {

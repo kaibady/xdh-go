@@ -34,7 +34,12 @@ export default {
           stroke: 'blue',
           image: DIR + '1.png',
           label: '1',
-          size: 60
+          size: 60,
+          stroke: {
+            select: 'red',
+            normal: 'yellow',
+            highlight: 'green'
+          }
         },
         {
           key: 2,
