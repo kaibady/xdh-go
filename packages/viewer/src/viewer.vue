@@ -136,13 +136,13 @@ export default {
     reloadDiagram() {
       let modelJson = this.diagram.model.toJson()
       let model = JSON.parse(modelJson)
-      console.log('model', model)
+      // console.log('model', model)
       let nodes = [],
         links = []
       if (model.nodeDataArray) {
         nodes = this.getChildren(model.nodeDataArray, 0)
       }
-      console.log(nodes)
+      // console.log(nodes)
       if (model.linkDataArray) {
         links = this.getChildren(model.linkDataArray, 0)
       }
@@ -191,7 +191,7 @@ export default {
           let children = this.getChildren(d, level + 1)
           if (children instanceof Array) {
             item.children = children
-            item.label = JSON.stringify(d).substr(0, 50) + '(Array)'
+            item.label = `${name}:  ${JSON.stringify(d).substr(0, 50)}`
           } else {
             if (typeof d === 'string') {
               item.label = `${name}:  '${d}'`
@@ -248,8 +248,6 @@ export default {
       }
       this.clickTimeout = setTimeout(() => {
         let nodeData = obj.subject.part.data
-        console.log(obj.subject)
-        console.log(nodeData)
         if (nodeData.key) {
           this.activeName = 'nodes'
           this.currKey = nodeData.key

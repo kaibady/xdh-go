@@ -18,8 +18,10 @@
 <script>
 import node from '../../../utils/template/node'
 import link from '../../../utils/template/link'
+import { spotPanel, iconfont } from '../../../utils/node-parts'
 let DIR = '/docs/node/circleimage/'
 let DIR2 = '/docs/node/image/'
+
 export default {
   components: {},
   data() {
@@ -30,21 +32,36 @@ export default {
         {
           key: 1,
           shape: 'Rectangle',
-          fill: 'yellow',
           image: DIR + '1.png',
           label: '1',
+          labelBackground: {
+            select: 'red'
+          },
+          labelStroke: {
+            select: '#fff'
+          },
           size: 60,
-          stroke: {
+          strokeColor: {
             select: 'red',
             normal: 'yellow',
             highlight: 'green'
+          },
+          strokeWidth: {
+            select: 5,
+            normal: 1,
+            highlight: 3
           }
         },
         {
           key: 2,
           shape: 'image',
           image: DIR2 + '1.png',
-          label: '2'
+          label: { text: '2', editable: true },
+          tooltip: {
+            text: 'fdsfsf',
+            background: 'red',
+            stroke: 'white'
+          }
         },
         {
           key: 3,
@@ -56,7 +73,8 @@ export default {
           key: 4,
           shape: 'icon',
           icon: '\uE7BD',
-          label: '4'
+          label: '4',
+          loc: '100 100'
         },
         {
           key: 5,
@@ -122,8 +140,17 @@ export default {
     nodeTemplate($, go) {
       return node($, go, {
         props: {
-          font: `30px "iconfont"`
-        }
+          font: `30px "iconfont"`,
+          size: 40
+        },
+        parts: [
+          spotPanel($, go, {
+            props: {
+              alignment: new go.Spot(1, 0)
+            },
+            parts: [iconfont($, go, {})]
+          })
+        ]
       })
     },
     linkTemplate($, go) {

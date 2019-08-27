@@ -7,8 +7,14 @@ export default function($, go, options) {
       bindProp.push(bind[1].handler);
     }
     let ret = new go.Binding(...bindProp);
-    if (bind[1].type) {
+    if (bind[1].type && typeof bind[1].type === 'string') {
       bindings.push(ret[bind[1].type]());
+    } else if (bind[1].type && bind[1].type instanceof Array) {
+      let typeParams = [];
+      if (bind[1].type[1]) {
+        typeParams.push(bind[1].type[1]);
+      }
+      bindings.push(ret[bind[1].type[0]](...typeParams));
     } else {
       bindings.push(ret);
     }

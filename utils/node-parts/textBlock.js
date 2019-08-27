@@ -18,7 +18,7 @@ export default function($, go, options) {
   _options.props = Object.assign({}, defaultProps, options.props);
   return $(
     go.TextBlock,
-    'Default Text',
+    ' ',
     _options.props,
     ..._options.parts,
     ..._options.binding

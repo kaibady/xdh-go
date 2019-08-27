@@ -7,7 +7,6 @@ export default function($, go, options) {
     textAlign: 'center',
     alignment: go.Spot.Center,
     verticalAlignment: go.Spot.Top,
-    portId: '',
     scale: 1
   };
   let _options = Object.assign(

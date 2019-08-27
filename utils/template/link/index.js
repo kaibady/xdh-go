@@ -1,5 +1,5 @@
-import { link, binding, textBlock } from '../node-parts';
-import { genOption } from '../node-parts/util/fun';
+import { link, binding, textBlock } from '../../node-parts';
+import { genOption } from '../../node-parts/util/fun';
 let defaultProps = ($, go) => {
   return {
     arrows: 'to',
