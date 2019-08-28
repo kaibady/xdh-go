@@ -148,7 +148,9 @@ export default {
             props: {
               alignment: new go.Spot(1, 0)
             },
-            parts: [iconfont($, go, {})]
+            parts: [iconfont($, go, {
+              icon: '\uE6fD'
+            })]
           })
         ]
       })

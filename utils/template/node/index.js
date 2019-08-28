@@ -12,6 +12,7 @@ import { genOption } from '../../node-parts/util/fun';
 import { defaultProps } from './default';
 import {
   pictureBinding,
+  pictureCircleBinding,
   shapeBinding,
   clipBinding,
   iconfontBinding,
@@ -57,6 +58,18 @@ export default function($, go, options) {
                   toPortSport: true
                 },
                 parts: [
+                  shape($, go, {
+                    type: 'Circle',
+                    props: {
+                       width: 60,
+                       height: 60,
+                       background: 'transparent',
+                       strokeWidth: 3,
+                       stroke: 'red',
+                       portId: '',
+                    },
+                    binding: pictureCircleBinding($, go, 'circularImage', _options)
+                  }),
                   picture($, go, {
                     props: {
                       portId: ''

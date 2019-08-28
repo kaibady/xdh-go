@@ -24,6 +24,20 @@ export function clipBinding($, go, _options) {
     }
   });
 }
+export function pictureCircleBinding($, go, type, _options) {
+  return binding($, go, {
+    visible: {
+      key: '',
+      handler(d) {
+        if ([type].includes(d.shape)) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  })
+}
 export function pictureBinding($, go, type, _options) {
   return binding($, go, {
     source: { key: 'image' },
