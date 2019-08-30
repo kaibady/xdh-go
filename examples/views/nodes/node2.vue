@@ -57,6 +57,15 @@ export default {
           shape: 'image',
           image: DIR2 + '1.png',
           label: { text: '2', editable: true },
+          strokeWidth: {
+            normal: 0,
+            hover: 0
+          },
+          strokeColor: {
+            normal: 'blue',
+            hover: 'red'
+          },
+          clipShape: 'Rectangle',
           tooltip: {
             text: 'fdsfsf',
             background: 'red',
@@ -78,48 +87,52 @@ export default {
         },
         {
           key: 5,
-          shape: 'circularImage',
+          shape: 'clipImage',
           image: DIR + 'missing.png',
           brokenImage: DIR + 'missingBrokenImage.png',
-          label: '5',
-          hidden: true
+          label: '5'
         },
         {
           key: 6,
-          shape: 'circularImage',
+          shape: 'clipImage',
           image: DIR + 'anotherMissing.png',
           brokenImage: DIR + '9.png',
-          label: '6'
+          label: {
+            text: '6',
+            margin: [10, 0, 0, 0]
+          }
         },
         {
           key: 7,
-          shape: 'circularImage',
+          shape: 'clipImage',
           image: DIR + '3.png',
           label: '7'
         },
         {
           key: 8,
-          shape: 'circularImage',
+          shape: 'clipImage',
           image: DIR + '4.png',
           label: '8',
-          shadow: true
+          shadow: true,
+          clipShape: 'Rectangle',
+          strokeWidth: 0
         }
       ],
       links: [
         { from: 1, to: 8, arrows: 'to', dashes: true },
         { from: 1, to: 3, arrows: 'to' },
         { from: 1, to: 2, arrows: 'to, from' },
-        { from: 2, to: 4, arrows: 'to, middle' },
-        { from: 2, to: 5, arrows: 'to, middle, from' },
+        { from: 2, to: 4, arrows: { from: { type: 'Triangle', show: true } } },
+        { from: 2, to: 5, arrows: 'to,from' },
         {
           from: 5,
           to: 6,
-          arrows: { to: { scaleFactor: 2, type: 'Triangle' } }
+          arrows: { to: { scale: 2, type: 'Triangle' } }
         },
         {
           from: 6,
           to: 7,
-          arrows: { from: { scaleFactor: 3, type: 'Boomerang' } }
+          arrows: { from: { scale: 3, type: 'Boomerang' } }
         }
       ]
     }
@@ -140,23 +153,35 @@ export default {
     nodeTemplate($, go) {
       return node($, go, {
         props: {
-          font: `30px "iconfont"`,
-          size: 40
+          size: 60
         },
         parts: [
           spotPanel($, go, {
             props: {
               alignment: new go.Spot(1, 0)
             },
-            parts: [iconfont($, go, {
-              icon: '\uE6fD'
-            })]
+            parts: [
+              iconfont($, go, {
+                icon: '\uE6fD'
+              })
+            ]
           })
-        ]
+        ],
+        events: {
+          mouseEnter(e, n) {
+            console.log('mouseEnter方法')
+          }
+        }
       })
     },
     linkTemplate($, go) {
-      return link($, go)
+      return link($, go, {
+        events: {
+          mouseEnter(e, n) {
+            console.log('link mouseenter')
+          }
+        }
+      })
     }
   },
   created() {}

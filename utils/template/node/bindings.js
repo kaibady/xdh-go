@@ -1,6 +1,7 @@
 import { defaultImage } from './default';
 import { binding } from '../../node-parts';
-export function clipBinding($, go, _options) {
+// 绑定图片裁剪
+export function pictureClipBinding($, go, _options) {
   return binding($, go, {
     width: {
       key: '',
@@ -21,24 +22,54 @@ export function clipBinding($, go, _options) {
           return _options.props.size;
         }
       }
-    }
-  });
-}
-export function pictureCircleBinding($, go, type, _options) {
-  return binding($, go, {
+    },
+    figure: {
+      key: '',
+      handler(d) {
+        if (d.clipShape) {
+          return d.clipShape;
+        } else {
+          return _options.props.clipShape;
+        }
+      }
+    },
     visible: {
       key: '',
       handler(d) {
-        if ([type].includes(d.shape)) {
+        if (d.shape === 'clipImage') {
           return true;
         } else {
           return false;
         }
       }
     }
-  })
+  });
 }
-export function pictureBinding($, go, type, _options) {
+export function picturePanelBinding($, go, _options) {
+  return binding($, go, {
+    isCliping: {
+      key: '',
+      handler(d) {
+        if (d.shape === 'clipImage') {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    },
+    visible: {
+      key: '',
+      handler(d) {
+        if (['image', 'clipImage'].includes(d.shape)) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  });
+}
+export function pictureBinding($, go, _options) {
   return binding($, go, {
     source: { key: 'image' },
     errorFunction: {
@@ -61,10 +92,34 @@ export function pictureBinding($, go, type, _options) {
         };
       }
     },
+    width: {
+      key: '',
+      handler(d) {
+        if (d.size) {
+          return d.size;
+        } else {
+          return _options.props.size;
+        }
+      }
+    },
+    height: {
+      key: '',
+      handler(d) {
+        if (d.size) {
+          return d.size;
+        } else {
+          return _options.props.size;
+        }
+      }
+    }
+  });
+}
+export function pictureCircleBinding($, go, _options) {
+  return binding($, go, {
     visible: {
       key: '',
       handler(d) {
-        if ([type].includes(d.shape)) {
+        if (['clipImage', 'image'].includes(d.shape)) {
           return true;
         } else {
           return false;
@@ -90,38 +145,124 @@ export function pictureBinding($, go, type, _options) {
           return _options.props.size;
         }
       }
+    },
+    stroke: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        return bindSelect(n, _options, 'strokeColor');
+      }
+    },
+    strokeWidth: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        console.log(n.data);
+        return bindSelect(n, _options, 'strokeWidth');
+      }
+    },
+    figure: {
+      key: '',
+      handler(d) {
+        if (d.clipShape) {
+          return d.clipShape;
+        } else {
+          return _options.props.clipShape;
+        }
+      }
     }
   });
 }
+export function pictureHolderBinding($, go, _options) {
+  return binding($, go, {
+    visible: {
+      key: '',
+      handler(d) {
+        if (['clipImage', 'image'].includes(d.shape)) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    },
+    width: {
+      key: '',
+      handler(d) {
+        if (d.size) {
+          return d.size;
+        } else {
+          return _options.props.size;
+        }
+      }
+    },
+    height: {
+      key: '',
+      handler(d) {
+        if (d.size) {
+          return d.size;
+        } else {
+          return _options.props.size;
+        }
+      }
+    },
+    strokeWidth: {
+      key: '',
+      handler(d) {
+        let select = _options.props.select || 0;
+        let normal = _options.props.normal || 0;
+        let highlight = _options.props.highlight || 0;
+        let hover = _options.props.hover || 0;
+        return Math.max(select, normal, highlight, hover) + 5;
+      }
+    },
+    figure: {
+      key: '',
+      handler(d) {
+        if (d.clipShape) {
+          return d.clipShape;
+        } else {
+          return _options.props.clipShape;
+        }
+      }
+    }
+  });
+}
+
 function bindSelect(n, _options, bindProp) {
   let d = n.data;
   let props = _options.props;
-  if (!n.isHighlighted && !n.isSelected) {
-    if (typeof d[bindProp] === 'string') {
+ if (n.isSelected) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
       return d[bindProp];
-    } else if (typeof d[bindProp] === 'object' && d[bindProp].normal) {
-      return d[bindProp].normal;
-    } else {
-      return props[bindProp].normal;
-    }
-  } else if (n.isHighlighted) {
-    if (typeof d[bindProp] === 'string') {
-      return d[bindProp];
-    } else if (typeof d[bindProp] === 'object' && d[bindProp].highlight) {
-      return d[bindProp].highlight;
-    } else {
-      return props[bindProp].highlight;
-    }
-  } else if (n.isSelected) {
-    if (typeof d[bindProp] === 'string') {
-      return d[bindProp];
-    } else if (typeof d[bindProp] === 'object' && d[bindProp].select) {
+    } else if (typeof d[bindProp] === 'object' && d[bindProp].select !== undefined) {
       return d[bindProp].select;
     } else {
       return props[bindProp].select;
     }
+  } else if (d.isHover) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (typeof d[bindProp] === 'object' && d[bindProp].hover !== undefined) {
+      return d[bindProp].hover;
+    } else {
+      return props[bindProp].hover;
+    }
+  } else if (n.isHighlighted) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (typeof d[bindProp] === 'object' && d[bindProp].highlight !== undefined) {
+      return d[bindProp].highlight;
+    } else {
+      return props[bindProp].highlight;
+    }
   } else {
-    return props[bindProp].normal;
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (typeof d[bindProp] === 'object' && d[bindProp].normal !== undefined) {
+      return d[bindProp].normal;
+    } else {
+      return props[bindProp].normal;
+    }
   }
 }
 export function shapeBinding($, go, _options) {
@@ -129,7 +270,7 @@ export function shapeBinding($, go, _options) {
     visible: {
       key: '',
       handler(d) {
-        if (!['circularImage', 'image', 'icon'].includes(d.shape)) {
+        if (!['clipImage', 'image', 'icon'].includes(d.shape)) {
           return true;
         } else {
           return false;
@@ -291,7 +432,6 @@ export function labelBinding($, go, _options) {
     text: {
       key: '',
       handler(d) {
-        console.log(d.key, d);
         if (d.label === undefined) {
           return '';
         } else if (typeof d.label === 'string') {
@@ -346,6 +486,22 @@ export function labelBinding($, go, _options) {
           return true;
         } else {
           return false;
+        }
+      }
+    },
+    margin: {
+      key: '',
+      handler(d) {
+        if (d.label && d.label.margin) {
+          if (typeof d.label.margin === 'number') {
+            return d.label.margin;
+          } else if (d.label.margin instanceof Array) {
+            return new go.Margin(...d.label.margin);
+          } else {
+            return new go.Margin(..._options.props.label.margin);
+          }
+        } else {
+          return new go.Margin(..._options.props.label.margin);
         }
       }
     }

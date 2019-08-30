@@ -10,6 +10,5 @@ export default function($, go, options) {
     },
     options
   );
-  _options.type = _options.type || 'Circle';
-  return $(go.Shape, _options.type, _options.props, ..._options.binding);
+  return $(go.Shape, _options.props, ..._options.binding);
 }

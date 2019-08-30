@@ -4,11 +4,16 @@ export default function($, go, options) {
       props: {},
       parts: [],
       events: {},
-      binding: []
+      binding: [],
+      clip: {
+        props: {},
+        binding: []
+      },
+      panelBinding: []
     },
     options
   );
-  let defaultProps = {
+  let pictureProps = {
     name: 'Picture',
     sourceCrossOrigin: function() {
       return 'use-credentials';
@@ -16,34 +21,31 @@ export default function($, go, options) {
     width: 30,
     height: 30
   };
-  let defaultClipBinding = [];
-  _options.props = Object.assign({}, defaultProps, options.props);
-  _options.clipBinding = _options.clipBinding || defaultClipBinding;
-  let defaultClip = $(
+  _options.props = Object.assign({}, pictureProps, options.props);
+  let imageClip = $(
     go.Shape,
-    'Circle',
     {
+      figure: 'Circle',
       width: 60,
       height: 60,
       fill: 'transparent',
       stroke: '#ffc000',
       strokeWidth: 1,
-      portId: 'picture'
+      portId: 'picture',
+      ..._options.clip.props
     },
-    ..._options.clipBinding
+    ..._options.clip.binding
   );
-  _options.clip = _options.clip || defaultClip;
-  _options.isClipping = _options.isClipping || true;
-  console.log('clipping', _options);
   return $(
     go.Panel,
     'Spot',
     {
       name: 'image',
-      isClipping: _options.isClipping,
+      isClipping: true,
       scale: 1
     },
-    _options.clip,
-    $(go.Picture, _options.props, [..._options.parts, ..._options.binding])
+    imageClip,
+    $(go.Picture, _options.props, ..._options.parts, ..._options.binding),
+    ..._options.panelBinding
   );
 }
