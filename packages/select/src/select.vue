@@ -3,6 +3,7 @@
   <div>
     <el-alert
       :title="`${alertTips}`"
+      v-if="showTips"
       v-show="['rect', 'multi'].includes(selectMode)"
       :closable="false"
       type="warning"
@@ -73,6 +74,10 @@ export default {
       default() {
         return null
       }
+    },
+    showTips: {
+      type: Boolean,
+      default: true
     }
   },
   watch: {

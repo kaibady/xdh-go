@@ -1,7 +1,7 @@
 <template>
   <!-- 布局组件 -->
   <div class="xdh-go-layout__menu">
-    <slot>
+    <slot :toggleLock="toggleLock" :changeLayout="changeLayout">
       <ul>
         <li @click="toggleLock()">
           <el-tooltip

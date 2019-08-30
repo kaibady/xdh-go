@@ -1,0 +1,12 @@
+.xdh-go-tooltip {
+  display: none;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 100;
+  .tooltip-text {
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+  }
+}

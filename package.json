@@ -1,6 +1,6 @@
 {
   "name": "xdh-go",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha",
   "keywords": [
     "gojs",
     "vue"
@@ -21,7 +21,7 @@
     "fix": "node build/fix",
     "test:unit": "vue-cli-service test:unit",
     "jsdoc": "jsdoc -c ./jsdoc.conf.js -r",
-    "lib": "vue-cli-service build --target lib --name xdhgo --dest lib packages/index.js",
+    "lib": "vue-cli-service build --target lib --name xdhgo --dest lib packages/index.js && node build/util.js",
     "build:docs": "npm run init:docs && vuepress build docs",
     "dev:docs": "npm run init:docs && vuepress dev docs",
     "init:docs": "node docs/.vuepress/extend/init.js"
@@ -40,6 +40,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
+    "copy-concurrently": "^1.0.5",
     "echarts": "^4.2.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",

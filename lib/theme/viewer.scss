@@ -1,0 +1,37 @@
+.xdh-go-viewer {
+  position: fixed;
+  left: 250px;
+  top: 300px;
+  z-index: 102;
+  &__content {
+    padding: 0 0;
+    .el-tree-node__content {
+      padding: 5px 10px;
+    }
+    .item {
+      width: 100%;
+      padding: 5px 10px;
+      &.active {
+        border: 1px solid #409eff;
+        border-radius: 3px;
+      }
+      .search {
+        float: right;
+      }
+    }
+  }
+  &__footer {
+    padding: 5px 10px;
+    .name-input {
+      width: 200px;
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+}
+
+.xdh-go-viewer__container {
+  .el-card__body {
+    padding: 10;
+  }
+}

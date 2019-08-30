@@ -1,6 +1,12 @@
 <template>
   <div :style="style" v-show="draftVisible" class="xdh-go-draft" v-draggable>
-    <slot>
+    <slot :close="close"
+        :draftList="draftList"
+        :remove="remove"
+        :load="load"
+        :save="save"
+        :clear="clear"
+    >
       <el-card class="xdh-go-draft__container">
         <div slot="header" class="xdh-go-draft__header">
           <span>草稿箱</span>

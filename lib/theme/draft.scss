@@ -1,0 +1,67 @@
+.xdh-go-draft {
+    position: fixed;
+    left: 250px;
+    top: 100px;
+    z-index: 102;
+    &__content {
+      padding: 0 0;
+      .img {
+        vertical-align: middle;
+        border: 1px solid #aaa;
+        padding: 5px;
+      }
+      .txt {
+        display: inline-block;
+        width: 160px;
+        margin: 0 15px;
+        vertical-align: middle;
+      }
+      .time {
+        font-size: 10px;
+        color: #aaa;
+      }
+      .btns {
+        margin-left: 10px;
+        display: inline-block;
+        vertical-align: middle;
+        .iconfont {
+          font-size: 16px;
+          margin-left: 5px;
+          float: right;
+          cursor: pointer;
+          &.remove {
+            color: #ff3300;
+          }
+          &.load {
+            color: #2333ff;
+          }
+        }
+      }
+      .name {
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+    &__footer {
+      padding: 5px 10px;
+      .name-input {
+        width: 200px;
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+    &__item {
+      background-color: #fefefe;
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+  }
+
+  .xdh-go-draft__container {
+    .el-card__body {
+      padding: 0;
+    }
+  }

@@ -1,7 +1,7 @@
 
 <template>
   <div class="xdh-go-search" @keyup.enter="search">
-    <slot>
+    <slot :search="search" :keyword="keyword">
       <el-input
         placeholder="输入检索内容"
         v-model="keyword"
