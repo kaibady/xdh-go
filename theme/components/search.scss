@@ -1,0 +1,26 @@
+.xdh-go-search__input {
+  float: left;
+  width: 300px;
+  margin-left: 25px;
+  & /deep/ .el-input__inner {
+    border: $xdh-go-search-border;
+    background-color: $xdh-go-search-background;
+    border-right-width: 0;
+    color: $xdh-go-search-color;
+    &::-webkit-input-placeholder {
+      color: $xdh-go-search-placeholder-color;
+    }
+  }
+  & /deep/ .el-input-group__append {
+    border: $xdh-go-search-border;
+    background-color: $xdh-go-search-background;
+    border-left-width: 0;
+    color: $xdh-go-search-color;
+    font-size: $xdh-go-search-fontsize;
+  }
+}
+.xdh-go-search {
+  position: fixed;
+  z-index: 999;
+  top: 100px;
+}

@@ -1,7 +1,7 @@
 <template>
   <!-- 视图组件 -->
-  <div>
-    <slot>
+  <div class="xdh-go__view">
+    <slot :menus="menus" :menuClick="menuClick">
       <div class="xdh-go__menu">
         <div
           v-for="(item, idx) in menus"

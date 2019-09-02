@@ -1,15 +1,17 @@
 <template>
   <!-- 选择组件 -->
-  <div>
-    <el-alert
-      :title="`${alertTips}`"
-      v-if="showTips"
-      v-show="['rect', 'multi'].includes(selectMode)"
-      :closable="false"
-      type="warning"
-      class="xdh-go__tips"
-    ></el-alert>
-    <slot>
+  <div class="xdh-go__select">
+    <slot name="tips" :alertTips="alertTips" :showTips="showTips">
+      <el-alert
+        :title="`${alertTips}`"
+        v-if="showTips"
+        v-show="['rect', 'multi'].includes(selectMode)"
+        :closable="false"
+        type="warning"
+        class="xdh-go__tips"
+      ></el-alert>
+    </slot>
+    <slot :menus="menus" :menuClick="menuClick">
       <div class="xdh-go__menu">
         <div
           v-for="(item, idx) in menus"

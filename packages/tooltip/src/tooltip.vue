@@ -1,6 +1,6 @@
 <template>
   <div class="xdh-go-tooltip">
-    <slot>
+    <slot :text="text">
       <div class="tooltip-text">
          {{text}}
       </div>

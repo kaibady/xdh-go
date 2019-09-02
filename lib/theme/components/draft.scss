@@ -7,7 +7,7 @@
       padding: 0 0;
       .img {
         vertical-align: middle;
-        border: 1px solid #aaa;
+        border: 1px solid $xdh-go-border-color;
         padding: 5px;
       }
       .txt {
@@ -18,7 +18,7 @@
       }
       .time {
         font-size: 10px;
-        color: #aaa;
+        color: $xdh-go-secondary-color;
       }
       .btns {
         margin-left: 10px;
@@ -30,10 +30,10 @@
           float: right;
           cursor: pointer;
           &.remove {
-            color: #ff3300;
+            color: $xdh-go-color-danger;
           }
           &.load {
-            color: #2333ff;
+            color: $xdh-go-color-primary;
           }
         }
       }
@@ -54,9 +54,9 @@
       }
     }
     &__item {
-      background-color: #fefefe;
+      background-color: $xdh-go-item-background;
       padding: 5px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid $xdh-go-border-color;
     }
   }
 

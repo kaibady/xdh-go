@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span class="xdh-go__snapshot">
     <slot :makeImage="makeImage" :makeImageData="makeImageData" :makeSvg="makeSvg">
       <el-button size="mini" type="primary" @click="makeImage()">保存图片</el-button>
       <el-button size="mini" type="primary" @click="makeImageData()">保存图片字符串</el-button>
