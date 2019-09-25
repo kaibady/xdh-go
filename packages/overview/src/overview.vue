@@ -2,10 +2,16 @@
   <div :style="style"></div>
 </template>
 <script>
+/**
+ * XdhGoOverview组件
+ * @module xdh-go-overview
+ * @description 鹰眼组件
+ */
 export default {
   name: 'XdhGoOverview',
   inject: ['$', 'go', 'diagram'],
   components: {},
+
   props: {
     divStyle: {
       type: Object,
@@ -19,8 +25,6 @@ export default {
       name: 'XdhGoOverview',
       defaultStyle: {
         position: 'absolute',
-        left: '10px',
-        bottom: '10px',
         width: '150px',
         height: '150px',
         border: '2px solid #75a3fa',
