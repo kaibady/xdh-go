@@ -30,6 +30,9 @@ export default {
    * 属性参数
    * @property {Function} [beforeShowMenu = () => {}] 显示菜单前须做的操作，可用于调整菜单项
    * @property {Function} [showContextMenu] 显示菜单，可选
+   * @property {Object} [menuStyle={'z-index': 10000,position:'fixed'}] 菜单容器样式
+   * @property {Function} [hideContextMenu=null] 菜单关闭方法
+   * @property {Boolean} [autoHide=true] 菜单是否自动关闭，设为true时，tooltip和contextMenu表现不一样，tooltip为移出节点时关闭，contentMenu为点击diagram空白处关闭
    */
   props: {
     appendToBody: {

@@ -4,9 +4,9 @@ export default function($, go, options) {
     {
       width: 30,
       height: 30,
-      fill: 'transparent',
-      stroke: 'rgba(255,0,0,0)',
-      strokeWidth: 3
+      fill: '#000',
+      stroke: '#000s',
+      strokeWidth: 1
     },
     options
   );

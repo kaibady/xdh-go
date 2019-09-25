@@ -1,10 +1,81 @@
 {
+  "/components/": [
+    {
+      "title": "组件",
+      "collapsable": false,
+      "children": [
+        "go",
+        "tooltip",
+        "circle-menu",
+        "overview",
+        "snapshot",
+        "draft",
+        "tool",
+        "layout",
+        "view",
+        "select",
+        "search"
+      ]
+    }
+  ],
+  "/utils/": [
+    {
+      "title": "模板方法",
+      "collapsable": false,
+      "children": [
+        "panel",
+        "parts",
+        "binding",
+        "functions"
+      ]
+    }
+  ],
+  "/commonNode/": [
+    {
+      "title": "通用节点",
+      "collapsable": false,
+      "children": [
+        "base",
+        "clip-image",
+        "image",
+        "icon",
+        "shape",
+        "default",
+        "extension"
+      ]
+    }
+  ],
+  "/commonLink/": [
+    {
+      "title": "通用连线",
+      "collapsable": false,
+      "children": [
+        "base",
+        "arrows",
+        "lines",
+        "default",
+        "extension"
+      ]
+    }
+  ],
+  "/applys/": [
+    {
+      "title": "综合应用",
+      "collapsable": false,
+      "children": [
+        "base",
+        "example1",
+        "example2"
+      ]
+    }
+  ],
   "/api": null,
+  "/gojs": null,
   "/": [
     {
       "title": "使用指南",
       "collapsable": false,
-      "children": ["", "go"]
+      "children": [""]
     }
   ]
 }

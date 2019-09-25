@@ -171,6 +171,7 @@ export default {
         model.linkDataArray = links
       }
       this.diagram.updateAllRelationshipsFromData()
+      this.$emit('on-load-data', this.diagram, $, go)
     },
     /**
      * 初始化载入图表模板
@@ -540,7 +541,6 @@ export default {
     getHtmlInfo() {
       this.$children.forEach(el => {
         if (el.name === 'XdhGoHtml') {
-          console.log(el)
           this.htmlInfo[el.menuName] = el.bindMenu()
           if (el.appendToBody) {
             this.$el.parentNode.appendChild(el.$el)

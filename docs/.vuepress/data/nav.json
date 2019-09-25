@@ -4,7 +4,31 @@
     "link": "/"
   },
   {
+    "text": "组件",
+    "link": "/components/go"
+  },
+  {
+    "text": "模板方法",
+    "link": "/utils/panel"
+  },
+  {
+    "text": "通用节点",
+    "link": "/commonNode/base"
+  },
+  {
+    "text": "通用连线",
+    "link": "/commonLink/base"
+  },
+  {
+    "text": "综合应用",
+    "link": "/applys/example1"
+  },
+  {
     "text": "API文档",
     "link": "/api"
+  },
+  {
+    "text": "gojs文档",
+    "link": "/gojs.html?url=gojs/index.html"
   }
 ]
