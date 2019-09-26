@@ -1,5 +1,5 @@
 <template>
-  <div :style="style" v-show="viewerVisible" class="xdh-go-viewer" v-draggable>
+  <div v-show="viewerVisible" class="xdh-go-viewer" v-draggable>
     <slot>
       <el-card class="xdh-go-viewer__container">
         <div slot="header" class="xdh-go-viewer__header">

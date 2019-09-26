@@ -5,13 +5,22 @@
 :::
 
 ## 基础用法
-使用el-button默认按钮,可以通过/deep/ 改变按钮样式
+
+使用 el-button 默认按钮,可以通过/deep/ 改变按钮样式。组件提供 image(图片),imageData(图片 base64),svg(svg 元素)三种快照格式，可以通过 layout 参数设置按钮的显隐和顺序
 :::demo
 
 ```html
 <template>
   <div>
+    <div>
+      默认显示三种按钮
+    </div>
     <xdh-go-snapshot :diagram="diagram" @on-snap="getImage"></xdh-go-snapshot>
+    <div>
+      可以通过layout控制显示按钮
+    </div>
+    <xdh-go-snapshot :diagram="diagram" @on-snap="getImage"
+    layout="svg,image"></xdh-go-snapshot>
     <xdh-go
       :nodes="nodes"
       :links="links"
@@ -123,22 +132,36 @@
 
 :::
 
-
 ## 使用插槽
-使用插槽自定义样式，通过makeImageData方法获得快照数据
+
+使用插槽自定义样式，通过 插槽提供的makeImage/makeImageData/makeSvg 方法获得快照数据
 :::demo
 
 ```html
 <template>
   <div>
     <xdh-go-snapshot :diagram="diagram" @on-snap="getImage">
-      <template slot-scope="{makeImageData}">
+      <template slot-scope="{makeImageData,makeImage,makeSvg}">
         <el-button
           circle
           size="mini"
           type="primary"
           icon="el-icon-camera-solid"
           @click="makeImageData"
+        ></el-button>
+        <el-button
+          circle
+          size="mini"
+          type="primary"
+          icon="el-icon-picture"
+          @click="makeImage"
+        ></el-button>
+        <el-button
+          circle
+          size="mini"
+          type="primary"
+          icon="el-icon-s-data"
+          @click="makeSvg"
         ></el-button>
       </template>
     </xdh-go-snapshot>
@@ -155,7 +178,7 @@
     ></xdh-go>
     <div>{{imageType}}{{imageObjectType}}</div>
     <img :src="currImg" v-show="imageType !== 'svg'" />
-    <div id="imageConainer" v-show="imageType === 'svg'"></div>
+    <div id="imageConainer1" v-show="imageType === 'svg'"></div>
   </div>
 </template>
 <script>
@@ -192,6 +215,7 @@
       },
       getImage(type, data) {
         this.imageType = type;
+        console.log(type)
         this.imageObjectType = `(${
           this.imageType !== 'imageData'
             ? data.toString()
@@ -202,8 +226,8 @@
         } else if (type === 'imageData') {
           this.currImg = data;
         } else if (type === 'svg') {
-          document.getElementById('imageConainer').innerHTML = '';
-          document.getElementById('imageConainer').appendChild(data);
+          document.getElementById('imageConainer1').innerHTML = '';
+          document.getElementById('imageConainer1').appendChild(data);
         }
       },
       diagramReady(diagram, $, go) {
