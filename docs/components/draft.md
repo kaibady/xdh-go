@@ -15,6 +15,7 @@ XdhGoDraft 草稿箱组件，组件[XdhGoDraft](/api.html?url=/xdh-go/doc/module
     <xdh-go-draft
       ref="draft"
       :visible.sync="draftShow"
+      :local-key="'box1'"
       :diagram="diagram"
     ></xdh-go-draft>
     <xdh-go

@@ -1,6 +1,6 @@
 <template>
   <!-- 布局组件 -->
-  <div class="xdh-go-layout__menu">
+  <div :class="`xdh-go-layout__menu ${customClass}`" :style="customStyle">
     <slot :toggleLock="toggleLock" :changeLayout="changeLayout">
       <ul>
         <li @click="toggleLock()">
@@ -55,7 +55,7 @@
           <el-tooltip :content="'树形'" placement="left" effect="light" popper-class="invest-graph">
             <i class="iconfont icon-map-site icon"></i>
           </el-tooltip>
-          <ul>
+          <ul class="bottom">
             <li @click="changeLayout('TreeLayout', {angle:270})">
               <i class="iconfont icon-arrow-up icon"></i>
             </li>
@@ -91,6 +91,16 @@ export default {
     lock: {
       type: Boolean,
       default: false
+    },
+    customClass: {
+      type: String,
+      default: ''
+    },
+    customStyle: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {

@@ -1,6 +1,6 @@
 <template>
   <!-- 视图组件 -->
-  <div class="xdh-go__view">
+  <div :class="`xdh-go__view ${customClass}`" :style="customStyle">
     <slot :menus="menus" :menuClick="menuClick">
       <div class="xdh-go__menu">
         <div
@@ -80,6 +80,16 @@ export default {
       default() {
         return null
       }
+    },
+    customClass: {
+      type: String,
+      default: ''
+    },
+    customStyle: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
@@ -158,11 +168,11 @@ export default {
           diagram.zoomToFit()
           break
         case '缩小':
-            diagram.scale = diagram.scale - 0.2;
-            break
+          diagram.scale = diagram.scale - 0.2
+          break
         case '放大':
-            diagram.scale = diagram.scale + 0.2;
-            break
+          diagram.scale = diagram.scale + 0.2
+          break
       }
     }
   },

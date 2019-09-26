@@ -288,7 +288,7 @@ class Draggable extends Events {
     if (this.dragProxy) {
       this.off(this.dragProxy, 'webkitTransitionEnd', this.handleAnimationEnd)
       this.off(this.dragProxy, 'transitionend', this.handleAnimationEnd)
-      this.dragProxy.parentNode.removeChild(this.dragProxy)
+      this.dragProxy.parentNode && this.dragProxy.parentNode.removeChild(this.dragProxy)
       this.dragProxy = null
     }
   }
