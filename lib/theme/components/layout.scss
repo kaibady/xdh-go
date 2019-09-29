@@ -26,6 +26,10 @@
           left: 40px;
           list-style: none;
           padding: 0;
+          &.bottom{
+            bottom: 0;
+            top: initial;
+          }
           & > li {
             background-color: $xdh-go-layout-item-background;
             color: $xdh-go-layout-item-color;

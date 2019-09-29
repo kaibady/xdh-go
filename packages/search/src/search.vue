@@ -1,8 +1,16 @@
 
 <template>
-  <div class="xdh-go-search" @keyup.enter="search">
+  <div :class="`xdh-go-search ${customClass}`" :style="customStyle" @keyup.enter="search">
     <slot :search="search" :keyword="keyword">
+      <el-popover
+        v-model="popoverShow"
+        ref="popover"
+        placement="bottom"
+        :title="searchKey"
+        :content="searchResult"
+      ></el-popover>
       <el-input
+        v-popover:popover
         placeholder="输入检索内容"
         v-model="keyword"
         size="small"
@@ -54,8 +62,22 @@ export default {
         return 'node'
       },
       validator(val) {
-        return ['node', 'link', 'node,link'].includes(val)
+        return ['node', 'link', 'node,link', 'link,node'].includes(val)
       }
+    },
+    customClass: {
+      type: String,
+      default: ''
+    },
+    customStyle: {
+      type: Object,
+      default() {
+        return {}
+      }
+    },
+    popDuration: {
+      type: Number,
+      default: 2000
     }
   },
   data() {
@@ -65,7 +87,10 @@ export default {
       keywordCache: '',
       // 用来放置搜索的结果数组，与index结合实现查找下一个功能
       resultCache: [],
-      index: 0
+      index: 0,
+      searchKey: '',
+      searchResult: '',
+      popoverShow: false
     }
   },
   computed: {},
@@ -83,7 +108,14 @@ export default {
       }
       this.searchNode()
       if (this.resultCache.length !== 0) {
-        let node = this.resultCache[this.index]
+        let result = this.resultCache[this.index]
+        this.searchKey = `${result.type}   ${result.keyword}`
+        this.searchResult = `比中内容:${result.hit}`
+        this.popoverShow = true
+        setTimeout(() => {
+          this.popoverShow = false
+        }, this.popDuration)
+        let node = result.node
         node.isSelected = true
         if (this.pullCenter) {
           let rect = node.actualBounds
@@ -102,6 +134,8 @@ export default {
       if (this.mode.includes('node')) {
         this.diagram.nodes.each(n => {
           let hit = false // 是否命中
+          let hitKeywords = []
+          let hitText = []
           this.nodeKeys.forEach(k => {
             let keywords = k.split('.')
             let d = this.getData(n.data, keywords)
@@ -109,38 +143,58 @@ export default {
               if (this.ignoreCase) {
                 if (d.toLowerCase().includes(this.keyword.toLowerCase())) {
                   hit = true
+                  hitKeywords.push(k)
+                  hitText.push(`${k}:${d}`)
                 }
               } else {
                 if (d.includes(this.keyword)) {
                   hit = true
+                  hitKeywords.push(k)
+                  hitText.push(`${k}:${d}`)
                 }
               }
             }
           })
           if (hit) {
-            nodes.push(n)
+            nodes.push({
+              type: '节点',
+              keyword: hitKeywords.join(','),
+              hit: hitText.join('\n'),
+              node: n
+            })
           }
         })
       }
       if (this.mode.includes('link')) {
         this.diagram.links.each(n => {
           let hit = false
+          let hitKeywords = []
+          let hitText = []
           this.linkKeys.forEach(k => {
             let keywords = k.split('.')
             let d = this.getData(n.data, keywords)
-            if (this.ignoreCase) {
-              if (typeof d === 'string') {
+            if (typeof d === 'string') {
+              if (this.ignoreCase) {
                 if (d.toLowerCase().includes(this.keyword.toLowerCase())) {
                   hit = true
+                  hitKeywords.push(k)
+                  hitText.push(`${k}:${d}`)
                 }
               } else {
                 if (d.includes(this.keyword)) {
                   hit = true
+                  hitKeywords.push(k)
+                  hitText.push(`${k}:${d}`)
                 }
               }
             }
             if (hit) {
-              nodes.push(n)
+              nodes.push({
+                type: '连线',
+                keyword: hitKeywords.join(','),
+                hit: hitText.join('\n'),
+                node: n
+              })
             }
           })
         })
@@ -169,5 +223,4 @@ export default {
 }
 </script>
 <style type="text/scss" lang="scss" scoped>
-
 </style>

@@ -1,14 +1,14 @@
 <template>
   <!-- 视图组件 -->
   <div :class="`xdh-go__view ${customClass}`" :style="customStyle">
-    <slot :menus="menus" :menuClick="menuClick">
+    <slot :menus="menuOption" :menuClick="menuClick">
       <div class="xdh-go__menu">
         <div
-          v-for="(item, idx) in menus"
+          v-for="(item, idx) in menuOption"
           :key="idx"
           :class="{'xdh-go__box': true, disabled: item.disabled || disabledAll}"
         >
-          <div v-if="!item.subMenu" @click="menuClick(item.name)">
+          <div v-if="!item.subMenu" @click="menuClick(item)">
             <div class="icon-con">
               <i :class="item.icon"></i>
             </div>
@@ -18,7 +18,7 @@
             <div class="icon-con">
               <i :class="item.icon"></i>
             </div>
-            <el-dropdown @command="(name) => menuClick(name)" trigger="click" class="submenu">
+            <el-dropdown @command="(obj) => menuClick(obj)" trigger="click" class="submenu">
               <span :class="{'el-dropdwon-link': true, 'disabled':item.disabled || disabledAll}">
                 {{item.name}}
                 <i class="iconfont icon-bold-arrow-down" style="margin-left: 5px;"></i>
@@ -27,7 +27,7 @@
                 <el-dropdown-item
                   :key="idx"
                   v-for="(item1, idx) in item.subMenu"
-                  :command="item1.name"
+                  :command="item1"
                   :disabled="item1.disabled"
                 >{{item1.name}}</el-dropdown-item>
               </el-dropdown-menu>
@@ -41,7 +41,6 @@
 <script>
 import go from 'gojs'
 let viewMenus = [
-  { name: '显示照片', icon: 'iconfont icon-image', visible: false },
   {
     name: '隐藏',
     icon: 'iconfont icon-magic',
@@ -90,13 +89,31 @@ export default {
       default() {
         return {}
       }
+    },
+    menus: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    handlers: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
     return {
-      menus: viewMenus.filter(r => {
-        return r.visible !== false
-      }),
+      menuOption: (() => {
+        if (this.menus.length !== 0) {
+          return this.menus.filter(r => {
+            return r.visible !== false
+          })
+        } else {
+          return JSON.parse(JSON.stringify(viewMenus))
+        }
+      })(),
       disabledAll: false
     }
   },
@@ -105,8 +122,13 @@ export default {
     toggleDisabledAll(disabled = true) {
       this.disabledAll = disabled
     },
-    menuClick(name) {
-      this.$emit('item-click', name)
+    menuClick(item) {
+      let name = item.name
+      this.$emit('item-click', item)
+      if (this.handlers[name]) {
+        this.handlers[name](this.diagram, go.GraphObject.make, go, item)
+        return
+      }
       let set = new go.Set()
       let diagram = this.diagram
       let model = diagram.model

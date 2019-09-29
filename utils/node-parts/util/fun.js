@@ -1,3 +1,9 @@
+/**
+ * @function genOption
+ * @description 封装时将传入的参数与默认参数合并，支持到第二级合并
+ * @param {*} defaultProps
+ * @param {*} options
+ */
 export function genOption(defaultProps, options = {}) {
   // 默认参数补全
   let _options = Object.assign(
@@ -29,6 +35,27 @@ export function genOption(defaultProps, options = {}) {
             : _options.props[name][n1];
       }
     }
+  }
+  return _options;
+}
+
+export function extendOption(defaultProps, options = {}) {
+  // 默认参数补全
+  let _options = Object.assign(
+    {
+      props: {},
+      parts: [],
+      events: {},
+      binding: []
+    },
+    options
+  );
+  // 取传进来的默认参数，深入到第二层合并
+  for (let name in defaultProps) {
+    _options.props[name] =
+      _options.props[name] === undefined
+        ? defaultProps[name]
+        : _options.props[name];
   }
   return _options;
 }

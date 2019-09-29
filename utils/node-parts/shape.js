@@ -1,14 +1,11 @@
-import { genOption } from './util/fun';
-export default function($, go, options) {
-  let _options = genOption(
+import { extendOption } from './util/fun';
+export default function($, go, options = {}) {
+  let _options = extendOption(
     {
-      width: 30,
-      height: 30,
-      fill: '#000',
-      stroke: '#000s',
+      stroke: '#000',
       strokeWidth: 1
     },
     options
   );
-  return $(go.Shape, _options.props, ..._options.binding);
+  return $(go.Shape, _options.props, ..._options.binding, _options.events);
 }

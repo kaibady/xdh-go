@@ -1,6 +1,6 @@
 <template>
   <!-- 选择组件 -->
-  <div class="xdh-go__select">
+  <div :class="`xdh-go__select ${customClass}`" :style="customStyle">
     <slot name="tips" :alertTips="alertTips" :showTips="showTips">
       <el-alert
         :title="`${alertTips}`"
@@ -80,6 +80,16 @@ export default {
     showTips: {
       type: Boolean,
       default: true
+    },
+    customClass: {
+      type: String,
+      default: ''
+    },
+    customStyle: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   watch: {
@@ -296,5 +306,4 @@ export default {
 }
 </script>
 <style type="text/scss" lang="scss" scoped>
-
 </style>

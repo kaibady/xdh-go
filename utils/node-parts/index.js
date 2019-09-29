@@ -1,4 +1,4 @@
-import { horPanel, spotPanel, verPanel } from './panel';
+import { horPanel, spotPanel, verPanel, panel } from './panel';
 import iconfont from './iconfont';
 import makeport from './makeport';
 import node from './node';
@@ -9,6 +9,7 @@ import shape from './shape';
 import binding from './binding';
 import link from './link';
 export {
+  panel,
   horPanel,
   spotPanel,
   verPanel,

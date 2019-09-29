@@ -1,7 +1,7 @@
-export default function($, go, options) {
+export default function($, go, options = {}) {
   let defaultProps = {
     font: `30px "iconfont"`,
-    stroke: '#ccc',
+    stroke: '#000',
     wrap: go.TextBlock.OverflowEllipsis,
     editable: false,
     textAlign: 'center',

@@ -11,6 +11,10 @@ import Layout from './layout';
 import View from './view';
 import Select from './select';
 import Search from './search';
+// 节点定义方法
+import * as utilFuns from '../utils/node-parts/index';
+import link from '../utils/template/link/index';
+import node from '../utils/template/node/index';
 const components = [
   Go,
   Html,
@@ -46,6 +50,9 @@ export const XdhGoLayout = Layout;
 export const XdhGoView = View;
 export const XdhGoSelect = Select;
 export const XdhGoSearch = Search;
+export const utils = utilFuns;
+export const nodeTmpl = node;
+export const linkTmpl = link;
 export default {
   version: '1.0.0',
   install,
@@ -60,5 +67,8 @@ export default {
   Layout,
   View,
   Select,
-  Search
+  Search,
+  utils,
+  nodeTmpl,
+  linkTmpl
 };

@@ -1,6 +1,5 @@
 import {
-  verPanel,
-  spotPanel,
+  panel,
   node,
   picture,
   textBlock,
@@ -26,7 +25,6 @@ import {
 
 export default function($, go, options) {
   let _options = handleNodeDefault($, go, options);
-  console.log(_options);
   // 用于扩展节点
   let extendUp = [],
     extendDown = [];
@@ -68,23 +66,26 @@ export default function($, go, options) {
     props: {
       shadowVisible: true,
       toolTip: tooltip($, go, {
-        shapeBinding: tooltipShape($, go, _options),
-        adornmentBinding: tooltipAdornment($, go, _options),
+        shape: { binding: tooltipShape($, go, _options) },
+        adornment: { binding: tooltipAdornment($, go, _options) },
         binding: tooltipBinding($, go, _options)
       }),
       ..._options.props._nodeOptions.props
     },
     binding: nodeBinding($, go, _options),
     parts: [
-      spotPanel($, go, {
+      panel($, go, {
+        type: 'spot',
         props: {
           ..._options.props._layerOptions.props
         },
         parts: [
           ...extendDown,
-          verPanel($, go, {
+          panel($, go, {
+            type: 'ver',
             parts: [
-              spotPanel($, go, {
+              panel($, go, {
+                type: 'spot',
                 porps: {
                   portId: '',
                   fromPortSpot: true,
@@ -116,15 +117,17 @@ export default function($, go, options) {
                     binding: pictureCircleBinding($, go, _options)
                   }),
                   picture($, go, {
-                    props: {
-                      portId: '',
-                      ..._options.props._pictureOptions.props
-                    },
                     clip: {
                       props: {},
                       binding: pictureClipBinding($, go, _options)
                     },
-                    panelBinding: picturePanelBinding($, go, _options),
+                    panel: {
+                      binding: picturePanelBinding($, go, _options)
+                    },
+                    props: {
+                      portId: '',
+                      ..._options.props._pictureOptions.props
+                    },
                     binding: pictureBinding($, go, _options)
                   }),
                   // 图形类型

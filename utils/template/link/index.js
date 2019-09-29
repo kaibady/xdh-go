@@ -7,10 +7,8 @@ import {
   linkHolderBinding
 } from './bindings';
 import { handleLinkDefault } from './default';
-console.log(shape);
 export default function($, go, options) {
   let _options = handleLinkDefault($, go, options);
-  console.log('link', _options);
   // 用于扩展节点
   let extendUp = [],
     extendDown = [];

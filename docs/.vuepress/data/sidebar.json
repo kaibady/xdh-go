@@ -23,10 +23,11 @@
       "title": "模板方法",
       "collapsable": false,
       "children": [
+        "pack",
+        "functions",
         "panel",
         "parts",
-        "binding",
-        "functions"
+        "binding"
       ]
     }
   ],
