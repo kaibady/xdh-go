@@ -650,6 +650,10 @@ props 默认参数
       },
       nodeTemplate($, go) {
         return node($, go, {
+          props: {
+            fromShortLength: 5,
+            toShortLength: 20
+          },
           parts: [
             shape($, go, {
               props: {
@@ -682,7 +686,11 @@ props 默认参数
                 }
               }),
               shape($, go, {
-                toArrow: 'Standard'
+                props: {
+                  toArrow: 'Standard',
+                  stroke: 'red',
+                  fill: 'red'
+                }
               })
             ]
           })
@@ -696,4 +704,258 @@ props 默认参数
 
 :::
 
-## makeport
+## makePort
+
+makePort 是对 go.Shape 的封装，实现了一个连线点
+
+参数包括 type, props, parts, binding, events
+
+props 默认参数
+
+```
+  {
+    fill: null,
+    stroke: null,
+    desiredSize: new go.Size(7, 7),
+    alignment: defaultSpot,
+    alignmentFocus: defaultSpot,
+    portId: options.name || '',
+    fromSpot: defaultSpot,
+    toSpot: defaultSpot,
+    fromLinkable: options.output || true,
+    toLinkable: options.input || true,
+    cursor: 'pointer'
+  }
+```
+
+### 基本用法
+
+示例中，makePort定义到节点的左右侧。鼠标移到节点上时显示连接点
+
+:::demo
+
+```html
+<template>
+  <div>
+    <xdh-tool v-if="$route.query.test"></xdh-tool>
+    <xdh-go
+      :nodes="nodes"
+      :links="links"
+      :type="model"
+      :config="config"
+      :layout="layout"
+      ref="diagram"
+      height="400px"
+      :node-template="nodeTemplate"
+      :link-template-map="linkTemplateMap"
+      @on-ready="diagramReady"
+    ></xdh-go>
+  </div>
+</template>
+<script>
+  import { XdhGo, XdhTool, utils } from 'xdh-go';
+  let { node, link, shape, panel, textBlock, binding, makePort } = utils;
+  // from gojs sample extensions folder
+  function getReshapingTool($, go) {
+    function SnapLinkReshapingTool() {
+      go.LinkReshapingTool.call(this);
+      this._gridCellSize = new go.Size(NaN, NaN);
+      this._gridOrigin = new go.Point(NaN, NaN);
+      this._isGridSnapEnabled = true;
+    }
+    go.Diagram.inherit(SnapLinkReshapingTool, go.LinkReshapingTool);
+    Object.defineProperty(SnapLinkReshapingTool.prototype, 'gridCellSize', {
+      get: function() {
+        return this._gridCellSize;
+      },
+      set: function(val) {
+        if (!(val instanceof go.Size))
+          throw new Error(
+            'new value for SnapLinkReshapingTool.gridCellSize must be a Size, not: ' +
+              val
+          );
+        this._gridCellSize = val.copy();
+      }
+    });
+    Object.defineProperty(SnapLinkReshapingTool.prototype, 'gridOrigin', {
+      get: function() {
+        return this._gridOrigin;
+      },
+      set: function(val) {
+        if (!(val instanceof go.Point))
+          throw new Error(
+            'new value for SnapLinkReshapingTool.gridOrigin must be a Point, not: ' +
+              val
+          );
+        this._gridOrigin = val.copy();
+      }
+    });
+    Object.defineProperty(
+      SnapLinkReshapingTool.prototype,
+      'isGridSnapEnabled',
+      {
+        get: function() {
+          return this._isGridSnapEnabled;
+        },
+        set: function(val) {
+          if (typeof val !== 'boolean')
+            throw new Error(
+              'new value for SnapLinkReshapingTool.isGridSnapEnabled must be a boolean, not: ' +
+                val
+            );
+          this._isGridSnapEnabled = val;
+        }
+      }
+    );
+    SnapLinkReshapingTool.prototype.computeReshape = function(p) {
+      var pt = p;
+      if (this.isGridSnapEnabled) {
+        var cell = this.gridCellSize;
+        var orig = this.gridOrigin;
+        if (!cell.isReal() || cell.width === 0 || cell.height === 0)
+          cell = this.diagram.grid.gridCellSize;
+        if (!orig.isReal()) orig = this.diagram.grid.gridOrigin;
+        pt = p.copy().snapToGrid(orig.x, orig.y, cell.width, cell.height);
+      }
+      return go.LinkReshapingTool.prototype.computeReshape.call(this, pt);
+    };
+    return SnapLinkReshapingTool;
+  }
+  function showSmallPorts(node, show) {
+    node.ports.each(function(port) {
+      if (port.portId !== '') {
+        port.fill = show ? 'rgba(0,0,0,.3)' : null;
+        port.stroke = show ? 'rgba(255,255,255, 0.6)' : null;
+      }
+    });
+  }
+  export default {
+    components: {
+      XdhGo,
+      XdhTool
+    },
+    data() {
+      return {
+        model: 'GraphLinksModel',
+        nodes: [
+          { key: 'a', text: 'A' },
+          { key: 'b', text: 'B' },
+          { key: 'c', text: 'C' }
+        ],
+        links: []
+      };
+    },
+    methods: {
+      config($, go) {
+        go.SnapLinkReshapingTool = getReshapingTool($, go);
+        return {
+          initialContentAlignment: go.Spot.Center,
+          'toolManager.hoverDelay': 100,
+          linkReshapingTool: $(go.SnapLinkReshapingTool),
+          grid: $(
+            go.Panel,
+            'Grid',
+            { gridCellSize: new go.Size(8, 8) },
+            $(go.Shape, 'LineH', { stroke: 'lightgray', strokeWidth: 0.5 }),
+            $(go.Shape, 'LineV', { stroke: 'lightgray', strokeWidth: 0.5 })
+          ),
+          'draggingTool.isGridSnapEnabled': true,
+          LinkReshaped: function(e) {
+            e.subject.routing = go.Link.Orthogonal;
+          },
+          'animationManager.isEnabled': false,
+          'undoManager.isEnabled': true
+        };
+      },
+      layout($, go) {
+        return $(go.ForceDirectedLayout, {});
+      },
+      diagramReady(diagram, $, go) {},
+      nodeTemplate($, go) {
+        return node($, go, {
+          type: 'spot',
+          props: {
+            fromShortLength: 3,
+            toShortLength: 3
+          },
+          events: {
+            mouseEnter: function(e, node) {
+              showSmallPorts(node, true);
+            },
+            mouseLeave: function(e, node) {
+              showSmallPorts(node, false);
+            }
+          },
+          parts: [
+            panel($, go, {
+              type: 'spot',
+              parts: [
+                shape($, go, {
+                  props: {
+                    figure: 'RoundedRectangle',
+                    fill: 'red'
+                  }
+                }),
+                textBlock($, go, {
+                  props: {
+                    stroke: '#fff',
+                    margin: 12
+                  },
+                  binding: binding($, go, { text: 'text' })
+                })
+              ]
+            }),
+            makePort($, go, {
+              spot: new go.Spot(0.1, 0.5),
+              props: {
+                strokeWidth: 2,
+                portId: 'L',
+                desiredSize: new go.Size(10, 10)
+              }
+            }),
+            makePort($, go, {
+              spot: new go.Spot(0.9, 0.5),
+              props: {
+                strokeWidth: 2,
+                portId: 'R',
+                desiredSize: new go.Size(10, 10)
+              }
+            })
+          ]
+        });
+      },
+      linkTemplateMap($, go) {
+        let map = new go.Map();
+        map.add(
+          '',
+          link($, go, {
+            props: {
+              relinkableFrom: true,
+              relinkableTo: true,
+              reshapable: true
+            },
+            parts: [
+              shape($, go, {
+                props: {
+                  stroke: '#000',
+                  strokeWidth: 2
+                }
+              }),
+              shape($, go, {
+                props: {
+                  toArrow: 'Standard',
+                  stroke: '#000',
+                  fill: '#000'
+                }
+              })
+            ]
+          })
+        );
+        return map;
+      }
+    }
+  };
+</script>
+```
+
+:::

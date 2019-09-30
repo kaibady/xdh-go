@@ -12,7 +12,11 @@ export default function($, go, options) {
     } else if (bind[1].type && bind[1].type instanceof Array) {
       let typeParams = [];
       if (bind[1].type[1]) {
-        typeParams.push(bind[1].type[1]);
+        if (!(bind[1].type[1] instanceof Array)) {
+          typeParams.push(bind[1].type[1]);
+        } else if (bind[1].type[1] instanceof Array) {
+          typeParams.push(...bind[1].type[1]);
+        }
       }
       bindings.push(ret[bind[1].type[0]](...typeParams));
     } else {

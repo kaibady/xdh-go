@@ -1,6 +1,6 @@
 import { horPanel, spotPanel, verPanel, panel } from './panel';
 import iconfont from './iconfont';
-import makeport from './makeport';
+import makePort from './makePort';
 import node from './node';
 import picture from './picture';
 import textBlock from './textBlock';
@@ -15,7 +15,7 @@ export {
   verPanel,
   iconfont,
   shape,
-  makeport,
+  makePort,
   node,
   link,
   tooltip,
