@@ -36,7 +36,15 @@ export function pictureClipBinding($, go, _options) {
     visible: {
       key: '',
       handler(d) {
-        if (d.shape === 'clipImage') {
+        if (
+          d.clipShape === null ||
+          (d.clipShape === undefined && _options.props.clipShape === null)
+        ) {
+          return false;
+        } else if (
+          (d.shape && d.shape === 'clipImage') ||
+          (!d.shape && _options.props.shape === 'clipImage')
+        ) {
           return true;
         } else {
           return false;
@@ -50,7 +58,10 @@ export function picturePanelBinding($, go, _options) {
     isCliping: {
       key: '',
       handler(d) {
-        if (d.shape === 'clipImage') {
+        if (
+          (d.shape && d.shape === 'clipImage') ||
+          (!d.shape && _options.props.shape === 'clipImage')
+        ) {
           return true;
         } else {
           return false;
@@ -60,7 +71,10 @@ export function picturePanelBinding($, go, _options) {
     visible: {
       key: '',
       handler(d) {
-        if (['image', 'clipImage'].includes(d.shape)) {
+        if (
+          (d.shape && ['image', 'clipImage'].includes(d.shape)) ||
+          (!d.shape && ['image', 'clipImage'].includes(_options.props.shape))
+        ) {
           return true;
         } else {
           return false;
@@ -119,10 +133,13 @@ export function pictureCircleBinding($, go, _options) {
     visible: {
       key: '',
       handler(d) {
-        if (['clipImage', 'image'].includes(d.shape)) {
-          return true;
-        } else {
+        if (
+          d.stateShape === null ||
+          (d.stateShape === undefined && _options.props.stateShape === null)
+        ) {
           return false;
+        } else {
+          return true;
         }
       }
     },
@@ -157,17 +174,23 @@ export function pictureCircleBinding($, go, _options) {
       type: 'ofObject',
       key: '',
       handler(n) {
-        console.log(n.data);
         return bindSelect(n, _options, 'strokeWidth');
+      }
+    },
+    fill: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        return bindSelect(n, _options, 'background');
       }
     },
     figure: {
       key: '',
       handler(d) {
         if (d.clipShape) {
-          return d.clipShape;
+          return d.stateShape;
         } else {
-          return _options.props.clipShape;
+          return _options.props.stateShape;
         }
       }
     }
@@ -178,7 +201,10 @@ export function pictureHolderBinding($, go, _options) {
     visible: {
       key: '',
       handler(d) {
-        if (['clipImage', 'image'].includes(d.shape)) {
+        if (
+          (d.shape && ['clipImage', 'image'].includes(d.shape)) ||
+          (!d.shape && ['image', 'clipImage'].includes(_options.props.shape))
+        ) {
           return true;
         } else {
           return false;
@@ -231,10 +257,13 @@ export function pictureHolderBinding($, go, _options) {
 function bindSelect(n, _options, bindProp) {
   let d = n.data;
   let props = _options.props;
- if (n.isSelected) {
+  if (n.isSelected) {
     if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
       return d[bindProp];
-    } else if (typeof d[bindProp] === 'object' && d[bindProp].select !== undefined) {
+    } else if (
+      typeof d[bindProp] === 'object' &&
+      d[bindProp].select !== undefined
+    ) {
       return d[bindProp].select;
     } else {
       return props[bindProp].select;
@@ -242,7 +271,10 @@ function bindSelect(n, _options, bindProp) {
   } else if (d.isHover) {
     if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
       return d[bindProp];
-    } else if (typeof d[bindProp] === 'object' && d[bindProp].hover !== undefined) {
+    } else if (
+      typeof d[bindProp] === 'object' &&
+      d[bindProp].hover !== undefined
+    ) {
       return d[bindProp].hover;
     } else {
       return props[bindProp].hover;
@@ -250,7 +282,10 @@ function bindSelect(n, _options, bindProp) {
   } else if (n.isHighlighted) {
     if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
       return d[bindProp];
-    } else if (typeof d[bindProp] === 'object' && d[bindProp].highlight !== undefined) {
+    } else if (
+      typeof d[bindProp] === 'object' &&
+      d[bindProp].highlight !== undefined
+    ) {
       return d[bindProp].highlight;
     } else {
       return props[bindProp].highlight;
@@ -258,7 +293,10 @@ function bindSelect(n, _options, bindProp) {
   } else {
     if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
       return d[bindProp];
-    } else if (typeof d[bindProp] === 'object' && d[bindProp].normal !== undefined) {
+    } else if (
+      typeof d[bindProp] === 'object' &&
+      d[bindProp].normal !== undefined
+    ) {
       return d[bindProp].normal;
     } else {
       return props[bindProp].normal;
@@ -270,14 +308,31 @@ export function shapeBinding($, go, _options) {
     visible: {
       key: '',
       handler(d) {
-        if (!['clipImage', 'image', 'icon'].includes(d.shape)) {
-          return true;
-        } else {
+        if (
+          (d.shape && ['clipImage', 'image', 'icon'].includes(d.shape)) ||
+          (!d.shape &&
+            ['clipImage', 'image', 'icon'].includes(_options.props.shape))
+        ) {
           return false;
+        } else {
+          return true;
         }
       }
     },
-    figure: 'shape',
+    figure: {
+      key: '',
+      handler(d) {
+        console.log('figure binding', d);
+        if (d.shape && !['clipImage', 'image', 'icon'].includes(d.shape)) {
+          return d.shape;
+        } else if (
+          !d.shape &&
+          !['clipImage', 'image', 'icon'].includes(_options.props.shape)
+        ) {
+          return _options.props.shape;
+        }
+      }
+    },
     fill: {
       type: 'ofObject',
       key: '',
@@ -318,7 +373,10 @@ export function iconfontBinding($, go, _options) {
     visible: {
       key: '',
       handler(d) {
-        if (d.shape === 'icon') {
+        if (
+          (d.shape && d.shape === 'icon') ||
+          (!d.shape && _options.props.shape === 'icon')
+        ) {
           return true;
         } else {
           return false;
@@ -328,7 +386,9 @@ export function iconfontBinding($, go, _options) {
     text: {
       key: '',
       handler(d) {
-        if (d.icon && d.icon.text) {
+        if (d.icon && typeof d.icon === 'string') {
+          return d.icon;
+        } else if (d.icon && d.icon.text) {
           return d.icon.text;
         } else {
           return _options.props.icon.text;
@@ -349,7 +409,7 @@ export function iconfontBinding($, go, _options) {
       type: 'ofObject',
       key: '',
       handler(n) {
-        return bindSelect(n, _options, 'background');
+        return bindSelect(n, _options, 'iconColor');
       }
     }
   });
@@ -370,6 +430,16 @@ export function nodeBinding($, go, _options) {
       type: ['makeTwoWay', go.Point.stringify],
       key: 'loc',
       handler: go.Point.parse
+    },
+    scale: {
+      key: '',
+      handler(d) {
+        if (d.scale) {
+          return d.scale;
+        } else {
+          return _options.props.scale;
+        }
+      }
     }
   });
 }
@@ -394,6 +464,16 @@ export function tooltipShape($, go, _options) {
           return _options.props.tooltip.stroke;
         }
       }
+    },
+    strokeWidth: {
+      key: '',
+      handler(d) {
+        if (d.tooltip && d.tooltip.strokeWidth) {
+          return d.tooltip.strokeWidth;
+        } else {
+          return _options.props.tooltip.strokeWidth;
+        }
+      }
     }
   });
 }
@@ -402,7 +482,9 @@ export function tooltipAdornment($, go, _options) {
     visible: {
       key: '',
       handler(d) {
-        if (d.tooltip && d.tooltip.text) {
+        if (d.tooltip && typeof d.tooltip === 'string') {
+          return true;
+        } else if (d.tooltip && d.tooltip.text) {
           return true;
         } else if (_options.props.tooltip && _options.props.tooltip.text) {
           return true;
@@ -418,10 +500,36 @@ export function tooltipBinding($, go, _options) {
     text: {
       key: '',
       handler(d) {
-        if (d.tooltip && d.tooltip.text) {
+        if (d.tooltip && typeof d.tooltip === 'string') {
+          return d.tooltip;
+        } else if (d.tooltip && d.tooltip.text) {
           return d.tooltip.text;
+        } else if (_options.props.tooltip && _options.props.tooltip.text) {
+          return _options.props.tooltip.text;
         } else {
           return '';
+        }
+      }
+    },
+    stroke: {
+      key: '',
+      handler(d) {
+        if (d.tooltip && d.tooltip.color) {
+          return d.tooltip.color;
+        } else if (_options.props.tooltip && _options.props.tooltip.color) {
+          return _options.props.tooltip.color;
+        } else {
+          return '#fff';
+        }
+      }
+    },
+    font: {
+      key: '',
+      handler(d) {
+        if (d.tooltip && d.tooltip.font) {
+          return d.tooltip.font;
+        } else {
+          return _options.props.tooltip.font;
         }
       }
     }
@@ -465,18 +573,11 @@ export function labelBinding($, go, _options) {
         }
       }
     },
-    background: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'labelBackground');
-      }
-    },
     stroke: {
       type: 'ofObject',
       key: '',
       handler(n) {
-        return bindSelect(n, _options, 'labelStroke');
+        return bindSelect(n, _options, 'labelColor');
       }
     },
     editable: {
@@ -485,7 +586,7 @@ export function labelBinding($, go, _options) {
         if (d.label.editable) {
           return true;
         } else {
-          return false;
+          return _options.props.label.editable;
         }
       }
     },
@@ -503,6 +604,41 @@ export function labelBinding($, go, _options) {
         } else {
           return new go.Margin(..._options.props.label.margin);
         }
+      }
+    }
+  });
+}
+export function labelShapeBinding($, go, _options) {
+  return binding($, go, {
+    visible: {
+      key: '',
+      handler(d) {
+        if (
+          d.label === undefined ||
+          (typeof d.label === 'object' && !d.label.text) ||
+          (typeof d.label === 'object' && d.label.show === false) ||
+          (typeof d.label === 'object' &&
+            d.label.show === undefined &&
+            _options.props.label.show === false)
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
+    fill: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        return bindSelect(n, _options, 'labelBackground');
+      }
+    },
+    stroke: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        return bindSelect(n, _options, 'labelStroke');
       }
     }
   });

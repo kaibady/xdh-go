@@ -551,7 +551,6 @@ export default {
   },
   mounted() {
     // this.proxyResize = this.resize.bind(this)
-
     // 实例化GoJS
     this.diagram = $(
       this.palette ? go.Palette : go.Diagram,

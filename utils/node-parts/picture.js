@@ -39,7 +39,8 @@ export default function($, go, options) {
   );
   _options.clip.props = clipProps;
   _options.clip.props.width = _options.clip.props.width || _options.props.width;
-  _options.clip.props.height = _options.clip.props.height || _options.props.height;
+  _options.clip.props.height =
+    _options.clip.props.height || _options.props.height;
   _options.clip.binding = (options.clip || {}).binding || [];
   if (options.clip === false) {
     _options.clip.props.visible = false;
@@ -54,7 +55,8 @@ export default function($, go, options) {
   let panelDefaultProps = {
     name: 'image',
     isClipping: true,
-    scale: 1
+    scale: 1,
+    visible: false
   };
 
   _options.panel.props = Object.assign(

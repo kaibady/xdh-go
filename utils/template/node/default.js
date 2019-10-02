@@ -7,10 +7,17 @@ export let getDefaultProps = ($, go) => {
     label: {
       text: '',
       show: true,
+      editable: false,
       font: '14px "iconfont"',
-      margin: [0, 0, 0, 0]
+      margin: [10, 10, 10, 10]
     },
     labelStroke: {
+      normal: 'transparent',
+      highlight: '#fff',
+      hover: '#fff',
+      select: '#fff'
+    },
+    labelColor: {
       normal: '#000',
       highlight: '#fff',
       hover: '#fff',
@@ -22,8 +29,15 @@ export let getDefaultProps = ($, go) => {
       hover: '#66b1ff',
       select: '#66b1ff'
     },
+    iconColor: {
+      normal: '#ccc',
+      highlight: '#66b1ff',
+      hover: '#66b1ff',
+      select: '#66b1ff'
+    },
     shape: 'Rectangle',
     clipShape: 'Circle',
+    stateShape: 'Circle',
     background: {
       normal: 'yellow',
       highlight: '#66b1ff',
@@ -43,15 +57,18 @@ export let getDefaultProps = ($, go) => {
       select: 5
     },
     scale: 1,
-    size: 25,
+    size: 50,
     icon: {
       iconfont: '30px "iconfont"',
       text: '\uE7BD'
     },
     loc: '0 0',
     tooltip: {
-      stroke: 'rgba(0,0,0,0.6)',
-      background: '',
+      stroke: '#000',
+      color: '#fff',
+      strokeWidth: 1,
+      font: '14px',
+      background: 'rgba(0,0,0,0.6)',
       text: ''
     },
     _nodeOptions: {
@@ -59,6 +76,10 @@ export let getDefaultProps = ($, go) => {
       parts: []
     },
     _layerOptions: {
+      props: {},
+      parts: []
+    },
+    _labelContainerOptions: {
       props: {},
       parts: []
     },
@@ -118,6 +139,7 @@ export function handleNodeDefault($, go, options = {}) {
   for (let name in defaultProps) {
     // 如果是简化参数，把参数值按对象的定义方法设置
     if (extendNames.includes(name)) {
+      console.log(name, _options.props[name]);
       if (typeof _options.props[name] !== 'object') {
         // 这三种类型在简化传值时，默认传的是text,其它取默认
         if (['label', 'icon', 'tooltip'].includes(name)) {

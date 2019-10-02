@@ -18,6 +18,7 @@ import {
   iconfontBinding,
   nodeBinding,
   labelBinding,
+  labelShapeBinding,
   tooltipBinding,
   tooltipShape,
   tooltipAdornment
@@ -25,6 +26,7 @@ import {
 
 export default function($, go, options) {
   let _options = handleNodeDefault($, go, options);
+  console.log('node options', _options);
   // 用于扩展节点
   let extendUp = [],
     extendDown = [];
@@ -97,7 +99,7 @@ export default function($, go, options) {
                   shape($, go, {
                     props: {
                       figure: 'Circle',
-                      background: 'transparent',
+                      fill: 'transparent',
                       stroke: 'transparent',
                       portId: '',
                       ..._options.props._figureHolderOptions.props
@@ -150,12 +152,33 @@ export default function($, go, options) {
                   ..._options.props._figureContainerOptions.parts
                 ]
               }),
-              textBlock($, go, {
+              // 文字
+              panel($, go, {
+                type: 'auto',
                 props: {
-                  ..._options.props._labelOptions.props
+                  ..._options.props._labelContainerOptions.props
                 },
-                parts: [..._options.props._labelOptions.parts],
-                binding: labelBinding($, go, _options)
+                parts: [
+                  shape($, go, {
+                    props: {
+                      figure: 'Rectangle'
+                    },
+                    binding: labelShapeBinding($, go, _options)
+                  }),
+                  panel($, go, {
+                    type: 'ver',
+                    parts: [
+                      textBlock($, go, {
+                        props: {
+                          ..._options.props._labelOptions.props
+                        },
+                        parts: [..._options.props._labelOptions.parts],
+                        binding: labelBinding($, go, _options)
+                      }),
+                      ..._options.props._labelContainerOptions.parts
+                    ]
+                  })
+                ]
               })
             ]
           }),

@@ -37,8 +37,8 @@
       "collapsable": false,
       "children": [
         "base",
-        "clip-image",
         "image",
+        "clip-image",
         "icon",
         "shape",
         "default",
