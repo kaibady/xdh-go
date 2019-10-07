@@ -115,14 +115,15 @@ export function linkBinding($, go, _options) {
 export function lineBinding($, go, _options) {
   return binding($, go, {
     strokeDashArray: {
-      key: 'dashes',
-      handler(d) {
+      key: '',
+      handler(data) {
+        let d = data.dashes;
         if (d instanceof Array) {
           return d;
-        } else if (d) {
+        } else if (d === true) {
           return [4, 4, 4, 4];
         } else {
-          return null;
+          return _options.props.dashes;
         }
       }
     },
@@ -146,11 +147,12 @@ export function arrowBinding($, go, name, _options) {
   let props = _options.props;
   let bindOpt = {
     visible: {
-      key: 'arrows',
-      handler(d) {
-        if (typeof d === 'string' && d.includes(name)) {
+      key: '',
+      handler(data) {
+        let d = data.arrows;
+        if (d && typeof d === 'string' && d.includes(name)) {
           return true;
-        } else if (typeof d === 'object' && d[name]) {
+        } else if (d && typeof d === 'object' && d[name]) {
           return true;
         } else {
           return props.arrows[name].show;
@@ -158,9 +160,10 @@ export function arrowBinding($, go, name, _options) {
       }
     },
     scale: {
-      key: 'arrows',
-      handler(d) {
-        if (typeof d === 'object' && d[name] && d[name].scale) {
+      key: '',
+      handler(data) {
+        let d = data.arrows;
+        if (d && typeof d === 'object' && d[name] && d[name].scale) {
           return d[name].scale;
         } else {
           return props.arrows[name].scale;
@@ -171,14 +174,29 @@ export function arrowBinding($, go, name, _options) {
       type: 'ofObject',
       key: '',
       handler(n) {
+        return bindSelect(n, _options, 'arrowFill');
+      }
+    },
+    stroke: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
         return bindSelect(n, _options, 'strokeColor');
+      }
+    },
+    strokeWidth: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        return bindSelect(n, _options, 'strokeWidth');
       }
     }
   };
   let type = {
-    key: 'arrows',
-    handler(d) {
-      if (typeof d === 'object' && d[name] && d[name].type) {
+    key: '',
+    handler(data) {
+      let d = data.arrows;
+      if (d && typeof d === 'object' && d[name] && d[name].type) {
         return d[name].type;
       } else {
         return props.arrows[name].type;
@@ -192,7 +210,7 @@ export function arrowBinding($, go, name, _options) {
   }
   return binding($, go, bindOpt);
 }
-export function textBlockBinding($, go, _options) {
+export function labelBinding($, go, _options) {
   return binding($, go, {
     font: {
       key: 'font',
@@ -226,7 +244,10 @@ export function textBlockBinding($, go, _options) {
     visible: {
       key: '',
       handler(d) {
-        if (d.text) {
+        if (
+          (typeof d.label === 'string' && d.label !== '') ||
+          (d.label && d.label.text)
+        ) {
           return true;
         } else {
           return false;
@@ -243,6 +264,42 @@ export function linkHolderBinding($, go, _options) {
       key: '',
       handler(n) {
         return n.path.geometryString;
+      }
+    }
+  });
+}
+
+export function labelShapeBinding($, go, _options) {
+  return binding($, go, {
+    visible: {
+      key: '',
+      handler(d) {
+        if (
+          d.label === undefined ||
+          (typeof d.label === 'object' && !d.label.text) ||
+          (typeof d.label === 'object' && d.label.show === false) ||
+          (typeof d.label === 'object' &&
+            d.label.show === undefined &&
+            _options.props.label.show === false)
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
+    fill: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        return bindSelect(n, _options, 'labelBackground');
+      }
+    },
+    stroke: {
+      type: 'ofObject',
+      key: '',
+      handler(n) {
+        return bindSelect(n, _options, 'labelStroke');
       }
     }
   });

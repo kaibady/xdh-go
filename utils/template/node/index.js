@@ -26,7 +26,7 @@ import {
 
 export default function($, go, options) {
   let _options = handleNodeDefault($, go, options);
-  console.log('node options', _options);
+  // console.log('node options', _options);
   // 用于扩展节点
   let extendUp = [],
     extendDown = [];
@@ -66,6 +66,7 @@ export default function($, go, options) {
   }
   return node($, go, {
     props: {
+      portId: 'tNode',
       shadowVisible: true,
       toolTip: tooltip($, go, {
         shape: { binding: tooltipShape($, go, _options) },
@@ -79,20 +80,25 @@ export default function($, go, options) {
       panel($, go, {
         type: 'spot',
         props: {
-          ..._options.props._layerOptions.props
+          portId: 'tPanel1',
+          ..._options.props._outerPanelOptions.props
         },
         parts: [
           ...extendDown,
           panel($, go, {
             type: 'ver',
+            props: {
+              portId: 'tPanel2',
+              ..._options.props._innerPanelOptions.props
+            },
             parts: [
               panel($, go, {
                 type: 'spot',
                 porps: {
-                  portId: '',
+                  portId: 'tFigure',
                   fromPortSpot: true,
                   toPortSport: true,
-                  ..._options.props._figureContainerOptions.props
+                  ..._options.props._figurePanelOptions.props
                 },
                 parts: [
                   // 增加一个不可见的环，放置外圈尺寸在改变时影响外部尺寸，导致布局变动
@@ -101,7 +107,7 @@ export default function($, go, options) {
                       figure: 'Circle',
                       fill: 'transparent',
                       stroke: 'transparent',
-                      portId: '',
+                      portId: 'tHolder',
                       ..._options.props._figureHolderOptions.props
                     },
                     parts: [..._options.props._figureHolderOptions.parts],
@@ -112,22 +118,27 @@ export default function($, go, options) {
                     props: {
                       figure: 'Circle',
                       background: 'transparent',
-                      portId: '',
-                      ..._options.props._figureStrokeOptions.props
+                      portId: 'tStateShape',
+                      ..._options.props._stateShapeOptions.props
                     },
-                    parts: [..._options.props._figureStrokeOptions.parts],
+                    parts: [..._options.props._stateShapeOptions.parts],
                     binding: pictureCircleBinding($, go, _options)
                   }),
                   picture($, go, {
                     clip: {
-                      props: {},
+                      props: {
+                        ..._options.props._clipShapeOptions.props
+                      },
                       binding: pictureClipBinding($, go, _options)
                     },
                     panel: {
+                      props: {
+                        ..._options.props._clipPanelOptions.props
+                      },
                       binding: picturePanelBinding($, go, _options)
                     },
                     props: {
-                      portId: '',
+                      portId: 'tFigure',
                       ..._options.props._pictureOptions.props
                     },
                     binding: pictureBinding($, go, _options)
@@ -135,7 +146,8 @@ export default function($, go, options) {
                   // 图形类型
                   shape($, go, {
                     props: {
-                      portId: '',
+                      portId: 'tFigure',
+                      fill: '#000',
                       ..._options.props._shapeOptions.props
                     },
                     binding: shapeBinding($, go, _options),
@@ -143,47 +155,52 @@ export default function($, go, options) {
                   }),
                   iconfont($, go, {
                     props: {
-                      portId: '',
-                      ..._options.props._iconfontOptions.props
+                      portId: 'tFigure',
+                      ..._options.props._iconOptions.props
                     },
                     binding: iconfontBinding($, go, _options),
-                    parts: [..._options.props._iconfontOptions.parts]
+                    parts: [..._options.props._iconOptions.parts]
                   }),
-                  ..._options.props._figureContainerOptions.parts
+                  ..._options.props._figurePanelOptions.parts
                 ]
               }),
               // 文字
               panel($, go, {
                 type: 'auto',
                 props: {
-                  ..._options.props._labelContainerOptions.props
+                  portId: 'tLabel',
+                 
                 },
                 parts: [
                   shape($, go, {
                     props: {
-                      figure: 'Rectangle'
+                      figure: 'Rectangle',
+                      ..._options.props._labelShapeOptions.props
                     },
                     binding: labelShapeBinding($, go, _options)
                   }),
                   panel($, go, {
                     type: 'ver',
+                    props: {
+                      ..._options.props._labelPanelOptions.props
+                    },
                     parts: [
                       textBlock($, go, {
                         props: {
-                          ..._options.props._labelOptions.props
+                          ..._options.props._labelTextOptions.props
                         },
-                        parts: [..._options.props._labelOptions.parts],
                         binding: labelBinding($, go, _options)
                       }),
-                      ..._options.props._labelContainerOptions.parts
+                      ..._options.props._labelPanelOptions.parts
                     ]
                   })
                 ]
-              })
+              }),
+              ..._options.props._innerPanelOptions.parts
             ]
           }),
           ...extendUp,
-          ..._options.props._layerOptions.parts
+          ..._options.props._outerPanelOptions.parts
         ]
       }),
       ..._options.props._nodeOptions.parts

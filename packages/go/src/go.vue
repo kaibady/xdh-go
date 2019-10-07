@@ -40,6 +40,7 @@ export default {
   },
   /**
    * 参数属性
+   * @property {function} [goRegister] 提供一个函数，用于在组件创建时将一些自定义类或者Shape注册到go中
    * @property {string} [width=100%] 图表宽度
    * @property {string} [height=100%] 图表高度
    * @property {function} [nodeTemplate] 节点模板回调函数，回调参数 $:创建图表工厂函数，go:GoJs命名空间对象。 需要返回go.GraphObject实例
@@ -58,6 +59,9 @@ export default {
    * @property {Boolean} [palette=false] 是否 Palette Diagram
    */
   props: {
+    goRegister: {
+      type: Function
+    },
     width: {
       type: String,
       default: '100%'
@@ -599,7 +603,11 @@ export default {
      * @member go
      * @type {Object}
      */
+    if (this.goRegister && typeof this.goRegister === 'function') {
+      this.goRegister($, go)
+    }
     this.go = go
+
     /**
      * 图表实例
      * @member diagram

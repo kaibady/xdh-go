@@ -22,52 +22,35 @@
     {
       "title": "模板方法",
       "collapsable": false,
-      "children": [
-        "pack",
-        "functions",
-        "panel",
-        "parts",
-        "binding"
-      ]
+      "children": ["pack", "panel", "parts", "binding"]
     }
   ],
   "/commonNode/": [
     {
       "title": "通用节点",
       "collapsable": false,
-      "children": [
-        "base",
-        "image",
-        "clip-image",
-        "icon",
-        "shape",
-        "default",
-        "extension"
-      ]
+      "children": ["base", "image", "clip-image", "icon", "shape", "extension"]
     }
   ],
   "/commonLink/": [
     {
       "title": "通用连线",
       "collapsable": false,
-      "children": [
-        "base",
-        "arrows",
-        "lines",
-        "default",
-        "extension"
-      ]
+      "children": ["base", "arrows", "lines", "extension"]
+    }
+  ],
+  "/animation/": [
+    {
+      "title": "动效",
+      "collapsable": false,
+      "children": ["example1"]
     }
   ],
   "/applys/": [
     {
       "title": "综合应用",
       "collapsable": false,
-      "children": [
-        "base",
-        "example1",
-        "example2"
-      ]
+      "children": ["base", "example1", "example2"]
     }
   ],
   "/api": null,

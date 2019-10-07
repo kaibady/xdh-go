@@ -48,6 +48,8 @@ export default function($, go, options) {
   let imageClip = $(
     go.Shape,
     {
+      // geometryStretch: go.GraphObject.Fill,
+      // fill: '#000',
       ..._options.clip.props
     },
     ..._options.clip.binding

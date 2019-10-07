@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: xdh-go-draft</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: xdh-go-draft</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>草稿箱组件</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_draft_src_draft.vue.html">packages/draft/src/draft.vue</a>, <a href="packages_draft_src_draft.vue.html#line2">line 2</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".props"><span class="type-signature">(static) </span>props<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>参数属性</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dragable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>是否可拖拽</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>localKey</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    ''
+                
+                </td>
+            
+
+            <td class="description last"><p>当存在多个草稿箱时用来区分在localStorage中的key</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>local</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>是否使用本地存储，如果选择否，只放在内存中，草稿箱销毁即没有，但可以通过事件提供的数据存储调用接口存储到后端</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>diagram</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last"><p>go.Diagram对象</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>visible.sync</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>草稿箱是否显示</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>list</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"><p>初始化的草稿列表，如果local=true,会优先选择本地存储，
+如果本地存储为空，则使用传入的数据
+数据格式：
+[{
+json: '{ &quot;class&quot;: &quot;GraphLinksModel&quot;,↵  &quot;nodeDataArray&quot;: [ ↵{&quot;key&quot;:&quot;A&quot;, &quot;category&quot;:&quot;a&quot;, &quot;location&quot;:{&quot;class&quot;:&quot;go.Point&quot;, &quot;x&quot;:0, &quot;y&quot;:30.250027885742202}},↵{&quot;key&quot;:&quot;B&quot;, &quot;category&quot;:&quot;b&quot;, &quot;location&quot;:{&quot;class&quot;:&quot;go.Point&quot;, &quot;x&quot;:83.13034326171876, &quot;y&quot;:0}},↵{&quot;key&quot;:&quot;C&quot;, &quot;category&quot;:&quot;c&quot;, &quot;location&quot;:{&quot;class&quot;:&quot;go.Point&quot;, &quot;x&quot;:83.13034326171876, &quot;y&quot;:60.500055771484405}}↵ ],↵  &quot;linkDataArray&quot;: [ ↵{&quot;from&quot;:&quot;A&quot;, &quot;to&quot;:&quot;B&quot;},↵{&quot;from&quot;:&quot;A&quot;, &quot;to&quot;:&quot;C&quot;}↵ ]}',
+name: 'ddd&quot;,
+thumb: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAACGklEQVRIS+2WS0gbURSG/5NxFYyb+gi2K1ukushSl4ILYbILZCZSiLSku9AHVgO6MAYRV4XuBR/bOyW7iiAUFFzUgKJIQBeC2YhkJ0KUDnNlAjNJRjOZJBNEyOwuc+b/7vnPPecO4Zkecp/LAwCObXQXAFpqg11wvmS1zwdMTAC5HJDJmNLNWS2KYpfX6/1ARH0ej+e/IXtz88a/vf3zi74eHwficeD0FEgmXQKHw+EpIurnnGeI6N6Qvbwce3twEN8wwLEYcH0NTE+7BJZlOcE5P1IUZaeyPnWcag78sysuAaPW97Isz3DODxVF+dsMmNuArwjofyngOZtEsuYA4UAp40AAUFUgmzW+rZbxsj6hGGOskR4sTq4K8Po6kM8DiURR76qzM/89GNy0iA9rmubTNO1HOp0udWgdO6gET04CwSAgCEAqBZyfF8HfRPGPRXOIiFQA84yxvTp4ZujjjB+rPGm1JEm/iOiIMWZ1w9E+GgZXback9Nvpsy09ha+tAZPttbiGRcQM8EWNATLguI/1jJ2CHRXFEmRrdRk49D6Ebm83Vg9XDYVSxo2AI5HIFOe8V1XVXUEQ7gyNs1dngyf+k9/6WhqWMPJ6BLM7s+WI5sDRaLS3UCh8BOAvvxZvO257tga3Pukk8Z2I0FAI+7l9bB6bh785cFWXWl3jNth04NmsnkNPzS5ZQb4F/9U1scWANtiZTy5EPQDT9PwfewHouAAAAABJRU5ErkJggg==',
+time: '2019/9/26 下午4:41:28 下午4:41:28'
+}]</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_draft_src_draft.vue.html">packages/draft/src/draft.vue</a>, <a href="packages_draft_src_draft.vue.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-utils_directives_draggable.html">utils/directives/draggable</a></li><li><a href="module-utils_directives_resizable.html">utils/directives/resizable</a></li><li><a href="module-utils_events.html">utils/events</a></li><li><a href="module-utils_storage.html">utils/storage</a></li><li><a href="module-widgets_xdh-go_menus_circle-menu.html">widgets/xdh-go/menus/circle-menu</a></li><li><a href="module-xdh-go.html">xdh-go</a></li><li><a href="module-xdh-go-draft.html">xdh-go-draft</a></li><li><a href="module-xdh-go-overview.html">xdh-go-overview</a></li><li><a href="module-xdh-go-snapshot.html">xdh-go-snapshot</a></li><li><a href="module-xdh-html.html">xdh-html</a></li></ul><h3>Classes</h3><ul><li><a href="module-utils_directives_draggable-Draggable.html">Draggable</a></li><li><a href="module-utils_directives_resizable-Resizable.html">Resizable</a></li><li><a href="module-utils_events-Events.html">Events</a></li></ul><h3>Events</h3><ul><li><a href="module-widgets_xdh-go_menus_circle-menu.html#~event:on-item-click">on-item-click</a></li><li><a href="module-xdh-go.html#~event:on-ready">on-ready</a></li></ul><h3>Global</h3><ul><li><a href="global.html#genOption">genOption</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Sep 27 2019 15:45:26 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

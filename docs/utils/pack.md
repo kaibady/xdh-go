@@ -100,14 +100,14 @@ function node($, go, options) {
 
 ```
 import { utils } from 'xdh-go'
-let {genOption} = utils;
+let {extendOption} = utils;
 function node($, go, options) {
     let defaultProps = {
         background: 'rgba(0, 0, 0, 0)',
         cursor: 'pointer',
         selectionAdorned: false
     };
-    let _options = genOption(defaultProps, options);
+    let _options = extendOption(defaultProps, options);
     return $(
         go.Node,
         _options.type || 'Auto',

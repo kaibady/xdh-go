@@ -8,20 +8,21 @@
     "link": "/components/go"
   },
   {
-    "text": "模板方法",
-    "link": "/utils/pack"
-  },
-  {
-    "text": "通用节点",
-    "link": "/commonNode/base"
-  },
-  {
-    "text": "通用连线",
-    "link": "/commonLink/base"
-  },
-  {
-    "text": "综合应用",
-    "link": "/applys/example1"
+    "text": "模板定义",
+    "items": [
+      {
+        "text": "模板方法",
+        "link": "/utils/pack"
+      },
+      {
+        "text": "通用节点",
+        "link": "/commonNode/base"
+      },
+      {
+        "text": "通用连线",
+        "link": "/commonLink/base"
+      }
+    ]
   },
   {
     "text": "API文档",

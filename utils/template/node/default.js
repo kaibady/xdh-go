@@ -4,13 +4,6 @@ export let getDefaultProps = ($, go) => {
     hidden: false, // 隐藏
     image: undefined,
     brokenImage: undefined,
-    label: {
-      text: '',
-      show: true,
-      editable: false,
-      font: '14px "iconfont"',
-      margin: [10, 10, 10, 10]
-    },
     labelStroke: {
       normal: 'transparent',
       highlight: '#fff',
@@ -29,6 +22,13 @@ export let getDefaultProps = ($, go) => {
       hover: '#66b1ff',
       select: '#66b1ff'
     },
+    label: {
+      text: '',
+      show: true,
+      editable: false,
+      font: '14px "iconfont"',
+      margin: [10, 10, 10, 10]
+    },
     iconColor: {
       normal: '#ccc',
       highlight: '#66b1ff',
@@ -36,6 +36,28 @@ export let getDefaultProps = ($, go) => {
       select: '#66b1ff'
     },
     shape: 'Rectangle',
+    shapeParams: {
+      figureShape: {
+        parameter1: NaN,
+        parameter2: NaN,
+        geometryString: undefined
+      },
+      clipShape: {
+        parameter1: NaN,
+        parameter2: NaN,
+        geometryString: undefined
+      },
+      holderShape: {
+        parameter1: NaN,
+        parameter2: NaN,
+        geometryString: undefined
+      },
+      stateShape: {
+        parameter1: NaN,
+        parameter2: NaN,
+        geometryString: undefined
+      }
+    },
     clipShape: 'Circle',
     stateShape: 'Circle',
     background: {
@@ -75,19 +97,16 @@ export let getDefaultProps = ($, go) => {
       props: {},
       parts: []
     },
-    _layerOptions: {
+
+    _outerPanelOptions: {
       props: {},
       parts: []
     },
-    _labelContainerOptions: {
+    _innerPanelOptions: {
       props: {},
       parts: []
     },
-    _labelOptions: {
-      props: {},
-      parts: []
-    },
-    _figureContainerOptions: {
+    _figurePanelOptions: {
       props: {},
       parts: []
     },
@@ -95,7 +114,15 @@ export let getDefaultProps = ($, go) => {
       props: {},
       parts: []
     },
-    _figureStrokeOptions: {
+    _stateShapeOptions: {
+      props: {},
+      parts: []
+    },
+    _clipShapeOptions: {
+      props: {},
+      parts: []
+    },
+    _clipPanelOptions: {
       props: {},
       parts: []
     },
@@ -106,7 +133,19 @@ export let getDefaultProps = ($, go) => {
       props: {},
       parts: []
     },
-    _iconfontOptions: {
+    _iconOptions: {
+      props: {},
+      parts: []
+    },
+    _labelPanelOptions: {
+      props: {},
+      parts: []
+    },
+    _labelShapeOptions: {
+      props: {},
+      parts: []
+    },
+    _labelTextOptions: {
       props: {},
       parts: []
     }
@@ -129,17 +168,20 @@ export function handleNodeDefault($, go, options = {}) {
   let extendNames = [
     'label',
     'labelStroke',
+    'labelColor',
     'labelBackground',
+    'iconColor',
     'background',
     'strokeColor',
     'strokeWidth',
     'tooltip',
-    'icon'
+    'icon',
+    'shapeParams'
   ];
   for (let name in defaultProps) {
     // 如果是简化参数，把参数值按对象的定义方法设置
     if (extendNames.includes(name)) {
-      console.log(name, _options.props[name]);
+      // console.log(name, _options.props[name]);
       if (typeof _options.props[name] !== 'object') {
         // 这三种类型在简化传值时，默认传的是text,其它取默认
         if (['label', 'icon', 'tooltip'].includes(name)) {
@@ -168,10 +210,22 @@ export function handleNodeDefault($, go, options = {}) {
         }
       }
     } else {
-      _options.props[name] =
-        _options.props[name] === undefined
-          ? defaultProps[name]
-          : _options.props[name];
+      // '_' 开头的是扩展参数
+      if (name[0] === '_' && _options.props[name]) {
+        _options.props[name].props =
+          _options.props[name].props === undefined
+            ? defaultProps[name].props
+            : _options.props[name].props;
+        _options.props[name].parts =
+          _options.props[name].parts === undefined
+            ? defaultProps[name].parts
+            : _options.props[name].parts;
+      } else {
+        _options.props[name] =
+          _options.props[name] === undefined
+            ? defaultProps[name]
+            : _options.props[name];
+      }
     }
   }
   return _options;

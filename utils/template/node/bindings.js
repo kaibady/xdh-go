@@ -1,5 +1,75 @@
 import { defaultImage } from './default';
 import { binding } from '../../node-parts';
+// 公共方法
+function bindSelect(n, _options, bindProp) {
+  let d = n.data;
+  let props = _options.props;
+  if (n.isSelected) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &&
+      d[bindProp].select !== undefined
+    ) {
+      return d[bindProp].select;
+    } else {
+      return props[bindProp].select;
+    }
+  } else if (d.isHover) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &&
+      d[bindProp].hover !== undefined
+    ) {
+      return d[bindProp].hover;
+    } else {
+      return props[bindProp].hover;
+    }
+  } else if (n.isHighlighted) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &&
+      d[bindProp].highlight !== undefined
+    ) {
+      return d[bindProp].highlight;
+    } else {
+      return props[bindProp].highlight;
+    }
+  } else {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &&
+      d[bindProp].normal !== undefined
+    ) {
+      return d[bindProp].normal;
+    } else {
+      return props[bindProp].normal;
+    }
+  }
+}
+function shapeParamsBinding(_options, bindProp, bindParamArr) {
+  let obj = {};
+  bindParamArr.forEach(paramName => {
+    obj[paramName] = {
+      key: '',
+      handler(d) {
+        if (
+          d.shapeParams &&
+          d.shapeParams[bindProp] &&
+          d.shapeParams[bindProp][paramName] !== undefined
+        ) {
+          return d.shapeParams[bindProp][paramName];
+        } else {
+          return _options.props.shapeParams[bindProp][paramName];
+        }
+      }
+    };
+  });
+  return obj;
+}
 // 绑定图片裁剪
 export function pictureClipBinding($, go, _options) {
   return binding($, go, {
@@ -23,16 +93,6 @@ export function pictureClipBinding($, go, _options) {
         }
       }
     },
-    figure: {
-      key: '',
-      handler(d) {
-        if (d.clipShape) {
-          return d.clipShape;
-        } else {
-          return _options.props.clipShape;
-        }
-      }
-    },
     visible: {
       key: '',
       handler(d) {
@@ -48,6 +108,27 @@ export function pictureClipBinding($, go, _options) {
           return true;
         } else {
           return false;
+        }
+      }
+    },
+    ...shapeParamsBinding(_options, 'clipShape', [
+      'parameter1',
+      'parameter2',
+      'geometryString'
+    ]),
+    figure: {
+      key: '',
+      handler(d) {
+        if (
+          d.shapeParams &&
+          d.shapeParams.clipShape &&
+          d.shapeParams.clipShape.geometryString
+        ) {
+          return 'None';
+        } else if (d.clipShape) {
+          return d.clipShape;
+        } else {
+          return _options.props.clipShape;
         }
       }
     }
@@ -184,10 +265,21 @@ export function pictureCircleBinding($, go, _options) {
         return bindSelect(n, _options, 'background');
       }
     },
+    ...shapeParamsBinding(_options, 'stateShape', [
+      'parameter1',
+      'parameter2',
+      'geometryString'
+    ]),
     figure: {
       key: '',
       handler(d) {
-        if (d.clipShape) {
+        if (
+          d.shapeParams &&
+          d.shapeParams.stateShape &&
+          d.shapeParams.stateShape.geometryString
+        ) {
+          return 'None';
+        } else if (d.stateShape) {
           return d.stateShape;
         } else {
           return _options.props.stateShape;
@@ -241,10 +333,21 @@ export function pictureHolderBinding($, go, _options) {
         return Math.max(select, normal, highlight, hover) + 5;
       }
     },
+    ...shapeParamsBinding(_options, 'figureShape', [
+      'parameter1',
+      'parameter2',
+      'geometryString'
+    ]),
     figure: {
       key: '',
       handler(d) {
-        if (d.clipShape) {
+        if (
+          d.shapeParams &&
+          d.shapeParams.holderShape &&
+          d.shapeParams.holderShape.geometryString
+        ) {
+          return 'None';
+        } else if (d.clipShape) {
           return d.clipShape;
         } else {
           return _options.props.clipShape;
@@ -252,56 +355,6 @@ export function pictureHolderBinding($, go, _options) {
       }
     }
   });
-}
-
-function bindSelect(n, _options, bindProp) {
-  let d = n.data;
-  let props = _options.props;
-  if (n.isSelected) {
-    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
-      return d[bindProp];
-    } else if (
-      typeof d[bindProp] === 'object' &&
-      d[bindProp].select !== undefined
-    ) {
-      return d[bindProp].select;
-    } else {
-      return props[bindProp].select;
-    }
-  } else if (d.isHover) {
-    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
-      return d[bindProp];
-    } else if (
-      typeof d[bindProp] === 'object' &&
-      d[bindProp].hover !== undefined
-    ) {
-      return d[bindProp].hover;
-    } else {
-      return props[bindProp].hover;
-    }
-  } else if (n.isHighlighted) {
-    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
-      return d[bindProp];
-    } else if (
-      typeof d[bindProp] === 'object' &&
-      d[bindProp].highlight !== undefined
-    ) {
-      return d[bindProp].highlight;
-    } else {
-      return props[bindProp].highlight;
-    }
-  } else {
-    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
-      return d[bindProp];
-    } else if (
-      typeof d[bindProp] === 'object' &&
-      d[bindProp].normal !== undefined
-    ) {
-      return d[bindProp].normal;
-    } else {
-      return props[bindProp].normal;
-    }
-  }
 }
 export function shapeBinding($, go, _options) {
   return binding($, go, {
@@ -316,20 +369,6 @@ export function shapeBinding($, go, _options) {
           return false;
         } else {
           return true;
-        }
-      }
-    },
-    figure: {
-      key: '',
-      handler(d) {
-        console.log('figure binding', d);
-        if (d.shape && !['clipImage', 'image', 'icon'].includes(d.shape)) {
-          return d.shape;
-        } else if (
-          !d.shape &&
-          !['clipImage', 'image', 'icon'].includes(_options.props.shape)
-        ) {
-          return _options.props.shape;
         }
       }
     },
@@ -364,6 +403,33 @@ export function shapeBinding($, go, _options) {
       key: '',
       handler(d) {
         return d.size;
+      }
+    },
+    ...shapeParamsBinding(_options, 'figureShape', [
+      'parameter1',
+      'parameter2',
+      'geometryString'
+    ]),
+    figure: {
+      key: '',
+      handler(d) {
+        if (
+          d.shapeParams &&
+          d.shapeParams.figureShape &&
+          d.shapeParams.figureShape.geometryString
+        ) {
+          return 'None';
+        } else if (
+          d.shape &&
+          !['clipImage', 'image', 'icon'].includes(d.shape)
+        ) {
+          return d.shape;
+        } else if (
+          !d.shape &&
+          !['clipImage', 'image', 'icon'].includes(_options.props.shape)
+        ) {
+          return _options.props.shape;
+        }
       }
     }
   });

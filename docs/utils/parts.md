@@ -247,7 +247,7 @@ props 默认参数为
 
 shape 是对 go.Shape 的封装
 
-参数包括 props, parts, binding, events
+参数包括 props, binding, events
 
 props 默认参数为
 
@@ -313,6 +313,14 @@ props 默认参数为
                   stroke: '#ff9900',
                   fill: '#ff6600',
                   margin: new go.Margin(0, 0, 0, 50)
+                }
+              }),
+              shape($, go, {
+                props: {
+                  stroke: '#ff9900',
+                  fill: '#ff6600',
+                  margin: new go.Margin(0, 0, 0, 50),
+                  geometryString: 'M 0,0 L 10,50 20,10 30,50 40,0'
                 }
               })
             ]
@@ -730,7 +738,7 @@ props 默认参数
 
 ### 基本用法
 
-示例中，makePort定义到节点的左右侧。鼠标移到节点上时显示连接点
+示例中，makePort 定义到节点的左右侧。鼠标移到节点上时显示连接点
 
 :::demo
 

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: packages/draft/src/draft.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: packages/draft/src/draft.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div :style="style" v-show="draftVisible" class="xdh-go-draft" v-draggable="dragable">
+    &lt;slot
+      :close="close"
+      :draftList="draftList"
+      :remove="remove"
+      :load="load"
+      :save="save"
+      :clear="clear"
+    >
+      &lt;el-card class="xdh-go-draft__container">
+        &lt;div slot="header" class="xdh-go-draft__header">
+          &lt;span>草稿箱&lt;/span>
+          &lt;el-button
+            type="text"
+            style="float:right;padding:0;"
+            circle
+            icon="iconfont icon-multiply"
+            size="mini"
+            @click="close"
+          >&lt;/el-button>
+        &lt;/div>
+        &lt;div class="xdh-go-draft__content">
+          &lt;div v-for="(item, idx) in draftList" :key="idx" class="xdh-go-draft__item">
+            &lt;img :src="item.thumb" class="img" />
+            &lt;span class="txt">
+              &lt;div class="name">{{item.name}}&lt;/div>
+              &lt;div class="time">{{item.time}}&lt;/div>
+            &lt;/span>
+            &lt;div class="btns">
+              &lt;i @click="remove(item)" class="iconfont icon-multiply remove">&lt;/i>
+              &lt;i @click="load(item)" class="iconfont icon-download load">&lt;/i>
+            &lt;/div>
+          &lt;/div>
+        &lt;/div>
+        &lt;div class="xdh-go-draft__footer" @keyup.enter="save()">
+          &lt;el-input v-model="itemName" class="name-input" size="mini" placeholder="输入草稿名称">&lt;/el-input>
+          &lt;el-button size="mini" type="primary" @click="save()" circle icon="iconfont icon-save">&lt;/el-button>
+          &lt;el-button size="mini" type="primary" @click="clear()" circle icon="iconfont icon-delete">&lt;/el-button>
+        &lt;/div>
+      &lt;/el-card>
+    &lt;/slot>
+  &lt;/div>
+&lt;/template>
+&lt;script>
+/**
+ * XdhGoDraft组件
+ * @module xdh-go-draft
+ * @description 草稿箱组件
+ */
+import go from 'gojs'
+import draggable from '../../../utils/directives/draggable'
+import { save, get, remove } from '../../../utils/storage'
+export default {
+  name: 'XdhGoDraft',
+  components: {},
+  directives: {
+    draggable
+  },
+
+  /**
+   * 参数属性
+   * @property {Boolean} [dragable=true] 是否可拖拽
+   * @property {String} [localKey=''] 当存在多个草稿箱时用来区分在localStorage中的key
+   * @property {Object} [local=true] 是否使用本地存储，如果选择否，只放在内存中，草稿箱销毁即没有，但可以通过事件提供的数据存储调用接口存储到后端
+   * @property {Object} [diagram=null] go.Diagram对象
+   * @property {Object} [visible.sync=false] 草稿箱是否显示
+   * @property {Object} [list=[]] 初始化的草稿列表，如果local=true,会优先选择本地存储，
+   *                            如果本地存储为空，则使用传入的数据
+   *                            数据格式：
+   *                           [{ 
+   *                              json: '{ "class": "GraphLinksModel",↵  "nodeDataArray": [ ↵{"key":"A", "category":"a", "location":{"class":"go.Point", "x":0, "y":30.250027885742202}},↵{"key":"B", "category":"b", "location":{"class":"go.Point", "x":83.13034326171876, "y":0}},↵{"key":"C", "category":"c", "location":{"class":"go.Point", "x":83.13034326171876, "y":60.500055771484405}}↵ ],↵  "linkDataArray": [ ↵{"from":"A", "to":"B"},↵{"from":"A", "to":"C"}↵ ]}',
+                                  name: 'ddd",
+                                  thumb: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAACGklEQVRIS+2WS0gbURSG/5NxFYyb+gi2K1ukushSl4ILYbILZCZSiLSku9AHVgO6MAYRV4XuBR/bOyW7iiAUFFzUgKJIQBeC2YhkJ0KUDnNlAjNJRjOZJBNEyOwuc+b/7vnPPecO4Zkecp/LAwCObXQXAFpqg11wvmS1zwdMTAC5HJDJmNLNWS2KYpfX6/1ARH0ej+e/IXtz88a/vf3zi74eHwficeD0FEgmXQKHw+EpIurnnGeI6N6Qvbwce3twEN8wwLEYcH0NTE+7BJZlOcE5P1IUZaeyPnWcag78sysuAaPW97Isz3DODxVF+dsMmNuArwjofyngOZtEsuYA4UAp40AAUFUgmzW+rZbxsj6hGGOskR4sTq4K8Po6kM8DiURR76qzM/89GNy0iA9rmubTNO1HOp0udWgdO6gET04CwSAgCEAqBZyfF8HfRPGPRXOIiFQA84yxvTp4ZujjjB+rPGm1JEm/iOiIMWZ1w9E+GgZXback9Nvpsy09ha+tAZPttbiGRcQM8EWNATLguI/1jJ2CHRXFEmRrdRk49D6Ebm83Vg9XDYVSxo2AI5HIFOe8V1XVXUEQ7gyNs1dngyf+k9/6WhqWMPJ6BLM7s+WI5sDRaLS3UCh8BOAvvxZvO257tga3Pukk8Z2I0FAI+7l9bB6bh785cFWXWl3jNth04NmsnkNPzS5ZQb4F/9U1scWANtiZTy5EPQDT9PwfewHouAAAAABJRU5ErkJggg==',
+                                  time: '2019/9/26 下午4:41:28 下午4:41:28'
+                                }]
+   */
+  props: {
+    dragable: {
+      type: Boolean,
+      default: true
+    },
+    localKey: {
+      type: String,
+      default: ''
+    },
+    // 是否使用本地缓存
+    local: {
+      type: Boolean,
+      default: true
+    },
+    diagram: {
+      type: Object,
+      default() {
+        return null
+      }
+    },
+    visible: {
+      type: Boolean,
+      default: false
+    },
+    list: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  data() {
+    return {
+      draftList: [],
+      imageDefaultOption: {
+        size: new go.Size(30, 30),
+        type: 'image/png'
+      },
+      itemName: '',
+      draftVisible: false
+    }
+  },
+  watch: {
+    draftVisible(val) {
+      this.$emit('update:visible', val)
+    },
+    visible(val) {
+      this.draftVisible = val
+    }
+  },
+  computed: {
+    style() {
+      return {
+        width: '350px'
+      }
+    }
+  },
+  methods: {
+    close() {
+      this.draftVisible = false
+    },
+    save() {
+      let bounds = this.diagram.documentBounds
+      let scaleW = 30 / bounds.width
+      let scaleH = 30 / bounds.height
+      let scale = Math.min(scaleW, scaleH)
+      let options = Object.assign({}, this.imageDefaultOption, {
+        scale: scale
+      })
+      let data = this.diagram.makeImageData(options)
+      let date = new Date()
+      let item = {
+        thumb: data,
+        name: this.itemName,
+        time: `${date.toLocaleString()} ${date.toLocaleTimeString()}`,
+        json: this.diagram.model.toJson()
+      }
+      this.draftList.push(item)
+      this.$emit('save', item)
+      if (this.local) {
+        save('XDH-GO-DRAFT' + this.localKey, this.draftList, localStorage)
+      }
+      this.$emit('save')
+    },
+    remove(item) {
+      let idx = this.draftList.indexOf(item)
+      this.$emit('remove', this.draftList[idx])
+      this.draftList.splice(idx, 1)
+      if (this.local) {
+        save('XDH-GO-DRAFT' + this.localKey, this.draftList, localStorage)
+      }
+    },
+    load(item) {
+      this.diagram.clear()
+      this.diagram.model = go.Model.fromJson(item.json)
+    },
+    clear() {
+      this.draftList = []
+      this.$emit('clear')
+      if (this.local) {
+        remove('XDH-GO-DRAFT' + this.localKey, localStorage)
+      }
+    },
+    destroy() {
+      if (this.$el.parentNode) {
+        this.$el.parentNode.removeChild(this.$el)
+      }
+    }
+  },
+  mounted() {
+    document.body.appendChild(this.$el)
+  },
+  created() {
+    this.draftVisible = this.visible
+    if (this.local) {
+      let draftList = get('XDH-GO-DRAFT' + this.localKey, localStorage)
+      this.draftList = draftList || this.list
+    } else {
+      this.draftList = this.list
+    }
+  },
+  beforeDestroy() {
+    this.destroy()
+  }
+}
+&lt;/script>
+&lt;style type="text/scss" lang="scss" scoped>
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-utils_directives_draggable.html">utils/directives/draggable</a></li><li><a href="module-utils_directives_resizable.html">utils/directives/resizable</a></li><li><a href="module-utils_events.html">utils/events</a></li><li><a href="module-utils_storage.html">utils/storage</a></li><li><a href="module-widgets_xdh-go_menus_circle-menu.html">widgets/xdh-go/menus/circle-menu</a></li><li><a href="module-xdh-go.html">xdh-go</a></li><li><a href="module-xdh-go-draft.html">xdh-go-draft</a></li><li><a href="module-xdh-go-overview.html">xdh-go-overview</a></li><li><a href="module-xdh-go-snapshot.html">xdh-go-snapshot</a></li><li><a href="module-xdh-html.html">xdh-html</a></li></ul><h3>Classes</h3><ul><li><a href="module-utils_directives_draggable-Draggable.html">Draggable</a></li><li><a href="module-utils_directives_resizable-Resizable.html">Resizable</a></li><li><a href="module-utils_events-Events.html">Events</a></li></ul><h3>Events</h3><ul><li><a href="module-widgets_xdh-go_menus_circle-menu.html#~event:on-item-click">on-item-click</a></li><li><a href="module-xdh-go.html#~event:on-ready">on-ready</a></li></ul><h3>Global</h3><ul><li><a href="global.html#genOption">genOption</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Fri Sep 27 2019 15:45:26 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# 图片
+# 图片(image)
 
 当设置 shape 为'image'时，显示 image 参数提供的地址，通过 go.Picture 对象显示，如果显示出错，则显示 brokenImage 提供的地址，如果仍加载失败，则显示一张灰色的底图。 通过 stateShape 可指定外框图形
 

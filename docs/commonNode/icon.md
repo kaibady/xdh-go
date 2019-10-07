@@ -1,4 +1,4 @@
-# icon 字体图标
+# 字体图标(icon)
 
 当设置 shape 为'icon'时，显示 icon 参数提供的字体图标及样式，通过 go.TextBlock 对象显示，icon.iconfont 可指定字体样式，text 指定图标内容
 

@@ -7,7 +7,7 @@
 基本定义形式
 
 ```
-import { nodeTmpl } from 'xdh-go';
+import { nodeTmpl, textBlock } from 'xdh-go';
 nodeTmpl($, go, {
     props: {
     shape: 'Circle',
@@ -17,7 +17,17 @@ nodeTmpl($, go, {
     },
     strokeColor: 'red',
     labelBackground: 'transparent'
-    }
+    },
+    /**
+      parts中的元素会添加到node尾部，在节点中呈现出来则是覆盖在所有对象前面。如果要区分前后关系可以用另一种定义形式
+      parts: {
+        up: [textBlock($, go)], // 覆盖在节点前方
+        down: [textBlock($, go)] // 在节点底部
+      }
+    **/
+    parts: [
+      textBlock($, go)
+    ]
 })
 nodes=  [
           {
@@ -126,7 +136,7 @@ nodes=  [
 
     // 裁剪形状，shape为 clipImage时有效
     clipShape: 'Circle',
-    
+
     // 状态框, 设为null时不显示
     stateShape: 'Circle'
 
@@ -146,7 +156,7 @@ nodes=  [
       select: '#66b1ff'
     },
 
-    // 边框颜色，可简写, 如 strokeWidth: 1,简写时四种状态都为同一宽度
+    // 边框宽度，可简写, 如 strokeWidth: 1,简写时四种状态都为同一宽度
     strokeWidth: {
       normal: 3,
       highlight: 4,
@@ -180,12 +190,20 @@ nodes=  [
     label: {
       text: '',
       show: true,
+      editable: false,
       font: '14px "iconfont"',
-      margin: [0, 0, 0, 0]
+      margin: [10, 10, 10, 10]
     },
 
      // 标签颜色, 可简写, 如 labelStroke: '#ccc',简写时四种状态都为同一种颜色
     labelStroke: {
+      normal: '#000',
+      highlight: '#fff',
+      hover: '#fff',
+      select: '#fff'
+    },
+   // 标签文字，可简写, 如 labelColor: '#ccc',简写时四种状态都为同一种颜色
+    labelColor: {
       normal: '#000',
       highlight: '#fff',
       hover: '#fff',
@@ -200,39 +218,73 @@ nodes=  [
       select: '#66b1ff'
     },
 
-    // 扩展参数
+    /// 扩展参数
+    // 节点 go.Node
     _nodeOptions: {
       props: {},
       parts: []
     },
-    _layerOptions: {
+    // 外层go.Panel
+    _outerPanelOptions: {
       props: {},
       parts: []
     },
-    _labelOptions: {
+    // 内层go.Panel
+    _innerPanelOptions: {
       props: {},
       parts: []
     },
-    _figureContainerOptions: {
+    // 上方图形go.Panel
+    _figurePanelOptions: {
       props: {},
       parts: []
     },
+    // 外围展位go.Shape
     _figureHolderOptions: {
       props: {},
       parts: []
     },
-    _figureStrokeOptions: {
+    // 状态圈go.Shape
+    _stateShapeOptions: {
       props: {},
       parts: []
     },
+    // 图片裁剪形状go.Shape
+    _clipShapeOptions: {
+      props: {},
+      parts: []
+    },
+    // 图片裁剪go.Panel
+    _clipPanelOptions: {
+      props: {},
+      parts: []
+    },
+    // 图片对象go.Picture
     _pictureOptions: {
       props: {}
     },
+    // 图形go.Shape
     _shapeOptions: {
       props: {},
       parts: []
     },
-    _iconfontOptions: {
+    // 字体图标 go.TextBlock
+    _iconOptions: {
+      props: {},
+      parts: []
+    },
+    // 标签外层go.Panel
+    _labelPanelOptions: {
+      props: {},
+      parts: []
+    },
+    // 标签外框形状go.Shape
+    _labelShapeOptions: {
+      props: {},
+      parts: []
+    },
+    // 标签文字go.TextBlock
+    _labelTextOptions: {
       props: {},
       parts: []
     }
