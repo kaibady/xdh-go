@@ -65,24 +65,24 @@
             label: 'node1',
             clipShape: 'TriangleRight',
             stateShape: 'TriangleRight',
-            image: '/img/node/circleimage/3.png'
+            image: 'img/node/circleimage/3.png'
           },
           {
             label: 'node2',
             stateShape: 'TriangleDown',
             clipShape: 'TriangleDown',
-            image: '/img/node/circleimage/1.png'
+            image: 'img/node/circleimage/1.png'
           },
           {
             label: 'node3',
             stateShape: 'RoundedRectangle',
             clipShape: 'Diamond',
-            image: '/img/node/circleimage/2.png'
+            image: 'img/node/circleimage/2.png'
           },
           {
             label: '自定义裁剪图形',
             stateShape: 'RoundedRectangle',
-            image: '/img/node/circleimage/2.png',
+            image: 'img/node/circleimage/2.png',
             clipShape: '',
             shapeParams: {
               clipShape: {

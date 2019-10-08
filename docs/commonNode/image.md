@@ -33,16 +33,16 @@
         nodes: [
           {
             label: '正常图片',
-            image: '/img/node/circleimage/1.png'
+            image: 'img/node/circleimage/1.png'
           },
           {
             label: '默认图片',
-            image: '/img/node/circleimage/b.png',
-            brokenImage: '/img/node/circleimage/4.png'
+            image: 'img/node/circleimage/b.png',
+            brokenImage: 'img/node/circleimage/4.png'
           },
           {
             label: '图片错误',
-            image: '/img/node/circleimage/a.png'
+            image: 'img/node/circleimage/a.png'
           }
         ]
       };
@@ -150,11 +150,11 @@
         nodes: [
           {
             label: '参数跟随模板',
-            image: '/img/node/circleimage/1.png'
+            image: 'img/node/circleimage/1.png'
           },
           {
             label: '边框样式覆盖',
-            image: '/img/node/circleimage/2.png',
+            image: 'img/node/circleimage/2.png',
             strokeColor: {
               normal: 'rgba(180, 50, 50, 0.6)',
               highlight: 'rgba(50, 180, 50,0.6)',
@@ -170,17 +170,17 @@
           },
           {
             label: 'scale参数覆盖',
-            image: '/img/node/circleimage/3.png',
+            image: 'img/node/circleimage/3.png',
             scale: 1.5
           },
           {
             label: 'size参数覆盖',
-            image: '/img/node/circleimage/3.png',
+            image: 'img/node/circleimage/3.png',
             size: 100
           },
           {
             label: '提示信息覆盖',
-            image: '/img/node/circleimage/3.png',
+            image: 'img/node/circleimage/3.png',
             tooltip: {
               stroke: 'green',
               strokeWidth: 4,
@@ -191,7 +191,7 @@
             }
           },
           {
-            image: '/img/node/circleimage/3.png',
+            image: 'img/node/circleimage/3.png',
             label: {
               font: '14px bold "Microsoft Yahei"',
               text: 'label样式覆盖',
