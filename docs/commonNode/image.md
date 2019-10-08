@@ -39,7 +39,7 @@
           {
             label: '默认图片',
             image: imgPath + 'img/node/circleimage/b.png',
-            brokenImage: '/img/node/circleimage/4.png'
+            brokenImage: imgPath + 'img/node/circleimage/4.png'
           },
           {
             label: '图片错误',
