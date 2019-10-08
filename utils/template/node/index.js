@@ -169,7 +169,7 @@ export default function($, go, options) {
                 type: 'auto',
                 props: {
                   portId: 'tLabel',
-                 
+                  ..._options.props._labelOuterPanelOptions.props
                 },
                 parts: [
                   shape($, go, {
@@ -182,7 +182,7 @@ export default function($, go, options) {
                   panel($, go, {
                     type: 'ver',
                     props: {
-                      ..._options.props._labelPanelOptions.props
+                      ..._options.props._labelInnerPanelOptions.props
                     },
                     parts: [
                       textBlock($, go, {
@@ -191,9 +191,10 @@ export default function($, go, options) {
                         },
                         binding: labelBinding($, go, _options)
                       }),
-                      ..._options.props._labelPanelOptions.parts
+                      ..._options.props._labelInnerPanelOptions.parts
                     ]
-                  })
+                  }),
+                  ..._options.props._labelInnerPanelOptions.parts
                 ]
               }),
               ..._options.props._innerPanelOptions.parts

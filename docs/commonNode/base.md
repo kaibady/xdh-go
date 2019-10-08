@@ -205,9 +205,9 @@ nodes=  [
    // 标签文字，可简写, 如 labelColor: '#ccc',简写时四种状态都为同一种颜色
     labelColor: {
       normal: '#000',
-      highlight: '#fff',
-      hover: '#fff',
-      select: '#fff'
+      highlight: '#000',
+      hover: '#000',
+      select: '#000'
     },
 
      // 标签背景色，可简写, 如 labelBackground: '#ccc',简写时四种状态都为同一种颜色
@@ -274,7 +274,12 @@ nodes=  [
       parts: []
     },
     // 标签外层go.Panel
-    _labelPanelOptions: {
+    _labelOuterPanelOptions: {
+      props: {},
+      parts: []
+    },
+    // 标签内层go.Panel
+    _labelInnerPanelOptions: {
       props: {},
       parts: []
     },

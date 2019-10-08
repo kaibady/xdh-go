@@ -12,9 +12,9 @@ export let getDefaultProps = ($, go) => {
     },
     labelColor: {
       normal: '#000',
-      highlight: '#fff',
-      hover: '#fff',
-      select: '#fff'
+      highlight: '#000',
+      hover: '#000',
+      select: '#000'
     },
     labelBackground: {
       normal: '#ccc',
@@ -137,7 +137,11 @@ export let getDefaultProps = ($, go) => {
       props: {},
       parts: []
     },
-    _labelPanelOptions: {
+    _labelOuterPanelOptions: {
+      props: {},
+      parts: []
+    },
+    _labelInnerPanelOptions: {
       props: {},
       parts: []
     },

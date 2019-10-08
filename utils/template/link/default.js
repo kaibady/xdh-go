@@ -57,7 +57,7 @@ export let getDefaultProps = ($, go) => {
     },
     label: {
       text: '',
-      font: '13px sans-serif',
+      font: '13px sans-serif'
     },
     _linkOptions: {
       props: {},
