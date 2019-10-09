@@ -240,8 +240,8 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
                 case 'type3':
                   // 节点变形
                   let height = obj.part.findObject('Bd').height;
-                  tween(0, 10, 300, func['easeOutCirc'], state => {
-                    obj.part.margin = new go.Margin(state, 0, 0, 0);
+                  tween(0, 5, 300, func['easeOutCirc'], state => {
+                    obj.part.findObject('Bd').margin = new go.Margin(state, 0, 0, 0);
                   });
                   tween(
                     height,
@@ -274,8 +274,8 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
                   // 节点变形
                   let height = obj.part.findObject('Bd').height;
                   let y = obj.part.location.y;
-                  tween(10, 0, 300, func['easeOutCirc'], state => {
-                    obj.part.margin = new go.Margin(state, 0, 0, 0);;
+                  tween(5, 0, 300, func['easeOutCirc'], state => {
+                    obj.part.findObject('Bd').margin = new go.Margin(state, 0, 0, 0);;
                   });
                   tween(
                     height,
