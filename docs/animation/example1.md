@@ -223,6 +223,9 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
           },
           events: {
             mouseEnter: (e, obj) => {
+              let diagram = obj.part.diagram;
+              let oldskips = diagram.skipsUndoManager;
+              diagram.skipsUndoManager = true;
               switch (obj.part.data.animate) {
                 case 'type1':
                   // 节点放大
@@ -241,7 +244,12 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
                   // 节点变形
                   let height = obj.part.findObject('Bd').height;
                   tween(0, 5, 300, func['easeOutCirc'], state => {
-                    obj.part.findObject('Bd').margin = new go.Margin(state, 0, 0, 0);
+                    obj.part.findObject('Bd').margin = new go.Margin(
+                      state,
+                      0,
+                      0,
+                      0
+                    );
                   });
                   tween(
                     height,
@@ -254,8 +262,12 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
                   );
                   break;
               }
+              diagram.skipsUndoManager = oldskips;
             },
             mouseLeave: (e, obj) => {
+              let diagram = obj.part.diagram;
+              let oldskips = diagram.skipsUndoManager;
+              diagram.skipsUndoManager = true;
               switch (obj.part.data.animate) {
                 case 'type1':
                   // 节点放大
@@ -275,7 +287,12 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
                   let height = obj.part.findObject('Bd').height;
                   let y = obj.part.location.y;
                   tween(5, 0, 300, func['easeOutCirc'], state => {
-                    obj.part.findObject('Bd').margin = new go.Margin(state, 0, 0, 0);;
+                    obj.part.findObject('Bd').margin = new go.Margin(
+                      state,
+                      0,
+                      0,
+                      0
+                    );
                   });
                   tween(
                     height,
@@ -288,6 +305,7 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
                   );
                   break;
               }
+              diagram.skipsUndoManager = oldskips;
             }
           },
           parts: [
