@@ -149,8 +149,7 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
 
 ## 动效扩展
 
-在此原理基础上，工具对基本的动画方法进行了封装，以简化动画的实现。基本思想是将需要实现的动画参数设置在节点数据中，需要时再调用方法去执行。不建议大量使用无限循环的动画，以免造成性能问题。
-
+在此原理基础上，可以使用 tween 动画函数简化动画的实现。
 :::demo
 
 ```html
@@ -169,8 +168,9 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
   </div>
 </template>
 <script>
-  import { XdhGo, utils } from 'xdh-go';
+  import { XdhGo, utils, animation } from 'xdh-go';
   let { node, textBlock, shape, binding } = utils;
+  let { func, tween } = animation;
   export default {
     components: {
       XdhGo
@@ -182,19 +182,22 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
           {
             text: 'node1',
             stroke: 'red',
-            fill: '#f0f0f0'
+            fill: '#f0f0f0',
+            animate: 'type1'
           },
           {
             text: 'node2',
             stroke: 'blue',
             fill: '#fe00fe',
-            loc: ''
+            loc: '',
+            animate: 'type2'
           },
           {
             text: 'node3',
             stroke: '#ff9900',
             fill: '#fefe00',
-            font: 'bold 18pt "Microsoft Yahei"'
+            font: 'bold 18pt "Microsoft Yahei"',
+            animate: 'type3'
           }
         ]
       };
@@ -212,43 +215,79 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
         });
       },
       diagramReady(diagram, $, go) {},
-      zoomOut(node) {
-        let animateStep = 0.01;
-        let diagram = node.diagram;
-        this.scaleAnimate = () => {
-          if (node.data.animation) {
-            let oldskips = diagram.skipsUndoManager;
-            diagram.skipsUndoManager = true;
-            let borderObj = node.findObject('Bd');
-            if (borderObj) {
-              let obj = borderObj;
-              if (obj) {
-                let N = obj.part;
-                if (N.scale > 1.1) {
-                  N.scale = 1.1;
-                }
-                N.scale = N.scale + animateStep;
-              }
-            }
-            diagram.skipsUndoManager = oldskips;
-            window.requestAnimationFrame(this.scaleAnimate);
-          }
-        };
-        window.requestAnimationFrame(this.scaleAnimate);
-      },
-      zoomIn(node) {
-        node.data.animation = false;
-        node.scale = 1;
-      },
       nodeTemplate($, go) {
         return node($, go, {
           type: 'spot',
+          props: {
+            rotateObjectName: 'centerObj'
+          },
           events: {
             mouseEnter: (e, obj) => {
-              this.zoomOut(obj.part);
+              switch (obj.part.data.animate) {
+                case 'type1':
+                  // 节点放大
+                  tween(1, 1.1, 300, func['easeOutCirc'], state => {
+                    obj.part.scale = state;
+                  });
+                  break;
+                case 'type2':
+                  // 节点旋转
+                  obj.part.data.animating = true;
+                  tween(0, 10, 300, func['easeOutCirc'], state => {
+                    obj.part.angle = state;
+                  });
+                  break;
+                case 'type3':
+                  // 节点变形
+                  let height = obj.part.findObject('Bd').height;
+                  tween(0, 10, 300, func['easeOutCirc'], state => {
+                    obj.part.margin = new go.Margin(state, 0, 0, 0);
+                  });
+                  tween(
+                    height,
+                    height - 10,
+                    300,
+                    func['easeOutCirc'],
+                    state => {
+                      obj.part.findObject('Bd').height = state;
+                    }
+                  );
+                  break;
+              }
             },
             mouseLeave: (e, obj) => {
-              this.zoomIn(obj.part);
+              switch (obj.part.data.animate) {
+                case 'type1':
+                  // 节点放大
+                  tween(1.1, 1, 300, func['easeOutCirc'], state => {
+                    obj.part.scale = state;
+                  });
+                  break;
+                case 'type2':
+                  // 节点旋转
+                  obj.part.data.animating = true;
+                  tween(10, 0, 300, func['easeOutCirc'], state => {
+                    obj.part.angle = state;
+                  });
+                  break;
+                case 'type3':
+                  // 节点变形
+                  let height = obj.part.findObject('Bd').height;
+                  let y = obj.part.location.y;
+                  tween(10, 0, 300, func['easeOutCirc'], state => {
+                    obj.part.margin = new go.Margin(state, 0, 0, 0);;
+                  });
+                  tween(
+                    height,
+                    height + 10,
+                    300,
+                    func['easeOutCirc'],
+                    state => {
+                      obj.part.findObject('Bd').height = state;
+                    }
+                  );
+                  break;
+              }
             }
           },
           parts: [
@@ -257,7 +296,9 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
               props: {
                 name: 'Bd',
                 strokeWidth: 3,
-                alignment: go.Spot.Center
+                alignment: go.Spot.Center,
+                width: 80,
+                height: 80
               },
               binding: binding($, go, {
                 fill: 'fill',

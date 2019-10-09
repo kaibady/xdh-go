@@ -13,6 +13,7 @@ import Select from './select';
 import Search from './search';
 // 节点定义方法
 import * as utilFuns from '../utils/node-parts/index';
+import * as func from '../utils/animation/tween';
 import link from '../utils/template/link/index';
 import node from '../utils/template/node/index';
 const components = [
@@ -53,6 +54,7 @@ export const XdhGoSearch = Search;
 export const utils = utilFuns;
 export const nodeTmpl = node;
 export const linkTmpl = link;
+export const animation = { func: func, tween: func.default };
 export default {
   version: '1.0.0',
   install,
@@ -70,5 +72,6 @@ export default {
   Search,
   utils,
   nodeTmpl,
-  linkTmpl
+  linkTmpl,
+  animation
 };
