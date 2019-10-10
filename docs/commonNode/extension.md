@@ -111,3 +111,88 @@
 ```
 
 :::
+
+## 扩展参数说明
+![image](/xdh-go/img/desc/nodedesc1.jpg)
+![image](/xdh-go/img/desc/nodedesc2.jpg)
+![image](/xdh-go/img/desc/nodedesc3.jpg)
+![image](/xdh-go/img/desc/nodedesc4.jpg)
+
+
+```
+ /// 扩展参数
+    // 节点 go.Node
+    _nodeOptions: {
+      props: {},
+      parts: []
+    },
+    // 外层go.Panel
+    _outerPanelOptions: {
+      props: {},
+      parts: []
+    },
+    // 内层go.Panel
+    _innerPanelOptions: {
+      props: {},
+      parts: []
+    },
+    // 上方图形go.Panel
+    _figurePanelOptions: {
+      props: {},
+      parts: []
+    },
+    // 外围展位go.Shape
+    _figureHolderOptions: {
+      props: {},
+      parts: []
+    },
+    // 状态圈go.Shape
+    _stateShapeOptions: {
+      props: {},
+      parts: []
+    },
+    // 图片裁剪形状go.Shape
+    _clipShapeOptions: {
+      props: {},
+      parts: []
+    },
+    // 图片裁剪go.Panel
+    _clipPanelOptions: {
+      props: {},
+      parts: []
+    },
+    // 图片对象go.Picture
+    _pictureOptions: {
+      props: {}
+    },
+    // 图形go.Shape
+    _shapeOptions: {
+      props: {},
+      parts: []
+    },
+    // 字体图标 go.TextBlock
+    _iconOptions: {
+      props: {},
+      parts: []
+    },
+    // 标签外层go.Panel
+    _labelOuterPanelOptions: {
+      props: {},
+      parts: []
+    },
+    // 标签内层go.Panel
+    _labelInnerPanelOptions: {
+      props: {},
+      parts: []
+    },
+    // 标签外框形状go.Shape
+    _labelShapeOptions: {
+      props: {},
+      parts: []
+    },
+    // 标签文字go.TextBlock
+    _labelTextOptions: {
+      props: {},
+      parts: []
+    }
+```

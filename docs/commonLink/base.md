@@ -282,12 +282,6 @@ links=  [
       parts: []
     },
 
-      // 标签的go.TextBlock属性
-    _labelTextOptions: {
-      props: {},
-      parts: []
-    },
-
     // 标签外层go.Panel属性
     _outerPanelOptions: {
       props: {},
@@ -304,7 +298,13 @@ links=  [
     _labelShapeOptions: {
       props: {},
       parts: []
-    }
+    },
+    
+      // 标签的go.TextBlock属性
+    _labelTextOptions: {
+      props: {},
+      parts: []
+    },
   };
 }
 ```

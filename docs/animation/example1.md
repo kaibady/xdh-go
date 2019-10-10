@@ -150,6 +150,37 @@ gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有�
 ## 动效扩展
 
 在此原理基础上，可以使用 tween 动画函数简化动画的实现。
+动画函数包括：
+easeInQuad,
+easeOutQuad,
+easeInOutQuad,
+easeInCubic,
+easeOutCubic,
+easeInOutCubic,
+easeInQuart,
+easeOutQuart,
+easeInOutQuart,
+easeInQuint,
+easeOutQuint,
+easeInOutQuint,
+easeInSine,
+easeOutSine,
+easeInOutSine,
+easeInExpo,
+easeOutExpo,
+easeInOutExpo,
+easeInCirc,
+easeOutCirc,
+easeInOutCirc,
+easeInElastic,
+easeOutElastic,
+easeInOutElastic,
+easeInBack,
+easeOutBack,
+easeInOutBack,
+easeInBounce,
+easeOutBounce,
+easeInOutBounce
 :::demo
 
 ```html

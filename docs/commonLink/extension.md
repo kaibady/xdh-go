@@ -186,3 +186,62 @@
 ```
 
 :::
+
+## 扩展参数说明
+![image](/xdh-go/img/desc/linkdesc1.jpg)
+```
+/// 扩展参数
+
+    // 连线go.Link属性
+    _linkOptions: {
+      props: {},
+      parts: []
+    },
+
+    // 连线go.Shape属性
+    _lineOptions: {
+      props: {},
+      parts: []
+    },
+
+     // 连线占位go.Shape属性
+    _linkHolderOptions: {
+      props: {},
+      parts: []
+    },
+
+    // 箭头to的go.Shape属性
+    _toArrowOptions: {
+      props: {},
+      parts: []
+    },
+
+    // 箭头from的go.Shape属性
+    _fromArrowOptions: {
+      props: {},
+      parts: []
+    },
+
+    // 标签外层go.Panel属性
+    _outerPanelOptions: {
+      props: {},
+      parts: []
+    },
+
+     // 标签内层go.Panel属性
+    _innerPanelOptions: {
+      props: {},
+      parts: []
+    },
+
+       // 标签边框go.Shape属性
+    _labelShapeOptions: {
+      props: {},
+      parts: []
+    },
+         // 标签的go.TextBlock属性
+    _labelTextOptions: {
+      props: {},
+      parts: []
+    }
+```
