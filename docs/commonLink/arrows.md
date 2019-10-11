@@ -17,7 +17,7 @@ from和to都各有三个参数: type(箭头类型), show(是否显示), scale(�
       :config="config"
       :layout="layout"
       ref="diagram"
-      height="400px"
+      height="500px"
       @on-ready="diagramReady"
     ></xdh-go>
   </div>
@@ -47,13 +47,22 @@ from和to都各有三个参数: type(箭头类型), show(是否显示), scale(�
           {
             key: 'd',
             label: 'node4'
+          },
+          {
+            key: 'e',
+            label: 'node3'
+          },
+          {
+            key: 'f',
+            label: 'node4'
           }
         ],
         links: [
-          { from: 'a', to: 'b', label: 'link1', arrows: 'to' },
+          { from: 'a', to: 'b'},
+          { from: 'c', to: 'd', label: 'link1', arrows: 'to' },
           {
-            from: 'c',
-            to: 'd',
+            from: 'e',
+            to: 'f',
             label: 'link2',
             arrows: {
               to: {

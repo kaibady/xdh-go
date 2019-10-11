@@ -150,13 +150,21 @@ export function handleLinkDefault($, go, options = {}) {
             if (n1 === 'show') {
               switch (type) {
                 case 'string':
-                  arrows[part][n1] = _options.props[name].includes(part);
+                  arrows[part].show = _options.props[name].includes(part);
                   break;
                 case 'undefined':
-                  arrows[part][n1] = false;
+                  arrows[part].show = false;
                   break;
                 case 'object':
-                  arrows[part][n1] = !!defaultProps[name][part][n1];
+                  if (_options.props[name][part]) {
+                    if (_options.props[name][part].show === undefined) {
+                      arrows[part].show = true;
+                    } else {
+                      arrows[part].show = _options.props[name][part].show;
+                    }
+                  } else {
+                    arrows[part].show = false;
+                  }
                   break;
               }
             } else {
