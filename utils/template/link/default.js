@@ -156,7 +156,7 @@ export function handleLinkDefault($, go, options = {}) {
                   arrows[part].show = false;
                   break;
                 case 'object':
-                  if (_options.props[name][part]) {
+                  if (_options.props[name][part] !== undefined) {
                     if (_options.props[name][part].show === undefined) {
                       arrows[part].show = true;
                     } else {
@@ -172,6 +172,7 @@ export function handleLinkDefault($, go, options = {}) {
             }
           }
         });
+        
         _options.props.arrows = arrows;
       } else {
         for (let n1 in defaultProps[name]) {

@@ -1,7 +1,8 @@
 # 箭头(arrows)
-通过arrows可以定义连线的箭头样式，其中from为连线始端，to为连线末端。
 
-from和to都各有三个参数: type(箭头类型), show(是否显示), scale(缩放大小)
+通过 arrows 可以定义连线的箭头样式，其中 from 为连线始端，to 为连线末端。
+
+from 和 to 都各有三个参数: type(箭头类型), show(是否显示), scale(缩放大小)
 
 :::demo
 
@@ -58,7 +59,7 @@ from和to都各有三个参数: type(箭头类型), show(是否显示), scale(�
           }
         ],
         links: [
-          { from: 'a', to: 'b'},
+          { from: 'a', to: 'b' },
           { from: 'c', to: 'd', label: 'link1', arrows: 'to' },
           {
             from: 'e',
