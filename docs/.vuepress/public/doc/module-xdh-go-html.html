@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: xdh-go-snapshot</title>
+    <title>JSDoc: Module: xdh-go-html</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: xdh-go-snapshot</h1>
+    <h1 class="page-title">Module: xdh-go-html</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>提供快照功能</p></div>
+            <div class="description"><p>生成go.HtmlInfo对象，用于绑定到事件</p></div>
         
 
         
@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_snapshot_src_snapshot.vue.html">packages/snapshot/src/snapshot.vue</a>, <a href="packages_snapshot_src_snapshot.vue.html#line2">line 2</a>
+        <a href="packages_html_src_html.vue.html">packages/html/src/html.vue</a>, <a href="packages_html_src_html.vue.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -114,6 +114,14 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// use it with menu components &lt;xdh-html ref="menu1" menu-name="menu1">
+          &lt;circle-menu
+          :menu-list="listData1"
+          </code></pre>
 
 
 
@@ -144,7 +152,7 @@
 
 
 <div class="description">
-    <p>参数属性</p>
+    <p>属性参数</p>
 </div>
 
 
@@ -183,7 +191,7 @@
 
         <tr>
             
-                <td class="name"><code>layout</code></td>
+                <td class="name"><code>menuName</code></td>
             
 
             <td class="type">
@@ -198,6 +206,39 @@
             
                 <td class="attributes">
                 
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>菜单名称，必须</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>beforeShowMenu</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
                     &lt;optional><br>
                 
 
@@ -208,19 +249,54 @@
             
                 <td class="default">
                 
-                    'image,imageData,svg'
+                    () => {}
                 
                 </td>
             
 
-            <td class="description last"><p>按钮布局</p></td>
+            <td class="description last"><p>参数node,diagram,tool,menu, 显示菜单前须做的操作，可用于调整菜单项</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>diagarm</code></td>
+                <td class="name"><code>showContextMenu</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>参数node,diagram,tool,menu,显示菜单，可选</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>menuStyle</code></td>
             
 
             <td class="type">
@@ -245,23 +321,25 @@
             
                 <td class="default">
                 
+                    {'z-index': 10000,position:'fixed'}
+                
                 </td>
             
 
-            <td class="description last"><p>go.Diagram对象</p></td>
+            <td class="description last"><p>菜单容器样式</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>hideContextMenu</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">function</span>
 
 
             
@@ -280,12 +358,49 @@
             
                 <td class="default">
                 
-                    {image:{}, imageData: {},svg: {}}
+                    null
                 
                 </td>
             
 
-            <td class="description last"><p>快照配置</p></td>
+            <td class="description last"><p>参数diagram,tool,menu 菜单关闭方法</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>autoHide</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>菜单是否自动关闭，设为true时，tooltip和contextMenu表现不一样，tooltip为移出节点时关闭，contentMenu为点击diagram空白处关闭</p></td>
         </tr>
 
     
@@ -324,7 +439,69 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_snapshot_src_snapshot.vue.html">packages/snapshot/src/snapshot.vue</a>, <a href="packages_snapshot_src_snapshot.vue.html#line17">line 17</a>
+        <a href="packages_html_src_html.vue.html">packages/html/src/html.vue</a>, <a href="packages_html_src_html.vue.html#line33">line 33</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="~slot"><span class="type-signature">(inner) </span>slot<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>插槽</p>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_html_src_html.vue.html">packages/html/src/html.vue</a>, <a href="packages_html_src_html.vue.html#line15">line 15</a>
     </li></ul></dd>
     
 
@@ -343,6 +520,116 @@
         
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~bindMenu"><span class="type-signature">(inner) </span>bindMenu<span class="signature">()</span><span class="type-signature"> &rarr; {go.HTMLInfo}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>返回用于绑定到contextMenu参数的HTMLInfo对象</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_html_src_html.vue.html">packages/html/src/html.vue</a>, <a href="packages_html_src_html.vue.html#line71">line 71</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">go.HTMLInfo</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     

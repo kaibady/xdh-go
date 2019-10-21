@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/node-parts/makePort.js</title>
+    <title>JSDoc: Source: utils/node-parts/panel/spotPanel.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/node-parts/makePort.js</h1>
+    <h1 class="page-title">Source: utils/node-parts/panel/spotPanel.js</h1>
 
     
 
@@ -26,46 +26,25 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @function makePort
- * @param {*} $
- * @param {*} go
- * @param {*} options
- * @property {string} [options.spot] 点对应的位置 go.Spot对象，如果对应的props中有具体的属性值，会将其覆盖
- * @property {object} [options.props] go.Space的属性
- * @property {array} [options.parts] $()返回的对象或者go.Binding对象等
+            <pre class="prettyprint source linenums"><code>import { extendOption } from '../util/fun';
+/**
+ * @function spotPanel spot布局
+ * @param {*} $ 
+ * @param {*} go 
+ * @param {*} options 
  */
-export default function makePort($, go, options = {}) {
-  let defaultSpot = options.spot || new go.Spot(0.5, 0.5);
+export default function($, go, options) {
   let defaultProps = {
-    fill: null,
-    stroke: null,
-    desiredSize: new go.Size(7, 7),
-    alignment: defaultSpot,
-    alignmentFocus: defaultSpot,
-    fromSpot: defaultSpot,
-    toSpot: defaultSpot,
-    fromLinkable: true,
-    toLinkable: true,
-    cursor: 'pointer'
+    background: 'rgba(0, 0, 0, 0)',
+    alignment: go.Spot.Center
   };
-  let _options = Object.assign(
-    {
-      props: {},
-      parts: [],
-      events: {},
-      binding: []
-    },
-    options
-  );
-  _options.props = Object.assign({}, defaultProps, options.props);
-  _options.type = _options.type || 'Circle';
+  let _options = extendOption(defaultProps, options);
   return $(
-    go.Shape,
-    _options.type,
+    go.Panel,
+    'Spot',
     _options.props,
-    _options.events,
     ..._options.parts,
+    _options.events,
     ..._options.binding
   );
 }

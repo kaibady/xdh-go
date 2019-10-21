@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/animation/tween.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/animation/tween.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * 缓动动画函数和各类算法
+ * @module utils/tween
+ * @author 陈华春
+ */
+
+// 动画每秒60帧
+const UPDATE_TIME = 1000 / 60
+
+const pow = Math.pow
+const sqrt = Math.sqrt
+const sin = Math.sin
+const cos = Math.cos
+const PI = Math.PI
+const c1 = 1.70158
+const c2 = c1 * 1.525
+const c3 = c1 + 1
+const c4 = (2 * PI) / 3
+const c5 = (2 * PI) / 4.5
+
+// 动画执行函数
+const rAF = window.requestAnimationFrame || function (cb) {
+  setTimeout(cb, UPDATE_TIME)
+}
+
+/**
+ * 缓动动画函数
+ * @param {number} startValue 开始时的值
+ * @param {number} endValue 结束时的值
+ * @param {number} during 动画持续时间，单位：毫秒
+ * @param {Function} easingFunc 缓动算法函数
+ * @param {function} stepCb 每次改变的回调函数
+ * @returns {Promise} Promise实例
+ *
+ * @example
+ *
+ *  import tween, {easeInCubic} from '@/utils/tween'
+ *  tween(0, 100, 300, easeInCubic, function(val){
+ *      console.log(val)
+ *      // to do something
+ *  })
+ */
+export default function (startValue, endValue, during, easingFunc, stepCb) {
+  // 改变的值大小
+  const changeValue = endValue - startValue
+  // 指定时间内更新的次数
+  const updateCount = during / UPDATE_TIME
+  // 每次更新的值距离
+  const perUpdateDistance = 1 / updateCount
+  let position = 0
+  return new Promise(resolve => {
+    function step() {
+      const state = startValue + changeValue * easingFunc(position)
+      stepCb(state)
+      position += perUpdateDistance
+      if (position &lt; 1) {
+        rAF(step)
+      } else {
+        rAF(() => {
+          stepCb(endValue)
+          resolve()
+        })
+      }
+    }
+
+    step()
+  })
+}
+
+/**
+ * easeInQuad
+ * @param {number} x
+ * @returns {number}
+ */
+export function easeInQuad(x) {
+  return x * x
+}
+
+/**
+ * easeOutQuad
+ * @param {number} x
+ * @returns {number}
+ */
+export function easeOutQuad(x) {
+  return 1 - (1 - x) * (1 - x)
+}
+
+/**
+ * easeInOutQuad
+ * @param x
+ * @returns {number}
+ */
+export function easeInOutQuad(x) {
+  return x &lt; 0.5 ? 2 * x * x : 1 - pow(-2 * x + 2, 2) / 2
+}
+
+/**
+ * easeInCubic
+ * @param x
+ * @returns {number}
+ */
+export function easeInCubic(x) {
+  return x * x * x
+}
+
+/**
+ * easeOutCubic
+ * @param x
+ * @returns {number}
+ */
+export function easeOutCubic(x) {
+  return 1 - pow(1 - x, 3)
+}
+
+/**
+ * easeInOutCubic
+ * @param x
+ * @returns {number}
+ */
+export function easeInOutCubic(x) {
+  return x &lt; 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2;
+}
+
+/**
+ * easeInQuart
+ * @param x
+ * @returns {number}
+ */
+export function easeInQuart(x) {
+  return x * x * x * x;
+}
+
+/**
+ * easeInQuart
+ * @param x
+ * @returns {number}
+ */
+export function easeOutQuart(x) {
+  return 1 - pow(1 - x, 4)
+}
+
+/**
+ * easeInOutQuart
+ * @param x
+ * @returns {number}
+ */
+export function easeInOutQuart(x) {
+  return x &lt; 0.5 ? 8 * x * x * x * x : 1 - pow(-2 * x + 2, 4) / 2;
+}
+
+/**
+ * easeInQuint
+ * @param x
+ * @returns {number}
+ */
+export function easeInQuint(x) {
+  return x * x * x * x * x
+}
+
+/**
+ * easeOutQuint
+ * @param x
+ * @returns {number}
+ */
+export function easeOutQuint(x) {
+  return 1 - pow(1 - x, 5)
+}
+
+/**
+ * easeInOutQuint
+ * @param x
+ * @returns {number}
+ */
+export function easeInOutQuint(x) {
+  return x &lt; 0.5 ? 16 * x * x * x * x * x : 1 - pow(-2 * x + 2, 5) / 2;
+}
+
+/**
+ * easeInSine
+ * @param x
+ * @returns {number}
+ */
+export function easeInSine(x) {
+  return 1 - cos(x * PI / 2)
+}
+
+/**
+ * easeOutSine
+ * @param x
+ * @returns {number}
+ */
+export function easeOutSine(x) {
+  return sin(x * PI / 2)
+}
+
+/**
+ * easeInOutSine
+ * @param x
+ * @returns {number}
+ */
+export function easeInOutSine(x) {
+  return -(cos(PI * x) - 1) / 2
+}
+
+/**
+ * easeInExpo
+ * @param x
+ * @returns {number}
+ */
+export function easeInExpo(x) {
+  return x === 0 ? 0 : pow(2, 10 * x - 10)
+}
+
+/**
+ * easeOutExpo
+ * @param x
+ * @returns {number}
+ */
+export function easeOutExpo(x) {
+  return x === 1 ? 1 : 1 - pow(2, -10 * x)
+}
+
+export function easeInOutExpo(x) {
+  return x === 0 ? 0 : x === 1 ? 1 : x &lt; 0.5 ? pow(2, 20 * x - 10) / 2 : (2 - pow(2, -20 * x + 10)) / 2
+}
+
+/**
+ * easeInOutExpo
+ * @param x
+ * @returns {number}
+ */
+export function easeInCirc(x) {
+  return 1 - sqrt(1 - pow(x, 2))
+}
+
+/**
+ * easeOutCirc
+ * @param x
+ * @returns {number}
+ */
+export function easeOutCirc(x) {
+  return sqrt(1 - pow(x - 1, 2))
+}
+
+export function easeInOutCirc(x) {
+  return x &lt; 0.5 ? (1 - sqrt(1 - pow(2 * x, 2))) / 2 : (sqrt(1 - pow(-2 * x + 2, 2)) + 1) / 2
+}
+
+/**
+ * easeInOutCirc
+ * @param x
+ * @returns {number}
+ */
+export function easeInElastic(x) {
+  return x === 0 ? 0 : x === 1 ? 1 : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4)
+}
+
+/**
+ * easeOutElastic
+ * @param x
+ * @returns {number}
+ */
+export function easeOutElastic(x) {
+  return x === 0 ? 0 : x === 1 ? 1 : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1
+}
+
+export function easeInOutElastic(x) {
+  return x === 0 ? 0 : x === 1 ? 1 : x &lt; 0.5 ? -(pow(2, 20 * x - 10) * sin((20 * x - 11.125) * c5)) / 2 : pow(2, -20 * x + 10) * sin((20 * x - 11.125) * c5) / 2 + 1
+}
+
+/**
+ * easeInOutElastic
+ * @param x
+ * @returns {number}
+ */
+export function easeInBack(x) {
+  return c3 * x * x * x - c1 * x * x
+}
+
+/**
+ * easeOutBack
+ * @param x
+ * @returns {number}
+ */
+export function easeOutBack(x) {
+  return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2)
+}
+
+/**
+ * easeOutBack
+ * @param x
+ * @returns {number}
+ */
+export function easeInOutBack(x) {
+  return x &lt; 0.5 ? (pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2 : (pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2
+}
+
+/**
+ * easeInBounce
+ * @param x
+ * @returns {number}
+ */
+export function easeInBounce(x) {
+  return 1 - easeOutBounce(1 - x)
+}
+
+/**
+ * easeOutBounce
+ * @param x
+ * @returns {number}
+ */
+export function easeOutBounce(x) {
+  let n1 = 7.5625
+  let d1 = 2.75
+  if (x &lt; 1 / d1) {
+    return n1 * x * x
+  } else if (x &lt; 2 / d1) {
+    return n1 * (x -= (1.5 / d1)) * x + 0.75;
+  } else if (x &lt; 2.5 / d1) {
+    return n1 * (x -= (2.25 / d1)) * x + 0.9375;
+  } else {
+    return n1 * (x -= (2.625 / d1)) * x + 0.984375;
+  }
+}
+
+/**
+ * easeInOutBounce
+ * @param x
+ * @returns {number}
+ */
+export function easeInOutBounce(x) {
+  return x &lt; 0.5 ? (1 - easeOutBounce(1 - 2 * x)) / 2 : (1 + easeOutBounce(2 * x - 1)) / 2
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-utils_directives_draggable.html">utils/directives/draggable</a></li><li><a href="module-utils_directives_resizable.html">utils/directives/resizable</a></li><li><a href="module-utils_events.html">utils/events</a></li><li><a href="module-utils_storage.html">utils/storage</a></li><li><a href="module-utils_tween.html">utils/tween</a></li><li><a href="module-xdh-go.html">xdh-go</a></li><li><a href="module-xdh-go-circle-menu.html">xdh-go-circle-menu</a></li><li><a href="module-xdh-go-draft.html">xdh-go-draft</a></li><li><a href="module-xdh-go-html.html">xdh-go-html</a></li><li><a href="module-xdh-go-layout.html">xdh-go-layout</a></li><li><a href="module-xdh-go-overview.html">xdh-go-overview</a></li><li><a href="module-xdh-go-snapshot.html">xdh-go-snapshot</a></li></ul><h3>Classes</h3><ul><li><a href="module-utils_directives_draggable-Draggable.html">Draggable</a></li><li><a href="module-utils_directives_resizable-Resizable.html">Resizable</a></li><li><a href="module-utils_events-Events.html">Events</a></li></ul><h3>Events</h3><ul><li><a href="module-xdh-go-circle-menu.html#~event:on-item-click">on-item-click</a></li><li><a href="module-xdh-go.html#~event:on-load-data">on-load-data</a></li><li><a href="module-xdh-go.html#~event:on-ready">on-ready</a></li></ul><h3>Global</h3><ul><li><a href="global.html#genOption">genOption</a></li><li><a href="global.html#horPanel%25E6%25B0%25B4%25E5%25B9%25B3%25E5%25B8%2583%25E5%25B1%2580">horPanel 水平布局</a></li><li><a href="global.html#makePort">makePort</a></li><li><a href="global.html#node%25E8%258A%2582%25E7%2582%25B9%25E5%25AE%259A%25E4%25B9%2589">node 节点定义</a></li><li><a href="global.html#spotPanelspot%25E5%25B8%2583%25E5%25B1%2580">spotPanel spot布局</a></li><li><a href="global.html#verPanel%25E5%259E%2582%25E7%259B%25B4%25E5%25B8%2583%25E5%25B1%2580">verPanel 垂直布局</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Oct 21 2019 17:32:50 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

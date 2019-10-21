@@ -1,7 +1,7 @@
 # CircleMenu 圆形菜单
 
 ::: tip 提示
-XdhGoCircleMenu 实现了一个圆形菜单，组件[XdhGoCircleMenu](/api.html?url=/xdh-go/doc/module-xdh-go-circle-menu.html)
+XdhGoCircleMenu 实现了一个圆形菜单，文档[XdhGoCircleMenu](/api.html?url=/xdh-go/doc/module-xdh-go-circle-menu.html)，相关组件XdhGoHtml文档[XdhGoHtml](/api.html?url=/xdh-go/doc/module-xdh-go-html.html)
 :::
 
 ## 基础用法

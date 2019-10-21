@@ -1,7 +1,7 @@
 # Tooltip 组件
 
 ::: tip 提示
-XdhGoTooltip可用于实现节点提示功能及简易菜单，组件[XdhGoTooltip](/api.html?url=/xdh-go/doc/module-xdh-go-tooltip.html)
+XdhGoTooltip可用于实现节点提示功能及简易菜单，组件[XdhGoTooltip](/api.html?url=/xdh-go/doc/module-xdh-go-tooltip.html)，相关组件XdhGoHtml文档[XdhGoHtml](/api.html?url=/xdh-go/doc/module-xdh-go-html.html)
 :::
 
 ## 基础用法

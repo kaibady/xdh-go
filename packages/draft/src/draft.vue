@@ -51,6 +51,17 @@
 import go from 'gojs'
 import draggable from '../../../utils/directives/draggable'
 import { save, get, remove } from '../../../utils/storage'
+/**
+ * 插槽
+ * @member slots
+ * @property {String} [default] 草稿箱插槽,slot-scope = 
+ * @property {Function} [default.close] 关闭方法
+ * @property {Array} [default.draftList] 草稿列表 =  [{ json: '{ "class": "GraphLinksModel",↵ "nodeDataArray": [ ↵{"key":"A", "category":"a", "location":{"class":"go.Point", "x":0, "y":30.250027885742202}},↵ {"key":"B", "category":"b", "location":{"class":"go.Point", "x":83.13034326171876, "y":0}}, ↵{"key":"C", "category":"c", "location":{"class":"go.Point", "x":83.13034326171876, "y":60.500055771484405}}↵ ],↵ "linkDataArray": [ ↵{"from":"A", "to":"B"},↵{"from":"A", "to":"C"}↵ ]}', name: 'ddd", thumb: 'data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAACG...', time: '2019/9/26 下午4:41:28 下午4:41:28' }]
+ * @property {Function} [default.remove] 删除某行
+ * @property {Function} [default.load] 读取某行
+ * @property {Function} [default.save] 保存当前内容
+ * @property {Function} [default.clear] 清除列表
+ */
 export default {
   name: 'XdhGoDraft',
   components: {},
@@ -69,9 +80,15 @@ export default {
    *                            如果本地存储为空，则使用传入的数据
    *                            数据格式：
    *                           [{ 
-   *                              json: '{ "class": "GraphLinksModel",↵  "nodeDataArray": [ ↵{"key":"A", "category":"a", "location":{"class":"go.Point", "x":0, "y":30.250027885742202}},↵{"key":"B", "category":"b", "location":{"class":"go.Point", "x":83.13034326171876, "y":0}},↵{"key":"C", "category":"c", "location":{"class":"go.Point", "x":83.13034326171876, "y":60.500055771484405}}↵ ],↵  "linkDataArray": [ ↵{"from":"A", "to":"B"},↵{"from":"A", "to":"C"}↵ ]}',
+   *                              json: '{ "class": "GraphLinksModel",↵  "nodeDataArray":
+   *  [ ↵{"key":"A", "category":"a",
+   *  "location":{"class":"go.Point", "x":0, "y":30.250027885742202}},↵
+   * {"key":"B", "category":"b", "location":{"class":"go.Point", "x":83.13034326171876, "y":0}},
+   * ↵{"key":"C", "category":"c", "location":{"class":"go.Point", "x":83.13034326171876, "y":60.500055771484405}}↵ ],↵
+   *   "linkDataArray": [ ↵{"from":"A", "to":"B"},↵{"from":"A", "to":"C"}↵ ]}',
                                   name: 'ddd",
-                                  thumb: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAACGklEQVRIS+2WS0gbURSG/5NxFYyb+gi2K1ukushSl4ILYbILZCZSiLSku9AHVgO6MAYRV4XuBR/bOyW7iiAUFFzUgKJIQBeC2YhkJ0KUDnNlAjNJRjOZJBNEyOwuc+b/7vnPPecO4Zkecp/LAwCObXQXAFpqg11wvmS1zwdMTAC5HJDJmNLNWS2KYpfX6/1ARH0ej+e/IXtz88a/vf3zi74eHwficeD0FEgmXQKHw+EpIurnnGeI6N6Qvbwce3twEN8wwLEYcH0NTE+7BJZlOcE5P1IUZaeyPnWcag78sysuAaPW97Isz3DODxVF+dsMmNuArwjofyngOZtEsuYA4UAp40AAUFUgmzW+rZbxsj6hGGOskR4sTq4K8Po6kM8DiURR76qzM/89GNy0iA9rmubTNO1HOp0udWgdO6gET04CwSAgCEAqBZyfF8HfRPGPRXOIiFQA84yxvTp4ZujjjB+rPGm1JEm/iOiIMWZ1w9E+GgZXback9Nvpsy09ha+tAZPttbiGRcQM8EWNATLguI/1jJ2CHRXFEmRrdRk49D6Ebm83Vg9XDYVSxo2AI5HIFOe8V1XVXUEQ7gyNs1dngyf+k9/6WhqWMPJ6BLM7s+WI5sDRaLS3UCh8BOAvvxZvO257tga3Pukk8Z2I0FAI+7l9bB6bh785cFWXWl3jNth04NmsnkNPzS5ZQb4F/9U1scWANtiZTy5EPQDT9PwfewHouAAAAABJRU5ErkJggg==',
+                                  thumb: 'data:image/png;base64,
+                                  iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAACG...',
                                   time: '2019/9/26 下午4:41:28 下午4:41:28'
                                 }]
    */
@@ -133,9 +150,19 @@ export default {
     }
   },
   methods: {
+    /**
+     * @function
+     * @name close
+     * @description 关闭窗口
+     */
     close() {
       this.draftVisible = false
     },
+    /**
+     * @function
+     * @name save
+     * @description 保存当前记录
+     */
     save() {
       let bounds = this.diagram.documentBounds
       let scaleW = 30 / bounds.width
@@ -159,6 +186,12 @@ export default {
       }
       this.$emit('save')
     },
+    /**
+     * @function
+     * @name remove
+     * @description 删除行
+     * @param {Object} [item] 行数据
+     */
     remove(item) {
       let idx = this.draftList.indexOf(item)
       this.$emit('remove', this.draftList[idx])
@@ -167,10 +200,21 @@ export default {
         save('XDH-GO-DRAFT' + this.localKey, this.draftList, localStorage)
       }
     },
+    /**
+     * @function
+     * @name load
+     * @description 读取草稿到图
+     * @param {Object} [item] 行数据
+     */
     load(item) {
       this.diagram.clear()
       this.diagram.model = go.Model.fromJson(item.json)
     },
+    /**
+     * @function
+     * @name clear
+     * @description 清除草稿箱
+     */
     clear() {
       this.draftList = []
       this.$emit('clear')

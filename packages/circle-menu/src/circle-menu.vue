@@ -68,26 +68,15 @@
 </template>
 <script>
 /**
-   * 圆形菜单组件
-   * @module widgets/xdh-go/menus/circle-menu
-   * @example
-   * // with go-menu in gojs
-   *  <go-menu ref="menu1">
-   <circle-menu
-   :menu-list="listData1"
-   @item-click="itemClick">
-   </circle-menu>
-   </go-menu>
-   // single use
-   <circle-menu ref="menu1"
-   :menu-list="listData1"
-   @item-click="itemClick">
-   </circle-menu>
-   don't forget to show after mounted
-   mounted() {
-         this.$refs.menu1.show();
-       }
-   */
+ * 圆形菜单组件
+ * @module xdh-go-circle-menu
+ * @example
+ * // with go-menu in gojs
+ *  <go-menu ref="menu1">
+ *    <circle-menu
+ *      :menu-list="listData1" @item-click="itemClick"></circle-menu>
+ *  </go-menu>
+ */
 /**
  * 插槽
  * @member slots
@@ -114,6 +103,7 @@ export default {
    * @property {String} [hoverColor = ''] 菜单项鼠标经过颜色，不设置与选中一样
    * @property {Boolean} [fixed = false] 设置成true时，不再作为弹出菜单，而是跟随文档流布局
    * @property {Boolean} [textRotate = false] 设置成true时，菜单项内部文字旋转到正向朝上
+   * @property {Boolean} [itemGrap = 5] 菜单项之间的间距
    */
   props: {
     angleRange: {
@@ -389,12 +379,12 @@ export default {
         case 'mouseleave':
           this.hoverItem = ''
           this.mouseLeaveTimeout = setTimeout(() => {
-              this.hide()
+            this.hide()
           }, 800)
           break
         case 'mouseenter':
           this.hoverItem = 'item_' + item[this.itemKey]
-          if(this.mouseLeaveTimeout) {
+          if (this.mouseLeaveTimeout) {
             clearTimeout(this.mouseLeaveTimeout)
           }
           break

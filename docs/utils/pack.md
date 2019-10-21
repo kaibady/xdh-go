@@ -19,6 +19,7 @@ gojs 原生写法
 ```
 $(go.Node, "Auto",
      {
+      selectionAdorned: false,
       click: function(obj) {
         console.log(obj)
       }
@@ -28,7 +29,9 @@ $(go.Node, "Auto",
         new go.Binding("figure", "fig")),
       $(go.TextBlock,
         { margin: 5 },
-        new go.Binding("text", "key"))
+        new go.Binding("text", "key")
+       ),
+      new go.Binding('resizable', 'resizable')
     );
 ```
 
@@ -37,6 +40,9 @@ $(go.Node, "Auto",
 ```
 node($, go, {
     type: 'Auto',
+    props: {
+      selectionAdorned: false
+    },
     events: {
       click(obj) {
          console.log(obj)
@@ -56,7 +62,8 @@ node($, go, {
             },
             binding: binding($, go, {text: 'key'})
         })
-    ]
+    ],
+    binding: [new go.Binding('resizable', 'resizable')]
 })
 ```
 

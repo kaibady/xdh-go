@@ -11,7 +11,18 @@ export default {
   name: 'XdhGoOverview',
   inject: ['$', 'go', 'diagram'],
   components: {},
-
+  /**
+   * 参数属性
+   * @property {Object} [divStyle={}] 鹰眼外框样式, 默认 {
+        position: 'absolute',
+        width: '150px',
+        height: '150px',
+        border: '2px solid #75a3fa',
+        'z-index': 9999,
+        'background-color': 'rgba(100,100,100,0.4)'
+      }
+   *
+   */
   props: {
     divStyle: {
       type: Object,

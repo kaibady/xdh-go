@@ -6,11 +6,11 @@
 <script>
 /**
    * XdhHtml功能组件
-   * @module xdh-html
+   * @module xdh-go-html
    * @description 生成go.HtmlInfo对象，用于绑定到事件
    * @example
    * // use it with menu components
-   *  <xdh-html ref="menu1">
+   *  <xdh-html ref="menu1" menu-name="menu1">
           <circle-menu
           :menu-list="listData1"
           @item-click="itemClick">
@@ -28,20 +28,17 @@ export default {
   inject: ['$', 'go', 'diagram'],
   /**
    * 属性参数
-   * @property {Function} [beforeShowMenu = () => {}] 显示菜单前须做的操作，可用于调整菜单项
-   * @property {Function} [showContextMenu] 显示菜单，可选
+   * @property {String} menuName 菜单名称，必须
+   * @property {Function} [beforeShowMenu = () => {}] 参数node,diagram,tool,menu, 显示菜单前须做的操作，可用于调整菜单项
+   * @property {Function} [showContextMenu] 参数node,diagram,tool,menu,显示菜单，可选
    * @property {Object} [menuStyle={'z-index': 10000,position:'fixed'}] 菜单容器样式
-   * @property {Function} [hideContextMenu=null] 菜单关闭方法
+   * @property {Function} [hideContextMenu=null] 参数diagram,tool,menu 菜单关闭方法
    * @property {Boolean} [autoHide=true] 菜单是否自动关闭，设为true时，tooltip和contextMenu表现不一样，tooltip为移出节点时关闭，contentMenu为点击diagram空白处关闭
    */
   props: {
-    appendToBody: {
-      type: Boolean,
-      default: true
-    },
     menuName: {
       type: String,
-      default: ''
+      required: true
     },
     menuStyle: {
       type: Object,
@@ -79,6 +76,7 @@ export default {
     /**
      * 返回用于绑定到contextMenu参数的HTMLInfo对象
      * @function bindMenu
+     * @returns {go.HTMLInfo}
      */
     bindMenu() {
       let go = this.go,
@@ -127,6 +125,3 @@ export default {
   }
 }
 </script>
-<style type="text/scss" lang="scss" scoped>
-
-</style>

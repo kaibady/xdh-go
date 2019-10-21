@@ -175,6 +175,13 @@ export default {
         model.linkDataArray = links
       }
       this.diagram.updateAllRelationshipsFromData()
+      /**
+       *  nodes或links改变后触发
+       *  @event on-load-data
+       *  @param {object} diagram Diagram实例
+       *  @param {object} $ go.GraphObject.make
+       *  @param {object} go GoJS命名空间
+       */
       this.$emit('on-load-data', this.diagram, $, go)
     },
     /**
@@ -545,6 +552,11 @@ export default {
     getHtmlInfo() {
       this.$children.forEach(el => {
         if (el.name === 'XdhGoHtml') {
+          /**
+           * 由XdhGoHtml 返回的go.HtmlInfo对象，key与XdhGoHtml的menuName值对应
+           * @member htmlInfo
+           * @type {Object}
+           */
           this.htmlInfo[el.menuName] = el.bindMenu()
           if (el.appendToBody) {
             this.$el.parentNode.appendChild(el.$el)
