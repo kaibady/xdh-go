@@ -8,13 +8,28 @@
   </div>
 </template>
 <script>
+/**
+ * XdhGoTooltip组件
+ * @module xdh-go-tooltiip
+ * @description tooltip组件
+ */
+/**
+ * 插槽
+ * @member slots
+ * @property {String} [default] 默认插槽,slot-scope =
+ * @property {String} [default.text] 提示文字
+ */
 export default {
   name: 'XdhGoTooltip',
   components: {},
+    /**
+   * 参数属性
+   * @property {String} [text='提示'] 提示信息
+   */
   props: {
     text: {
       type: String,
-      default: 'tips'
+      default: '提示'
     }
   },
   data() {

@@ -186,7 +186,13 @@ mode 可以定义搜索节点，连线，或者两者都搜索； 而 node-keys 
       mode="link,node"
       :node-keys="['key', 'remark.name']"
       :link-keys="['key', 'info.tag']"
-    ></xdh-go-search>
+      :popDuration="6000"
+    >
+    <div slot="popover" slot-scope="{searchResult, keyword}">
+       <div>关键字:{{keyword}}</div>
+       <div>结果:{{searchResult.hit}}</div>
+    </div>
+    </xdh-go-search>
     <el-row>
       <el-col :span="8" :offset="12">
         <el-input v-model="addName" size="mini">

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: xdh-go-circle-menu</title>
+    <title>JSDoc: Module: xdh-go-search</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: xdh-go-circle-menu</h1>
+    <h1 class="page-title">Module: xdh-go-search</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>圆形菜单组件</p></div>
+            <div class="description"><p>搜索组件</p></div>
         
 
         
@@ -87,7 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line2">line 2</a>
+        <a href="packages_search_src_search.vue.html">packages/search/src/search.vue</a>, <a href="packages_search_src_search.vue.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -114,15 +114,6 @@
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// with go-menu in gojs
- &lt;go-menu ref="menu1">
-   &lt;circle-menu
-     :menu-list="listData1" @item-click="itemClick">&lt;/circle-menu>
- &lt;/go-menu></code></pre>
 
 
 
@@ -153,7 +144,7 @@
 
 
 <div class="description">
-    <p>属性参数</p>
+    <p>参数属性</p>
 </div>
 
 
@@ -192,44 +183,7 @@
 
         <tr>
             
-                <td class="name"><code>angleRange</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    [-30, 210]
-                
-                </td>
-            
-
-            <td class="description last"><p>扇形开始位置和结束位置</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>propMap</code></td>
+                <td class="name"><code>diagram</code></td>
             
 
             <td class="type">
@@ -254,131 +208,19 @@
             
                 <td class="default">
                 
-                    {text: 'text', subMenu: 'subMenu'}
+                    null
                 
                 </td>
             
 
-            <td class="description last"><p>参数配置</p></td>
+            <td class="description last"><p>go.Diagram对象</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>itemKey</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'text'
-                
-                </td>
-            
-
-            <td class="description last"><p>菜单的每个菜单项需要有唯一标识，默认为text字段,
-有时你不想显示文本，只想显示图标，那么需要指定一个字段作为唯一标识</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>innerRadius</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    60
-                
-                </td>
-            
-
-            <td class="description last"><p>扇形内径大小</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>itemWidth</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    100
-                
-                </td>
-            
-
-            <td class="description last"><p>扇形菜单项圈径</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>subRangeLimit</code></td>
+                <td class="name"><code>pullCenter</code></td>
             
 
             <td class="type">
@@ -403,24 +245,25 @@
             
                 <td class="default">
                 
+                    true
+                
                 </td>
             
 
-            <td class="description last"><p>子菜单的角度范围限制在所设的angleRange范围内,
-如果菜单要放在角落里，这个限制是有必要的</p></td>
+            <td class="description last"><p>搜索后是否将结果居中显示</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>trigger</code></td>
+                <td class="name"><code>ignoreCase</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Boolean</span>
 
 
             
@@ -439,19 +282,19 @@
             
                 <td class="default">
                 
-                    'click'
+                    true
                 
                 </td>
             
 
-            <td class="description last"><p>子菜单触发事件 ['click'|'mouseover']</p></td>
+            <td class="description last"><p>是否忽略大小写</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>menuList</code></td>
+                <td class="name"><code>nodeKeys</code></td>
             
 
             <td class="type">
@@ -476,25 +319,25 @@
             
                 <td class="default">
                 
-                    []
+                    ['key']
                 
                 </td>
             
 
-            <td class="description last"><p>菜单选项列表</p></td>
+            <td class="description last"><p>搜索节点数据字段，可深度搜索，如: ['info.name', 'remark.desc']</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>itemStyle</code></td>
+                <td class="name"><code>linkKeys</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Array</span>
 
 
             
@@ -513,25 +356,25 @@
             
                 <td class="default">
                 
-                    {color: '#fff'}
+                    ['key']
                 
                 </td>
             
 
-            <td class="description last"><p>菜单项文字样式</p></td>
+            <td class="description last"><p>搜索连线数据字段，可深度搜索，如: ['info.name', 'remark.desc']</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>activeColor</code></td>
+                <td class="name"><code>mode</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Object</span>
 
 
             
@@ -550,56 +393,19 @@
             
                 <td class="default">
                 
-                    'rgba(255, 102, 0, 0.5)'
+                    node
                 
                 </td>
             
 
-            <td class="description last"><p>菜单项选中状态颜色</p></td>
+            <td class="description last"><p>搜索节点或连线, 'node'/'link'/'node,link'/'link,node'</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>normalColor</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    'rgba(140, 197, 255, 0.8)'
-                
-                </td>
-            
-
-            <td class="description last"><p>菜单项非选中状态颜色</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>hoverColor</code></td>
+                <td class="name"><code>customClass</code></td>
             
 
             <td class="type">
@@ -629,20 +435,20 @@
                 </td>
             
 
-            <td class="description last"><p>菜单项鼠标经过颜色，不设置与选中一样</p></td>
+            <td class="description last"><p>容器自定义类</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>fixed</code></td>
+                <td class="name"><code>customStyle</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Boolean</span>
+<span class="param-type">Object</span>
 
 
             
@@ -661,25 +467,25 @@
             
                 <td class="default">
                 
-                    false
+                    {}
                 
                 </td>
             
 
-            <td class="description last"><p>设置成true时，不再作为弹出菜单，而是跟随文档流布局</p></td>
+            <td class="description last"><p>容器自定义类</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>textRotate</code></td>
+                <td class="name"><code>popDuration</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Boolean</span>
+<span class="param-type">Number</span>
 
 
             
@@ -698,49 +504,12 @@
             
                 <td class="default">
                 
-                    false
+                    {}
                 
                 </td>
             
 
-            <td class="description last"><p>设置成true时，菜单项内部文字旋转到正向朝上</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>itemGrap</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    5
-                
-                </td>
-            
-
-            <td class="description last"><p>菜单项之间的间距</p></td>
+            <td class="description last"><p>提示框停留的毫秒数，设置为0时不显示提示框</p></td>
         </tr>
 
     
@@ -779,7 +548,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line40">line 40</a>
+        <a href="packages_search_src_search.vue.html">packages/search/src/search.vue</a>, <a href="packages_search_src_search.vue.html#line46">line 46</a>
     </li></ul></dd>
     
 
@@ -826,6 +595,8 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -838,7 +609,7 @@
 
         <tr>
             
-                <td class="name"><code>'list-item'</code></td>
+                <td class="name"><code>default</code></td>
             
 
             <td class="type">
@@ -851,122 +622,21 @@
             </td>
 
             
-
-            
-
-            <td class="description last"><p>菜单项</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>'center-btn'</code></td>
-            
-
-            <td class="type">
-            
+                <td class="attributes">
                 
-<span class="param-type">String</span>
+                    &lt;optional><br>
+                
 
-
-            
-            </td>
-
-            
-
+                
+                </td>
             
 
-            <td class="description last"><p>中心功能按钮</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line12">line 12</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
             
 
-    
+            <td class="description last"><p>搜索框插槽,slot-scope =</p>
+                <h6>Properties</h6>
 
-    
-    <h4 class="name" id="~calCircle"><span class="type-signature">(inner) </span>calCircle<span class="signature">(arr<span class="signature-attributes">opt</span>, level<span class="signature-attributes">opt</span>, index<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>计算得出根菜单或子菜单的起始角度，圈径等数据</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="props">
     <thead>
     <tr>
         
@@ -990,7 +660,69 @@
 
         <tr>
             
-                <td class="name"><code>arr</code></td>
+                <td class="name"><code>search</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>搜索方法</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>keyword</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>搜索关键字，用于input数据绑定</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>resultCache</code></td>
             
 
             <td class="type">
@@ -1009,6 +741,35 @@
                 
 
                 
+                </td>
+            
+
+            
+
+            <td class="description last"><p>当前搜索结果列表</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
                 
                 </td>
@@ -1016,14 +777,14 @@
 
             
 
-            <td class="description last"><p>菜单数组</p></td>
+            <td class="description last"><p>当前搜索结果下标</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>level</code></td>
+                <td class="name"><code>searchResult</code></td>
             
 
             <td class="type">
@@ -1042,645 +803,15 @@
                 
 
                 
-
-                
                 </td>
             
 
             
 
-            <td class="description last"><p>可省，当前点击级别的相关数据，省略时为根菜单</p></td>
-        </tr>
+            <td class="description last"><p>当前搜索结果</p>
+                <h6>Properties</h6>
 
-    
-
-        <tr>
-            
-                <td class="name"><code>index</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>可省，当前点击菜单项的下标值</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line201">line 201</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="~cxcmmand"><span class="type-signature">(inner) </span>cxcmmand<span class="signature">(event, item, level, index)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>菜单点击事件</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>event</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>事件</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>菜单项对象</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>level</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>关于菜单层级的信息，包括liWidth, menuWidth, itemAngle,start, innerRadius</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>index</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>菜单在第几项</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line301">line 301</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="~hide"><span class="type-signature">(inner) </span>hide<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>隐藏菜单</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line400">line 400</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="~reduceMenu"><span class="type-signature">(inner) </span>reduceMenu<span class="signature">(reduceTo)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>清除菜单，通常是在点击按钮时，作为固定菜单使用时</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>reduceTo</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>一直删除到剩下数量为reduceTo的菜单, 之所以不用while而用递归，是想通过控制opened属性控制动画的先后</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line366">line 366</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="~resetMenu"><span class="type-signature">(inner) </span>resetMenu<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>弹出时或者菜单消失时初始化菜单，通常要在go-menu中调用</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line177">line 177</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="~show"><span class="type-signature">(inner) </span>show<span class="signature">(options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>显示菜单</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="props">
     <thead>
     <tr>
         
@@ -1694,8 +825,6 @@
         
 
         
-        <th>Default</th>
-        
 
         <th class="last">Description</th>
     </tr>
@@ -1706,13 +835,13 @@
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>keyword</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">String</span>
 
 
             
@@ -1725,27 +854,124 @@
                 
 
                 
+                </td>
+            
+
+            
+
+            <td class="description last"><p>比中字段</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
                 
                 </td>
             
 
             
-                <td class="default">
+
+            <td class="description last"><p>比中内容</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
                 
-                    {left: 0, top: 0}
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
                 
                 </td>
             
 
-            <td class="description last"><p>菜单显示时的初始位置</p></td>
+            
+
+            <td class="description last"><p>比中类型</p></td>
         </tr>
 
     
     </tbody>
 </table>
 
+            </td>
+        </tr>
 
+    
+
+        <tr>
+            
+                <td class="name"><code>popoverShow</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>popover显示</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -1779,7 +1005,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line387">line 387</a>
+        <a href="packages_search_src_search.vue.html">packages/search/src/search.vue</a>, <a href="packages_search_src_search.vue.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -1795,6 +1021,16 @@
 
 
 
+        
+            
+<h4 class="name" id="~slots"><span class="type-signature">(inner) </span>slots<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>插槽</p>
+</div>
 
 
 
@@ -1802,7 +1038,316 @@
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
 
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>popover</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>提示框内容插槽, 当设置了default插槽时，该插槽无效，slot-scope =</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>keyword</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>关键字</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>searchResult</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>当前搜索结果</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>keyword</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>比中字段</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>hit</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>比中内容</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>比中类型</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_search_src_search.vue.html">packages/search/src/search.vue</a>, <a href="packages_search_src_search.vue.html#line21">line 21</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
 
 
 
@@ -1810,6 +1355,8 @@
 
 
         
+    
+
     
 
     
@@ -1823,7 +1370,7 @@
     
 
     
-    <h4 class="name" id="~event:on-item-click">on-item-click</h4>
+    <h4 class="name" id="~event:on-error">on-error</h4>
     
 
     
@@ -1831,7 +1378,7 @@
 
 
 <div class="description">
-    <p>搜索框点击搜索按钮时触发</p>
+    <p>搜索错误时触发</p>
 </div>
 
 
@@ -1867,13 +1414,13 @@
 
         <tr>
             
-                <td class="name"><code>event</code></td>
+                <td class="name"><code>error</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Event</span>
+<span class="param-type">String</span>
 
 
             
@@ -1883,30 +1430,7 @@
 
             
 
-            <td class="description last"><p>点击事件的原生对象</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>item</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>菜单项对象</p></td>
+            <td class="description last"><p>错误信息</p></td>
         </tr>
 
     
@@ -1947,7 +1471,213 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="packages_circle-menu_src_circle-menu.vue.html">packages/circle-menu/src/circle-menu.vue</a>, <a href="packages_circle-menu_src_circle-menu.vue.html#line356">line 356</a>
+        <a href="packages_search_src_search.vue.html">packages/search/src/search.vue</a>, <a href="packages_search_src_search.vue.html#line120">line 120</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~event:on-search">on-search</h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>搜索成功时触发</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>node</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>搜索到的节点</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>resultCache</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>搜索到的结果数组</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>index</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>搜索到的结果下标</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>keyword</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>搜索关键字</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_search_src_search.vue.html">packages/search/src/search.vue</a>, <a href="packages_search_src_search.vue.html#line150">line 150</a>
     </li></ul></dd>
     
 

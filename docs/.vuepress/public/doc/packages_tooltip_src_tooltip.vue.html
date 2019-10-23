@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/node-parts/util/fun.js</title>
+    <title>JSDoc: Source: packages/tooltip/src/tooltip.vue</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/node-parts/util/fun.js</h1>
+    <h1 class="page-title">Source: packages/tooltip/src/tooltip.vue</h1>
 
     
 
@@ -26,68 +26,55 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @function genOption
- * @description 封装时将传入的参数与默认参数合并，支持到第二级合并
- * @param {*} defaultProps
- * @param {*} options
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;div class="xdh-go-tooltip">
+    &lt;slot :text="text">
+      &lt;div class="tooltip-text">
+         {{text}}
+      &lt;/div>
+    &lt;/slot>
+  &lt;/div>
+&lt;/template>
+&lt;script>
+/**
+ * XdhGoTooltip组件
+ * @module xdh-go-tooltiip
+ * @description tooltip组件
  */
-export function genOption(defaultProps, options = {}) {
-  // 默认参数补全
-  let _options = Object.assign(
-    {
-      props: {},
-      parts: [],
-      events: {},
-      binding: []
-    },
-    options
-  );
-  // 取传进来的默认参数，深入到第二层合并
-  for (let name in defaultProps) {
-    if (typeof defaultProps[name] !== 'object') {
-      _options.props[name] =
-        _options.props[name] === undefined
-          ? defaultProps[name]
-          : _options.props[name];
-    } else if (defaultProps[name] instanceof Array) {
-      _options.props[name] =
-        _options.props[name] === undefined
-          ? [...defaultProps[name]]
-          : _options.props[name];
-    } else {
-      for (let n1 in defaultProps[name]) {
-        _options.props[name][n1] =
-          _options.props[name][n1] === undefined
-            ? defaultProps[name][n1]
-            : _options.props[name][n1];
-      }
+/**
+ * 插槽
+ * @member slots
+ * @property {String} [default] 默认插槽,slot-scope =
+ * @property {String} [default.text] 提示文字
+ */
+export default {
+  name: 'XdhGoTooltip',
+  components: {},
+    /**
+   * 参数属性
+   * @property {String} [text='提示'] 提示信息
+   */
+  props: {
+    text: {
+      type: String,
+      default: '提示'
     }
+  },
+  data() {
+    return {}
+  },
+  computed: {},
+  methods: {
+  },
+  created() {},
+  beforeDestroy() {
+    this.$el.parentNode.removeChild(this.$el)
   }
-  return _options;
 }
+&lt;/script>
+&lt;style type="text/scss" lang="scss" scoped>
 
-export function extendOption(defaultProps, options = {}) {
-  // 默认参数补全
-  let _options = Object.assign(
-    {
-      props: {},
-      parts: [],
-      events: {},
-      binding: []
-    },
-    options
-  );
-  // 取传进来的默认参数，深入到第二层合并
-  for (let name in defaultProps) {
-    _options.props[name] =
-      _options.props[name] === undefined
-        ? defaultProps[name]
-        : _options.props[name];
-  }
-  return _options;
-}
-</code></pre>
+&lt;/style></code></pre>
         </article>
     </section>
 

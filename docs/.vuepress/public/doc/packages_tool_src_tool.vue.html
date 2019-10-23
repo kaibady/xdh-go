@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/node-parts/util/fun.js</title>
+    <title>JSDoc: Source: packages/tool/src/tool.vue</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/node-parts/util/fun.js</h1>
+    <h1 class="page-title">Source: packages/tool/src/tool.vue</h1>
 
     
 
@@ -26,68 +26,105 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @function genOption
- * @description 封装时将传入的参数与默认参数合并，支持到第二级合并
- * @param {*} defaultProps
- * @param {*} options
+            <pre class="prettyprint source linenums"><code>&lt;template>
+  &lt;!--开发工具条-->
+  &lt;div :class="['xdh-go-tool',{collapsed: collapsed}]" v-draggable="dragOption">
+    &lt;div class="expand">
+      &lt;i class="iconfont icon-expand btn" @click.prevent="collapsed=!collapsed">&lt;/i>
+    &lt;/div>
+    &lt;div :class="'xdh-go-tool__handle'">
+      &lt;span class="title">
+        gojs开发工具条
+        &lt;i class="iconfont icon-mid btn" @click.prevent="collapsed=!collapsed">&lt;/i>
+      &lt;/span>
+    &lt;/div>
+    &lt;div class="xdh-go-tool__container">
+      &lt;el-tooltip effect="dark" content="清空画布" placement="top-start">
+        &lt;el-button size="mini" type="primary" @click="clear()" circle icon="iconfont icon-delete">&lt;/el-button>
+      &lt;/el-tooltip>
+      &lt;el-tooltip effect="dark" content="草稿箱" placement="top-start">
+        &lt;el-button size="mini" type="primary" @click="draft()" circle icon="iconfont icon-paste">&lt;/el-button>
+      &lt;/el-tooltip>
+      &lt;el-tooltip effect="dark" content="查看图数据" placement="top-start">
+        &lt;el-button
+          size="mini"
+          type="primary"
+          @click="viewDiagram()"
+          circle
+          icon="iconfont icon-collaboration"
+        >&lt;/el-button>
+      &lt;/el-tooltip>
+    &lt;/div>
+    &lt;xdh-go-draft :visible.sync="draftShow" :diagram="diagram" ref="draft">&lt;/xdh-go-draft>
+    &lt;xdh-go-viewer :visible.sync="viewerShow" :diagram="diagram" ref="viewer">&lt;/xdh-go-viewer>
+  &lt;/div>
+&lt;/template>
+&lt;script>
+/**
+ * XdhGoTool组件
+ * @module xdh-go-tool
+ * @description 工具条组件
  */
-export function genOption(defaultProps, options = {}) {
-  // 默认参数补全
-  let _options = Object.assign(
-    {
-      props: {},
-      parts: [],
-      events: {},
-      binding: []
-    },
-    options
-  );
-  // 取传进来的默认参数，深入到第二层合并
-  for (let name in defaultProps) {
-    if (typeof defaultProps[name] !== 'object') {
-      _options.props[name] =
-        _options.props[name] === undefined
-          ? defaultProps[name]
-          : _options.props[name];
-    } else if (defaultProps[name] instanceof Array) {
-      _options.props[name] =
-        _options.props[name] === undefined
-          ? [...defaultProps[name]]
-          : _options.props[name];
-    } else {
-      for (let n1 in defaultProps[name]) {
-        _options.props[name][n1] =
-          _options.props[name][n1] === undefined
-            ? defaultProps[name][n1]
-            : _options.props[name][n1];
+import draggable from '../../../utils/directives/draggable'
+import XdhGoDraft from '../../draft'
+import XdhGoViewer from '../../viewer'
+export default {
+  name: 'XdhGoTool',
+  components: {
+    XdhGoDraft,
+    XdhGoViewer
+  },
+  directives: {
+    draggable
+  },
+  /**
+   * 参数属性
+   * @property {Object} [diagarm] go.Diagram对象
+   */
+  props: {
+    diagram: {
+      type: Object,
+      default() {
+        return null
       }
     }
-  }
-  return _options;
-}
-
-export function extendOption(defaultProps, options = {}) {
-  // 默认参数补全
-  let _options = Object.assign(
-    {
-      props: {},
-      parts: [],
-      events: {},
-      binding: []
+  },
+  data() {
+    return {
+      collapsed: false,
+      draftShow: false,
+      viewerShow: false,
+      dragOption: {
+        handle: '.xdh-go-tool__handle'
+      }
+    }
+  },
+  computed: {},
+  methods: {
+    clear() {
+      this.diagram.clear()
     },
-    options
-  );
-  // 取传进来的默认参数，深入到第二层合并
-  for (let name in defaultProps) {
-    _options.props[name] =
-      _options.props[name] === undefined
-        ? defaultProps[name]
-        : _options.props[name];
+    draft() {
+      this.draftShow = !this.draftShow
+    },
+    viewDiagram() {
+      this.viewerShow = !this.viewerShow
+      console.log(this.diagram.model.toJson())
+    }
+  },
+  created() {},
+  mounted() {
+    document.body.appendChild(this.$el)
+  },
+  beforeDestroy() {
+    this.$refs.draft.destroy()
+    this.$refs.viewer.destroy()
+    this.$el.parentNode.removeChild(this.$el)
   }
-  return _options;
 }
-</code></pre>
+&lt;/script>
+&lt;style type="text/scss" lang="scss" scoped>
+&lt;/style></code></pre>
         </article>
     </section>
 

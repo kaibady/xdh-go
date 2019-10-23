@@ -32,6 +32,11 @@
   </div>
 </template>
 <script>
+/**
+ * XdhGoTool组件
+ * @module xdh-go-tool
+ * @description 工具条组件
+ */
 import draggable from '../../../utils/directives/draggable'
 import XdhGoDraft from '../../draft'
 import XdhGoViewer from '../../viewer'
@@ -44,6 +49,10 @@ export default {
   directives: {
     draggable
   },
+  /**
+   * 参数属性
+   * @property {Object} [diagarm] go.Diagram对象
+   */
   props: {
     diagram: {
       type: Object,

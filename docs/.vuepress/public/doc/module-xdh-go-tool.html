@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/node-parts/util/fun.js</title>
+    <title>JSDoc: Module: xdh-go-tool</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,79 +17,260 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/node-parts/util/fun.js</h1>
+    <h1 class="page-title">Module: xdh-go-tool</h1>
 
     
 
 
 
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @function genOption
- * @description 封装时将传入的参数与默认参数合并，支持到第二级合并
- * @param {*} defaultProps
- * @param {*} options
- */
-export function genOption(defaultProps, options = {}) {
-  // 默认参数补全
-  let _options = Object.assign(
-    {
-      props: {},
-      parts: [],
-      events: {},
-      binding: []
-    },
-    options
-  );
-  // 取传进来的默认参数，深入到第二层合并
-  for (let name in defaultProps) {
-    if (typeof defaultProps[name] !== 'object') {
-      _options.props[name] =
-        _options.props[name] === undefined
-          ? defaultProps[name]
-          : _options.props[name];
-    } else if (defaultProps[name] instanceof Array) {
-      _options.props[name] =
-        _options.props[name] === undefined
-          ? [...defaultProps[name]]
-          : _options.props[name];
-    } else {
-      for (let n1 in defaultProps[name]) {
-        _options.props[name][n1] =
-          _options.props[name][n1] === undefined
-            ? defaultProps[name][n1]
-            : _options.props[name][n1];
-      }
-    }
-  }
-  return _options;
-}
 
-export function extendOption(defaultProps, options = {}) {
-  // 默认参数补全
-  let _options = Object.assign(
-    {
-      props: {},
-      parts: [],
-      events: {},
-      binding: []
-    },
-    options
-  );
-  // 取传进来的默认参数，深入到第二层合并
-  for (let name in defaultProps) {
-    _options.props[name] =
-      _options.props[name] === undefined
-        ? defaultProps[name]
-        : _options.props[name];
-  }
-  return _options;
-}
-</code></pre>
-        </article>
-    </section>
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>工具条组件</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_tool_src_tool.vue.html">packages/tool/src/tool.vue</a>, <a href="packages_tool_src_tool.vue.html#line2">line 2</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".props"><span class="type-signature">(static) </span>props<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>参数属性</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>diagarm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>go.Diagram对象</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_tool_src_tool.vue.html">packages/tool/src/tool.vue</a>, <a href="packages_tool_src_tool.vue.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

@@ -1,7 +1,7 @@
 # 工具箱
 
 ::: tip 提示
-XdhGoTool 通常作为开发时的工具使用，组件[XdhGoTool](/api.html?url=/xdh-go/doc/module-xdh-go-tool.html)
+XdhGoTool 通常作为开发时的工具使用，组件[XdhGoTool](/api.html?url=/xdh-go/doc/module-xdh-go-tool.html), 内部关联组件[XdhGoViewer](/api.html?url=/xdh-go/doc/module-xdh-go-viewer.html),[XdhGoDraft](/api.html?url=/xdh-go/doc/module-xdh-go-draft.html)
 :::
 
 ## 基础用法

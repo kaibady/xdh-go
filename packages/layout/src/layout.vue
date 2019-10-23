@@ -187,13 +187,18 @@ export default {
      * @param {String} type ForceDirectedLayout/GridLayout/CircularLayout/TreeLayout/LayeredDigraphLayout
      * @param {Object} options 布局类型参数
      * @description 设置布局
-     * @example 
+     * @example
      *   changeLayout('LayeredDigraphLayout', {direction:270})
      *   changeLayout('TreeLayout', {angle:270})
      *   changeLayout('CircularLayout')
      */
     changeLayout(type, options = {}) {
-      this.$emit('change', type)
+      /**
+       * 切换布局时触发
+       * @event on-search
+       * @param {String} type 布局类型
+       */
+      this.$emit('on-change', type)
       this.currOption = options
       this.currLayout = type
       if (this.lockState) {

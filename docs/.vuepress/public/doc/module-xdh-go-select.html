@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: utils/directives/resizable</title>
+    <title>JSDoc: Module: xdh-go-select</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: utils/directives/resizable</h1>
+    <h1 class="page-title">Module: xdh-go-select</h1>
 
     
 
@@ -31,8 +31,6 @@
         
             
         
-            
-        
     
 </header>
 
@@ -40,25 +38,13 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>元素拖拽改变尺寸指令</p></div>
+            <div class="description"><p>选择组件</p></div>
         
 
         
             
 
-    
 
-    
-    <h4 class="name" id="module:utils/directives/resizable"><span class="type-signature"></span>module:utils/directives/resizable<span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>指令 v-resizable</p>
-</div>
 
 
 
@@ -101,95 +87,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_directives_resizable.js.html">utils/directives/resizable.js</a>, <a href="utils_directives_resizable.js.html#line318">line 318</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>&lt;div v-resizable="{}">&lt;/div> import resizable from '@/utils/directives/dresizable' export default {   directives: {     resizable   } }</code></pre>
-
-
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>陈华春</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_directives_resizable.js.html">utils/directives/resizable.js</a>, <a href="utils_directives_resizable.js.html#line1">line 1</a>
+        <a href="packages_select_src_select.vue.html">packages/select/src/select.vue</a>, <a href="packages_select_src_select.vue.html#line2">line 2</a>
     </li></ul></dd>
     
 
@@ -228,13 +126,6 @@
     
 
     
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="module-utils_directives_resizable-Resizable.html">Resizable</a></dt>
-            <dd></dd>
-        </dl>
-    
 
     
 
@@ -247,26 +138,16 @@
 
         
             
-<h4 class="name" id="~defaultOptions"><span class="type-signature">(inner, constant) </span>defaultOptions<span class="type-signature"> :object</span></h4>
+<h4 class="name" id=".props"><span class="type-signature">(static) </span>props<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    <p>Resizable实例化默认参数</p>
+    <p>参数属性</p>
 </div>
 
 
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">object</span>
-
-
-        </li>
-    </ul>
 
 
 
@@ -302,498 +183,7 @@
 
         <tr>
             
-                <td class="name"><code>disabled</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"><p>是否禁用</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>handles</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    all
-                
-                </td>
-            
-
-            <td class="description last"><p>可resize的方向，可选值 e/s/w/n/all</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>minWidth</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    20
-                
-                </td>
-            
-
-            <td class="description last"><p>可resize最小宽度</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>minHeight</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    20
-                
-                </td>
-            
-
-            <td class="description last"><p>可resize最小高度</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>maxWidth</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    10000
-                
-                </td>
-            
-
-            <td class="description last"><p>可resize最大宽度</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>maxHeight</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    10000
-                
-                </td>
-            
-
-            <td class="description last"><p>可resize最大高度</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>edge</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    5
-                
-                </td>
-            
-
-            <td class="description last"><p>距离边缘多少时显示鼠标Cursor</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onStartResize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>开始改变尺寸时回调</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onStopResize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>结束改变尺寸时回调</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onResize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>正在改变尺寸时回调</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_directives_resizable.js.html">utils/directives/resizable.js</a>, <a href="utils_directives_resizable.js.html#line38">line 38</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".bind"><span class="type-signature">(static) </span>bind<span class="signature">(el, binding)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>元素在页面渲染时回调，在这里进行实例化Resizable</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>el</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">HtmlElement</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>指令的宿主元素</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>binding</code></td>
+                <td class="name"><code>diagram</code></td>
             
 
             <td class="type">
@@ -806,17 +196,233 @@
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
+                
+                </td>
             
 
-            <td class="description last"><p>Vue指令binding对象</p></td>
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last"><p>go.Diagram对象</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>showTips</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last"><p>是否显示顶部操作提示</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>customClass</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    ''
+                
+                </td>
+            
+
+            <td class="description last"><p>自定义容器类名</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>customStyle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    {}
+                
+                </td>
+            
+
+            <td class="description last"><p>自定义样式</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>itemMap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>选项名称对应关系 {
+normal: '普通',
+rect: '框选',
+multi: '多选',
+all: '全选',
+reverse: '反选',
+child: '选中子节点'
+}</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>menus</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>菜单项，默认
+[
+{
+name: '选择',
+icon: 'iconfont icon-indicator',
+subMenu: [
+{ name: '框选', tips: '点击框选或长按鼠标拖动可框选' },
+{ name: '多选', tips: '点击多选或按住ctrl可多选' },
+{
+name: '全选',
+tips: '全选节点'
+},
+{ name: '反选', tips: '反选节点' },
+{ name: '选中子节点', tips: '选中指定节点的子节点' }
+]
+}
+]</p></td>
         </tr>
 
     
     </tbody>
 </table>
-
-
 
 
 
@@ -850,7 +456,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_directives_resizable.js.html">utils/directives/resizable.js</a>, <a href="utils_directives_resizable.js.html#line324">line 324</a>
+        <a href="packages_select_src_select.vue.html">packages/select/src/select.vue</a>, <a href="packages_select_src_select.vue.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -866,6 +472,16 @@
 
 
 
+        
+            
+<h4 class="name" id="~slots"><span class="type-signature">(inner) </span>slots<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>插槽</p>
+</div>
 
 
 
@@ -873,7 +489,196 @@
 
 
 
+    <h5 class="subsection-title">Properties:</h5>
 
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tips</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>操作提示插槽,slot-scope =</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>alertTips</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>提示信息</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>showTips</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>是否显示提示信息</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_select_src_select.vue.html">packages/select/src/select.vue</a>, <a href="packages_select_src_select.vue.html#line30">line 30</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
 
 
 
@@ -882,11 +687,250 @@
 
         
             
+<h4 class="name" id="~slots"><span class="type-signature">(inner) </span>slots<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>插槽</p>
+</div>
+
+
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>default</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>菜单选项插槽,slot-scope =</p>
+                <h6>Properties</h6>
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>menu</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>菜单数组
+[
+{
+name: '选择',
+icon: 'iconfont icon-indicator',
+subMenu: [
+{ name: '框选', tips: '点击框选或长按鼠标拖动可框选' },
+{ name: '多选', tips: '点击多选或按住ctrl可多选' },
+{
+name: '全选',
+tips: '全选节点'
+},
+{ name: '反选', tips: '反选节点' },
+{ name: '选中子节点', tips: '选中指定节点的子节点' }
+]
+}
+]</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>menuClick</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>菜单点击方法</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
 
     
 
     
-    <h4 class="name" id=".unbind"><span class="type-signature">(static) </span>unbind<span class="signature">(el)</span><span class="type-signature"></span></h4>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="packages_select_src_select.vue.html">packages/select/src/select.vue</a>, <a href="packages_select_src_select.vue.html#line7">line 7</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Events</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~event:on-change">on-change</h4>
     
 
     
@@ -894,7 +938,7 @@
 
 
 <div class="description">
-    <p>元素在页面销毁时回调，在这里销毁Resizable实例</p>
+    <p>选择模式切换时触发</p>
 </div>
 
 
@@ -930,10 +974,15 @@
 
         <tr>
             
-                <td class="name"><code>el</code></td>
+                <td class="name"><code>mode</code></td>
             
 
             <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
             
             </td>
 
@@ -941,7 +990,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>选择模式</p></td>
         </tr>
 
     
@@ -982,7 +1031,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_directives_resizable.js.html">utils/directives/resizable.js</a>, <a href="utils_directives_resizable.js.html#line335">line 335</a>
+        <a href="packages_select_src_select.vue.html">packages/select/src/select.vue</a>, <a href="packages_select_src_select.vue.html#line206">line 206</a>
     </li></ul></dd>
     
 
@@ -1013,10 +1062,6 @@
 
 
         
-    
-
-    
-
     
 </article>
 

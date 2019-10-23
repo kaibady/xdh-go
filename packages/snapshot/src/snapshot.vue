@@ -20,6 +20,14 @@
  * @module xdh-go-snapshot
  * @description 提供快照功能
  */
+/**
+ * 插槽
+ * @member slots
+ * @property {String} [default] 快照按钮插槽,slot-scope =
+ * @property {Function} [default.makeImage] 生成image对象
+ * @property {Function} [default.makeImageData] 生成base64字符串
+ * @property {Function} [default.makeSvg] 生成svg对象
+ */
 import go from 'gojs'
 export default {
   name: 'XdhGoSnapshot',
@@ -73,6 +81,12 @@ export default {
         this.options.image || {}
       )
       let data = this.diagram.makeImage(options)
+      /**
+       * 点击快照按钮时触发
+       * @event on-snap
+       * @param {String} type 快照类型, image/imageData/svg
+       * @param {HTMLImageElement|String|SVGSVGElement} type 快照类型, image/imageData/svg
+       */
       this.$emit('on-snap', 'image', data)
     },
     makeImageData() {
