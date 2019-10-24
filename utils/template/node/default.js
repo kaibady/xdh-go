@@ -1,6 +1,7 @@
 export const defaultImage = `data:image/svg+xml;utf8,<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect x="0" y="0" width="100px" height="100px" fill="gray"></rect></svg>`;
 export let getDefaultProps = ($, go) => {
   return {
+    layout: 'Vertical', // 节点布局
     hidden: false, // 隐藏
     image: undefined,
     brokenImage: undefined,
@@ -27,7 +28,7 @@ export let getDefaultProps = ($, go) => {
       show: true,
       editable: false,
       font: '14px "iconfont"',
-      margin: [10, 10, 10, 10]
+      margin: 10
     },
     iconColor: {
       normal: '#ccc',
@@ -93,6 +94,18 @@ export let getDefaultProps = ($, go) => {
       background: 'rgba(0,0,0,0.6)',
       text: ''
     },
+    tag: {
+      placement: 'top-right',
+      figure: 'RoundedRectangle',
+      fill: '#40a9ff',
+      stroke: '#003a8c',
+      strokeWidth: 1,
+      strokeDashArray: null,
+      color: '#000',
+      font: '14px "Microsoft Yahei"',
+      padding: 5,
+      text: ''
+    },
     _nodeOptions: {
       props: {},
       parts: []
@@ -150,6 +163,22 @@ export let getDefaultProps = ($, go) => {
       parts: []
     },
     _labelTextOptions: {
+      props: {},
+      parts: []
+    },
+    _tagOuterPanelOptions: {
+      props: {},
+      parts: []
+    },
+    _tagShapeOptions: {
+      props: {},
+      parts: []
+    },
+    _tagInnerPanelOptions: {
+      props: {},
+      parts: []
+    },
+    _tagTextOptions: {
       props: {},
       parts: []
     }

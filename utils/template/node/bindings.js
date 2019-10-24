@@ -134,6 +134,21 @@ export function pictureClipBinding($, go, _options) {
     }
   });
 }
+
+export function innerPanelBinding($, go, _options) {
+  return binding($, go, {
+    type: {
+      key: '',
+      handler(d) {
+        if (d.layout) {
+          return go.Panel[d.layout];
+        } else {
+          return go.Panel[_options.props.layout];
+        }
+      }
+    }
+  });
+}
 export function picturePanelBinding($, go, _options) {
   return binding($, go, {
     isCliping: {
@@ -601,6 +616,80 @@ export function tooltipBinding($, go, _options) {
     }
   });
 }
+export function labelArrayBinding($, go, _options) {
+  return binding($, go, {
+    text: {
+      key: '',
+      handler(t) {
+        return t.text;
+      }
+    },
+    margin: {
+      key: '',
+      handler(t, n) {
+        let d = n.part.data;
+        if (d.label && d.label.margin) {
+          if (typeof d.label.margin === 'number') {
+            return d.label.margin;
+          } else if (d.label.margin instanceof Array) {
+            return new go.Margin(...d.label.margin);
+          } else {
+            return new go.Margin(..._options.props.label.margin);
+          }
+        } else {
+          return new go.Margin(..._options.props.label.margin);
+        }
+      }
+    },
+    font: {
+      key: '',
+      handler(t, n) {
+        let d = n.part.data;
+        if (d.label && d.label.font) {
+          return d.label.font;
+        } else {
+          return _options.label.font;
+        }
+      }
+    },
+    stroke: {
+      type: 'ofObject',
+      key: '',
+      handler(t, o) {
+        let n = o.part;
+        return bindSelect(n, _options, 'labelColor');
+      }
+    }
+  });
+}
+export function labelArrayPanelBinding($, go, _options) {
+  return binding($, go, {
+    itemArray: {
+      key: '',
+      handler(d) {
+        if (d.label && d.label instanceof Array) {
+          return d.label;
+        } else if (d.label && d.label.text && d.label.text instanceof Array) {
+          return d.label.text;
+        } else {
+          return _options.props.label.text;
+        }
+      }
+    },
+    visible: {
+      key: '',
+      handler(d) {
+        if (d.label && d.label instanceof Array) {
+          return true;
+        } else if (d.label && d.label.text instanceof Array) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+  });
+}
 export function labelBinding($, go, _options) {
   return binding($, go, {
     text: {
@@ -621,7 +710,8 @@ export function labelBinding($, go, _options) {
         if (
           d.label === undefined ||
           (typeof d.label === 'object' && !d.label.text) ||
-          (typeof d.label === 'object' && d.label.show === false)
+          (typeof d.label === 'object' && d.label.show === false) ||
+          (typeof d.label === 'object' && typeof d.label.text !== 'string')
         ) {
           return false;
         } else {
@@ -705,6 +795,152 @@ export function labelShapeBinding($, go, _options) {
       key: '',
       handler(n) {
         return bindSelect(n, _options, 'labelStroke');
+      }
+    }
+  });
+}
+
+export function tagOuterPanelBinding($, go, _options) {
+  return binding($, go, {
+    visible: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.text) {
+          return true;
+        } else if (d.tag && !d.tag.text) {
+          return false;
+        } else if (_options.props.tag.text) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    },
+    alignment: {
+      key: '',
+      handler(d) {
+        let placement;
+        if (d.tag && d.tag.placement) {
+          placement = d.tag.placement;
+        } else {
+          placement = _options.props.tag.placement;
+        }
+        let x = 0.5,
+          y = 0.5;
+        if (typeof placement === 'string') {
+          if (placement.includes('top')) {
+            y = 0;
+          } else if (placement.includes('bottom')) {
+            y = 1;
+          }
+          if (placement.includes('left')) {
+            x = 0;
+          } else if (placement.includes('right')) {
+            x = 1;
+          }
+        } else if (placement instanceof Array) {
+          x = placement[0];
+          y = placement[1];
+        }
+        return new go.Spot(x, y);
+      }
+    }
+  });
+}
+export function tagShapeBinding($, go, _options) {
+  return binding($, go, {
+    fill: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.fill) {
+          return d.tag.fill;
+        } else {
+          return _options.props.tag.fill;
+        }
+      }
+    },
+    figure: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.figure) {
+          return d.tag.figure;
+        } else {
+          return _options.props.tag.figure;
+        }
+      }
+    },
+    stroke: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.stroke) {
+          return d.tag.stroke;
+        } else {
+          return _options.props.tag.stroke;
+        }
+      }
+    },
+    strokeWidth: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.strokeWidth) {
+          return d.tag.strokeWidth;
+        } else {
+          return _options.props.tag.strokeWidth;
+        }
+      }
+    },
+    strokeDashArray: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.strokeDashArray) {
+          return d.tag.strokeDashArray;
+        } else {
+          return _options.props.tag.strokeDashArray;
+        }
+      }
+    }
+  });
+}
+export function tagBinding($, go, _options) {
+  return binding($, go, {
+    text: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.text) {
+          return d.tag.text;
+        } else {
+          return _options.props.tag.text;
+        }
+      }
+    },
+    stroke: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.color) {
+          return d.tag.color;
+        } else {
+          return _options.props.tag.color;
+        }
+      }
+    },
+    font: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.font) {
+          return d.tag.font;
+        } else {
+          return _options.props.tag.font;
+        }
+      }
+    },
+    margin: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag.padding) {
+          return d.tag.padding;
+        } else {
+          return _options.props.tag.padding;
+        }
       }
     }
   });

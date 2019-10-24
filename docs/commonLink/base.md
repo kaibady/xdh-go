@@ -143,9 +143,9 @@ links=  [
 
 :::
 
-# 所有默认参数
+# 默认参数
 
-以下是通用节点的所有默认参数设置，定义时通过 nodeTmpl 第三个参数的 props 传入。其中带下划线的参数为扩展参数，是为了满足特定需求下能改变内部元素的样式及增加内容，但这些参数不能被节点数据中的参数覆盖。
+以下是通用节点的默认参数设置，定义时通过 linkTmpl 第三个参数的 props 传入。其中带下划线的参数为扩展参数，是为了满足特定需求下能改变内部元素的样式及增加内容，但这些参数不能被节点数据中的参数覆盖。
 
 后面将有特定部分讲解扩展参数的使用
 
@@ -243,68 +243,12 @@ links=  [
       select: '#66b1ff'
     },
 
-     // 标签内容及样式, 可简写,如 label: 'node1', 简写时文本内容会赋值给text,其它与默认值相同
+     // 标签内容及样式, 可简写,如 label: 'link1', 简写时文本内容会赋值给text,其它与默认值相同
     label: {
       text: '',
       font: '13px sans-serif',
       scale: 1
-    },
-
-    /// 扩展参数
-
-    // 连线go.Link属性
-    _linkOptions: {
-      props: {},
-      parts: []
-    },
-
-    // 连线go.Shape属性
-    _lineOptions: {
-      props: {},
-      parts: []
-    },
-
-     // 连线占位go.Shape属性
-    _linkHolderOptions: {
-      props: {},
-      parts: []
-    },
-
-    // 箭头to的go.Shape属性
-    _toArrowOptions: {
-      props: {},
-      parts: []
-    },
-
-    // 箭头from的go.Shape属性
-    _fromArrowOptions: {
-      props: {},
-      parts: []
-    },
-
-    // 标签外层go.Panel属性
-    _outerPanelOptions: {
-      props: {},
-      parts: []
-    },
-
-     // 标签内层go.Panel属性
-    _innerPanelOptions: {
-      props: {},
-      parts: []
-    },
-
-       // 标签边框go.Shape属性
-    _labelShapeOptions: {
-      props: {},
-      parts: []
-    },
-    
-      // 标签的go.TextBlock属性
-    _labelTextOptions: {
-      props: {},
-      parts: []
-    },
+    }
   };
 }
 ```

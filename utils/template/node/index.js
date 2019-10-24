@@ -13,15 +13,21 @@ import {
   pictureCircleBinding,
   pictureHolderBinding,
   picturePanelBinding,
+  innerPanelBinding,
   shapeBinding,
   pictureClipBinding,
   iconfontBinding,
   nodeBinding,
   labelBinding,
   labelShapeBinding,
+  labelArrayBinding,
+  labelArrayPanelBinding,
   tooltipBinding,
   tooltipShape,
-  tooltipAdornment
+  tooltipAdornment,
+  tagOuterPanelBinding,
+  tagShapeBinding,
+  tagBinding
 } from './bindings';
 
 export default function($, go, options) {
@@ -185,12 +191,29 @@ export default function($, go, options) {
                       ..._options.props._labelInnerPanelOptions.props
                     },
                     parts: [
+                      // 单行文本
                       textBlock($, go, {
                         props: {
                           ..._options.props._labelTextOptions.props
                         },
                         binding: labelBinding($, go, _options)
                       }),
+                      // 多行文本
+                      panel($, go, {
+                        type: 'ver',
+                        props: {
+                          itemTemplate: panel($, go, {
+                            type: 'auto',
+                            parts: [
+                              textBlock($, go, {
+                                binding: labelArrayBinding($, go, _options)
+                              })
+                            ]
+                          })
+                        },
+                        binding: labelArrayPanelBinding($, go, _options)
+                      }
+                      ),
                       ..._options.props._labelInnerPanelOptions.parts
                     ]
                   }),
@@ -198,7 +221,41 @@ export default function($, go, options) {
                 ]
               }),
               ..._options.props._innerPanelOptions.parts
-            ]
+            ],
+            binding: innerPanelBinding($, go, _options)
+          }),
+          // 附加标签
+          panel($, go, {
+            type: 'auto',
+            props: {
+              ..._options.props._tagOuterPanelOptions.props
+            },
+            parts: [
+              shape($, go, {
+                props: {
+                  figure: 'RoundedRectangle',
+                  ..._options.props._tagShapeOptions.props
+                },
+                binding: tagShapeBinding($, go, _options)
+              }),
+              panel($, go, {
+                type: 'ver',
+                props: {
+                  ..._options.props._tagInnerPanelOptions.props
+                },
+                parts: [
+                  textBlock($, go, {
+                    props: {
+                      ..._options.props._tagTextOptions.props
+                    },
+                    binding: tagBinding($, go, _options)
+                  }),
+                  ..._options.props._tagInnerPanelOptions.parts
+                ]
+              }),
+              ..._options.props._tagInnerPanelOptions.parts
+            ],
+            binding: tagOuterPanelBinding($, go, _options)
           }),
           ...extendUp,
           ..._options.props._outerPanelOptions.parts

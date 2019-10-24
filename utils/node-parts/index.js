@@ -6,6 +6,7 @@ import picture from './picture';
 import textBlock from './textBlock';
 import tooltip from './tooltip';
 import shape from './shape';
+import tag from './tag';
 import binding from './binding';
 import link from './link';
 export {
@@ -15,6 +16,7 @@ export {
   verPanel,
   iconfont,
   shape,
+  tag,
   makePort,
   node,
   link,

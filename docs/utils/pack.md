@@ -101,7 +101,7 @@ function node($, go, options) {
 }
 ```
 
-上面的函数封装时，会将传入的参数与默认参数合并。鉴于这种情况经常发生，工具提供了一个合并的方法,文档[genOption](/api.html?url=/xdh-go/doc/utils_node-parts_util_fun.js.html)
+上面的函数封装时，会将传入的参数与默认参数合并。鉴于这种情况经常发生，工具提供了一个合并的方法,文档[extendOption](/api.html?url=/xdh-go/doc/utils_node-parts_util_fun.js.html)
 
 方法可以简化为
 

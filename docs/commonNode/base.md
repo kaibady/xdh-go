@@ -65,9 +65,34 @@ nodes=  [
         model: 'GraphLinksModel',
         nodes: [
           {
-            label: 'node1'
+            label: [{ text: '文本1' }, { text: '文本2' }],
+            labelColor: {
+              hover: 'red'
+            }
           },
-          { label: 'node2', background: { normal: '#f06600' } }
+          {
+            label: {
+              text: [{ text: 'node2' }, { text: 'node2' }]
+            },
+            layout: 'Horizontal',
+            size: 40,
+            shape: 'Rectangle',
+            background: { normal: '#f06600' }
+          },
+          {
+            label: 'node3',
+            layout: 'Spot',
+            labelColor: {
+              hover: '#fff'
+            },
+            labelStroke: {
+              hover: 'transparent'
+            },
+            tag: {
+              placement: 'top-right',
+              text: '级别1'
+            }
+          }
         ]
       };
     },
@@ -101,9 +126,9 @@ nodes=  [
 
 :::
 
-# 所有默认参数
+# 默认参数
 
-以下是通用节点的所有默认参数设置，定义时通过 nodeTmpl 第三个参数的 props 传入。其中带下划线的参数为扩展参数，是为了满足特定需求下能改变内部元素的样式及增加内容，但这些参数不能被节点数据中的参数覆盖。
+以下是通用节点的默认参数设置，定义时通过 nodeTmpl 第三个参数的 props 传入。其中带下划线的参数为扩展参数，是为了满足特定需求下能改变内部元素的样式及增加内容，但这些参数不能被节点数据中的参数覆盖。
 
 后面将有特定部分讲解扩展参数的使用
 
@@ -124,6 +149,12 @@ nodes=  [
         其它类型都判断为 go.Shape 所预定义的形状类型，如Rectangle等
      **/
     shape: 'Rectangle',
+
+    // 节点布局
+    // 可选值：'Position'，'Horizontal', 'Vertical', 'Spot', 'Auto',
+    //     'Table', 'Viewbox', 'TableRow', 'TableColumn', 'Link',
+            'Grid', 'Graduated',
+    layout: 'Vertical',
 
     // 是否隐藏节点，占位仍在，只设置透明度为0
     hidden: false,
@@ -216,82 +247,6 @@ nodes=  [
       highlight: '#66b1ff',
       hover: '#66b1ff',
       select: '#66b1ff'
-    },
-
-    /// 扩展参数
-    // 节点 go.Node
-    _nodeOptions: {
-      props: {},
-      parts: []
-    },
-    // 外层go.Panel
-    _outerPanelOptions: {
-      props: {},
-      parts: []
-    },
-    // 内层go.Panel
-    _innerPanelOptions: {
-      props: {},
-      parts: []
-    },
-    // 上方图形go.Panel
-    _figurePanelOptions: {
-      props: {},
-      parts: []
-    },
-    // 外围展位go.Shape
-    _figureHolderOptions: {
-      props: {},
-      parts: []
-    },
-    // 状态圈go.Shape
-    _stateShapeOptions: {
-      props: {},
-      parts: []
-    },
-    // 图片裁剪形状go.Shape
-    _clipShapeOptions: {
-      props: {},
-      parts: []
-    },
-    // 图片裁剪go.Panel
-    _clipPanelOptions: {
-      props: {},
-      parts: []
-    },
-    // 图片对象go.Picture
-    _pictureOptions: {
-      props: {}
-    },
-    // 图形go.Shape
-    _shapeOptions: {
-      props: {},
-      parts: []
-    },
-    // 字体图标 go.TextBlock
-    _iconOptions: {
-      props: {},
-      parts: []
-    },
-    // 标签外层go.Panel
-    _labelOuterPanelOptions: {
-      props: {},
-      parts: []
-    },
-    // 标签内层go.Panel
-    _labelInnerPanelOptions: {
-      props: {},
-      parts: []
-    },
-    // 标签外框形状go.Shape
-    _labelShapeOptions: {
-      props: {},
-      parts: []
-    },
-    // 标签文字go.TextBlock
-    _labelTextOptions: {
-      props: {},
-      parts: []
     }
   };
 }
