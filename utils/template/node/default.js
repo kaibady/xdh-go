@@ -3,25 +3,33 @@ export let getDefaultProps = ($, go) => {
   return {
     layout: 'Vertical', // 节点布局
     hidden: false, // 隐藏
+    shape: 'Rectangle',
+    stateShape: 'Circle',
+    figureMargin: 20,
+    clipShape: 'Circle',
+
     image: undefined,
     brokenImage: undefined,
     labelStroke: {
       normal: 'transparent',
-      highlight: '#fff',
-      hover: '#fff',
-      select: '#fff'
+      highlight: 'transparent',
+      hover: 'transparent',
+      select: 'transparent',
+      gray: 'transparent'
     },
     labelColor: {
       normal: '#000',
       highlight: '#000',
       hover: '#000',
-      select: '#000'
+      select: '#000',
+      gray: '#ccc'
     },
     labelBackground: {
       normal: '#ccc',
       highlight: '#66b1ff',
       hover: '#66b1ff',
-      select: '#66b1ff'
+      select: '#66b1ff',
+      gray: '#ccc'
     },
     label: {
       text: '',
@@ -34,9 +42,10 @@ export let getDefaultProps = ($, go) => {
       normal: '#ccc',
       highlight: '#66b1ff',
       hover: '#66b1ff',
-      select: '#66b1ff'
+      select: '#66b1ff',
+      gray: '#ccc'
     },
-    shape: 'Rectangle',
+
     shapeParams: {
       figureShape: {
         parameter1: NaN,
@@ -57,27 +66,50 @@ export let getDefaultProps = ($, go) => {
         parameter1: NaN,
         parameter2: NaN,
         geometryString: undefined
+      },
+      containerShape: {
+        parameter1: NaN,
+        parameter2: NaN,
+        geometryString: undefined
       }
     },
-    clipShape: 'Circle',
-    stateShape: 'Circle',
+
+
+    containerShape: null,
+    containerBackground: {
+      normal: '#85a5ff',
+      highlight: '#85a5ff',
+      hover: '#85a5ff',
+      select: '#85a5ff',
+      gray: '#ccc'
+    },
+    containerStrokeColor: {
+      normal: '#061178',
+      highlight: '#061178',
+      hover: '#061178',
+      select: '#061178',
+      gray: '#ccc'
+    },
     background: {
       normal: 'yellow',
       highlight: '#66b1ff',
       hover: '#66b1ff',
-      select: '#66b1ff'
+      select: '#66b1ff',
+      gray: '#ccc'
     },
     strokeColor: {
       normal: '#ccc',
       highlight: '#66b1ff',
       hover: '#66b1ff',
-      select: '#66b1ff'
+      select: '#66b1ff',
+      gray: '#ccc'
     },
     strokeWidth: {
       normal: 3,
       highlight: 4,
       hover: 4,
-      select: 5
+      select: 4,
+      gray: 4
     },
     scale: 1,
     size: 50,
@@ -203,10 +235,13 @@ export function handleNodeDefault($, go, options = {}) {
     'labelStroke',
     'labelColor',
     'labelBackground',
+    'containerBackground',
+    'containerStrokeColor',
     'iconColor',
     'background',
     'strokeColor',
     'strokeWidth',
+    'container',
     'tooltip',
     'icon',
     'shapeParams'

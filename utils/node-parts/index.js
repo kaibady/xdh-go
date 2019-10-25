@@ -7,6 +7,7 @@ import textBlock from './textBlock';
 import tooltip from './tooltip';
 import shape from './shape';
 import tag from './tag';
+import mark from './mark';
 import binding from './binding';
 import link from './link';
 export {
@@ -17,6 +18,7 @@ export {
   iconfont,
   shape,
   tag,
+  mark,
   makePort,
   node,
   link,

@@ -18,7 +18,6 @@ export default function($, go, options = {}) {
     },
     options
   );
-  console.log(_options);
   return panel($, go, {
     type: 'auto',
     parts: [

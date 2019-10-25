@@ -1,49 +1,43 @@
-import {
-  panel,
-  node,
-  picture,
-  textBlock,
-  iconfont,
-  shape,
-  tooltip
-} from '../../node-parts';
+import { panel, node, tooltip } from '../../node-parts';
 import { handleNodeDefault } from './default';
+import figure from './figure/index';
+import label from './label/index';
+import tag from './tag/index';
+import container from './container/index';
 import {
-  pictureBinding,
-  pictureCircleBinding,
-  pictureHolderBinding,
-  picturePanelBinding,
   innerPanelBinding,
-  shapeBinding,
-  pictureClipBinding,
-  iconfontBinding,
   nodeBinding,
-  labelBinding,
-  labelShapeBinding,
-  labelArrayBinding,
-  labelArrayPanelBinding,
   tooltipBinding,
   tooltipShape,
-  tooltipAdornment,
-  tagOuterPanelBinding,
-  tagShapeBinding,
-  tagBinding
+  tooltipAdornment
 } from './bindings';
-
-export default function($, go, options) {
-  let _options = handleNodeDefault($, go, options);
-  // console.log('node options', _options);
-  // 用于扩展节点
+/**
+ * @function
+ * @name handleParts
+ * @description 处理节点parts参数
+ * @param {Object} _options 节点配置
+ */
+function handleParts(_options) {
   let extendUp = [],
     extendDown = [];
-  // 处理parts
   if (_options.parts && _options.parts instanceof Array) {
     extendUp = [..._options.parts];
-  } else if (_options.parts && _options.parts.up) {
-    extendUp = [..._options.parts.up];
-    extendDown = [..._options.parts.down];
+  } else if (_options.parts && (_options.parts.up || _options.parts.down)) {
+    extendUp = [...(_options.parts.up || [])];
+    extendDown = [...(_options.parts.down || [])];
   }
-  // 处理事件
+  return {
+    extendUp,
+    extendDown
+  };
+}
+/**
+ * @function
+ * @name handleHover
+ * @description 处理节点mouseEnter,mouseLeave和isHover参数
+ * @param {Object} _options 节点配置
+ */
+function handleHover(_options) {
   if (_options.events.mouseEnter) {
     let hoverFun = _options.events.mouseEnter;
     let overideFun = function(e, n) {
@@ -70,6 +64,14 @@ export default function($, go, options) {
     };
     _options.events.mouseLeave = overideFun;
   }
+}
+export default function($, go, options) {
+  let _options = handleNodeDefault($, go, options);
+  // console.log('node options', _options);
+  // 处理parts, 用于扩展节点
+  let { extendUp, extendDown } = handleParts(_options);
+  // 处理事件
+  handleHover(_options);
   return node($, go, {
     props: {
       portId: 'tNode',
@@ -84,13 +86,15 @@ export default function($, go, options) {
     binding: nodeBinding($, go, _options),
     parts: [
       panel($, go, {
-        type: 'spot',
+        type: 'auto',
         props: {
           portId: 'tPanel1',
           ..._options.props._outerPanelOptions.props
         },
         parts: [
           ...extendDown,
+          // 节点外框
+          container($, go, _options),
           panel($, go, {
             type: 'ver',
             props: {
@@ -98,165 +102,16 @@ export default function($, go, options) {
               ..._options.props._innerPanelOptions.props
             },
             parts: [
-              panel($, go, {
-                type: 'spot',
-                porps: {
-                  portId: 'tFigure',
-                  fromPortSpot: true,
-                  toPortSport: true,
-                  ..._options.props._figurePanelOptions.props
-                },
-                parts: [
-                  // 增加一个不可见的环，放置外圈尺寸在改变时影响外部尺寸，导致布局变动
-                  shape($, go, {
-                    props: {
-                      figure: 'Circle',
-                      fill: 'transparent',
-                      stroke: 'transparent',
-                      portId: 'tHolder',
-                      ..._options.props._figureHolderOptions.props
-                    },
-                    parts: [..._options.props._figureHolderOptions.parts],
-                    binding: pictureHolderBinding($, go, _options)
-                  }),
-                  // 表示状态的圈
-                  shape($, go, {
-                    props: {
-                      figure: 'Circle',
-                      background: 'transparent',
-                      portId: 'tStateShape',
-                      ..._options.props._stateShapeOptions.props
-                    },
-                    parts: [..._options.props._stateShapeOptions.parts],
-                    binding: pictureCircleBinding($, go, _options)
-                  }),
-                  picture($, go, {
-                    clip: {
-                      props: {
-                        ..._options.props._clipShapeOptions.props
-                      },
-                      binding: pictureClipBinding($, go, _options)
-                    },
-                    panel: {
-                      props: {
-                        ..._options.props._clipPanelOptions.props
-                      },
-                      binding: picturePanelBinding($, go, _options)
-                    },
-                    props: {
-                      portId: 'tFigure',
-                      ..._options.props._pictureOptions.props
-                    },
-                    binding: pictureBinding($, go, _options)
-                  }),
-                  // 图形类型
-                  shape($, go, {
-                    props: {
-                      portId: 'tFigure',
-                      fill: '#000',
-                      ..._options.props._shapeOptions.props
-                    },
-                    binding: shapeBinding($, go, _options),
-                    parts: [..._options.props._shapeOptions.parts]
-                  }),
-                  iconfont($, go, {
-                    props: {
-                      portId: 'tFigure',
-                      ..._options.props._iconOptions.props
-                    },
-                    binding: iconfontBinding($, go, _options),
-                    parts: [..._options.props._iconOptions.parts]
-                  }),
-                  ..._options.props._figurePanelOptions.parts
-                ]
-              }),
-              // 文字
-              panel($, go, {
-                type: 'auto',
-                props: {
-                  portId: 'tLabel',
-                  ..._options.props._labelOuterPanelOptions.props
-                },
-                parts: [
-                  shape($, go, {
-                    props: {
-                      figure: 'Rectangle',
-                      ..._options.props._labelShapeOptions.props
-                    },
-                    binding: labelShapeBinding($, go, _options)
-                  }),
-                  panel($, go, {
-                    type: 'ver',
-                    props: {
-                      ..._options.props._labelInnerPanelOptions.props
-                    },
-                    parts: [
-                      // 单行文本
-                      textBlock($, go, {
-                        props: {
-                          ..._options.props._labelTextOptions.props
-                        },
-                        binding: labelBinding($, go, _options)
-                      }),
-                      // 多行文本
-                      panel($, go, {
-                        type: 'ver',
-                        props: {
-                          itemTemplate: panel($, go, {
-                            type: 'auto',
-                            parts: [
-                              textBlock($, go, {
-                                binding: labelArrayBinding($, go, _options)
-                              })
-                            ]
-                          })
-                        },
-                        binding: labelArrayPanelBinding($, go, _options)
-                      }
-                      ),
-                      ..._options.props._labelInnerPanelOptions.parts
-                    ]
-                  }),
-                  ..._options.props._labelInnerPanelOptions.parts
-                ]
-              }),
+              // 图形部分，包括四种类型
+              figure($, go, _options),
+              // 文字部分
+              label($, go, _options),
               ..._options.props._innerPanelOptions.parts
             ],
             binding: innerPanelBinding($, go, _options)
           }),
           // 附加标签
-          panel($, go, {
-            type: 'auto',
-            props: {
-              ..._options.props._tagOuterPanelOptions.props
-            },
-            parts: [
-              shape($, go, {
-                props: {
-                  figure: 'RoundedRectangle',
-                  ..._options.props._tagShapeOptions.props
-                },
-                binding: tagShapeBinding($, go, _options)
-              }),
-              panel($, go, {
-                type: 'ver',
-                props: {
-                  ..._options.props._tagInnerPanelOptions.props
-                },
-                parts: [
-                  textBlock($, go, {
-                    props: {
-                      ..._options.props._tagTextOptions.props
-                    },
-                    binding: tagBinding($, go, _options)
-                  }),
-                  ..._options.props._tagInnerPanelOptions.parts
-                ]
-              }),
-              ..._options.props._tagInnerPanelOptions.parts
-            ],
-            binding: tagOuterPanelBinding($, go, _options)
-          }),
+          tag($, go, _options),
           ...extendUp,
           ..._options.props._outerPanelOptions.parts
         ]

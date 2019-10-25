@@ -56,6 +56,7 @@ nodes=  [
 </template>
 <script>
   import { XdhGo, nodeTmpl } from 'xdh-go';
+    let imgPath = '/xdh-go/';
   export default {
     components: {
       XdhGo
@@ -67,8 +68,21 @@ nodes=  [
           {
             label: [{ text: '文本1' }, { text: '文本2' }],
             labelColor: {
-              hover: 'red'
-            }
+              hover: 'blue'
+            },
+            containerShape: null,
+            isGray: true
+          },
+          {
+            shape: 'clipImage',
+            image: imgPath + 'img/node/circleimage/1.png',
+            stateShape: 'Circle',
+            label: [{ text: '文本1' }, { text: '文本2' }],
+            labelColor: {
+              hover: 'blue'
+            },
+            containerShape: null,
+            isGray: true
           },
           {
             label: {
@@ -77,11 +91,12 @@ nodes=  [
             layout: 'Horizontal',
             size: 40,
             shape: 'Rectangle',
+            isGray: true,
             background: { normal: '#f06600' }
           },
           {
             label: 'node3',
-            layout: 'Spot',
+            layout: 'Vertical',
             labelColor: {
               hover: '#fff'
             },
@@ -113,7 +128,7 @@ nodes=  [
               normal: '#f0f0f0',
               hover: '#0000aa'
             },
-            strokeColor: 'red',
+            size: 80,
             labelBackground: 'transparent'
           }
         });
@@ -128,9 +143,41 @@ nodes=  [
 
 # 默认参数
 
-以下是通用节点的默认参数设置，定义时通过 nodeTmpl 第三个参数的 props 传入。其中带下划线的参数为扩展参数，是为了满足特定需求下能改变内部元素的样式及增加内容，但这些参数不能被节点数据中的参数覆盖。
+以下通用节点参数分类，定义时通过 nodeTmpl 第三个参数的 props 传入，或再节点数据中定义。
+### 参数状态
+一些参数包含了5种状态：normal: 正常状态;highlight:节点isHighlighed为true;hover:鼠标经过时;select:节点为选中状态;gray:灰度模式。在使用时可为不同状态定义不同的颜色或宽度。
+### 图形类型
+多个参数使用go.Shape的内置图形类型，包括：
+"Rectangle", "Square", "RoundedRectangle", "Border", "Ellipse", "Circle", "TriangleRight", "TriangleDown", "TriangleLeft", "TriangleUp", "Triangle", "Diamond", "LineH", "LineV", "BarH", "BarV", "MinusLine", "PlusLine", "XLine"
+### 节点参数
+|参数|参数说明|类型|可选值|默认值|
+|----|-------|----|----|----|
+|layout| 节点布局（即图形和文字的排布方式）|String|常用:'Vertical'/'Horizontal'/'Spot',其余见go.PanelLayout|'Vertical'|
+|hidden| 节点是否可见 |Boolean|false/true|false|
+|shape| 图形类型 |String|'image'/'clipImage'/'icon'/(go.Shape内置图形类型)|'Rectangle'|
+|stateShape| 状态框形状 |String|go.Shape内置图形类型|'Circle'|
+|figureMargin| 图形的外边距，影响节点的占位及tag的位置 |Number/Array|-|20|
+|containerShape| 节点的外框形状 |String/null|null/(go.Shape内置图形类型)|null,不可见|
+|containerBackground| 节点的外框背景色 |Object|-|gray状态为#ccc,其余状态为'#85a5ff'|
+|containerStrokeColor| 节点的外框边框色 |Object|-|gray状态为#ccc,其余状态为'#061178'|
+|loc| 节点位置,双向数据绑定 |String|-|'0 0'|
 
-后面将有特定部分讲解扩展参数的使用
+### image/clipImage相关参数
+shape参数为'image'/'clipImage'时有效
+|参数|说明|类型|可选值|默认值|
+|----|----|----|----|----|
+|image|图片地址|String|-|undefined|
+|brokenImage|加载失败时默认显示的图片地址|String|-|undefined|
+|clipShape|图片的裁剪外框,shape为'clipImage'时有效|String|-|'Circle'|
+
+### icon相关参数
+shape参数为'icon'时有效
+|参数|说明|类型|可选值|默认值|
+|----|----|----|----|----|
+|icon|字体图标类型参数|Object/String|-|-|
+|icon.iconfont|字体图标iconfont|String|-|'30px "iconfont"',font-family类型默认为iconfont|
+|icon.text|字体图标内容|String|-|'\uE7BD'|
+
 
 ```
 /**
@@ -139,6 +186,7 @@ nodes=  [
     highlight: 节点isHighlighted为true时
     select: 节点isSelected为true是
     hover: 节点鼠标经过时
+    gray: 灰度模式，通过数据中的isGray控制
 **/
 {
      /**

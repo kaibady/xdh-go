@@ -1,10 +1,25 @@
-import { defaultImage } from './default';
 import { binding } from '../../node-parts';
-// 公共方法
-function bindSelect(n, _options, bindProp) {
+/**
+ *
+ * @param {Object} n 节点对象
+ * @param {*} _options
+ * @param {*} bindProp 绑定的参数名
+ */
+export function bindToState(n, _options, bindProp) {
   let d = n.data;
   let props = _options.props;
-  if (n.isSelected) {
+  if (d.isGray) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &&
+      d[bindProp].gray !== undefined
+    ) {
+      return d[bindProp].gray;
+    } else {
+      return props[bindProp].gray;
+    }
+  } else if (n.isSelected) {
     if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
       return d[bindProp];
     } else if (
@@ -50,7 +65,44 @@ function bindSelect(n, _options, bindProp) {
     }
   }
 }
-function shapeParamsBinding(_options, bindProp, bindParamArr) {
+/**
+ *
+ * @param {Object} $
+ * @param {Object} go
+ * @param {Object} _options
+ * @param {Array} propArr 参数数组，如 ['tag', 'text']
+ */
+export function getHandler($, go, _options, propArr) {
+  let p1 = propArr[0],
+    p2 = propArr[1];
+  let fun;
+  if (p1 && p2) {
+    fun = d => {
+      if (d[p1] && d[p1][p2]) {
+        return d[p1][p2];
+      } else {
+        return _options.props[p1][p2];
+      }
+    };
+  } else if (p1) {
+    fun = d => {
+      if (d[p1]) {
+        return d[p1];
+      } else {
+        return _options.props[p1];
+      }
+    };
+  }
+
+  return fun;
+}
+/**
+ *
+ * @param {Object} _options
+ * @param {String} bindProp 绑定的图形key
+ * @param {Array} bindParamArr 图形参数
+ */
+export function shapeParamsBinding(_options, bindProp, bindParamArr) {
   let obj = {};
   bindParamArr.forEach(paramName => {
     obj[paramName] = {
@@ -70,70 +122,6 @@ function shapeParamsBinding(_options, bindProp, bindParamArr) {
   });
   return obj;
 }
-// 绑定图片裁剪
-export function pictureClipBinding($, go, _options) {
-  return binding($, go, {
-    width: {
-      key: '',
-      handler(d) {
-        if (d.size) {
-          return d.size;
-        } else {
-          return _options.props.size;
-        }
-      }
-    },
-    height: {
-      key: '',
-      handler(d) {
-        if (d.size) {
-          return d.size;
-        } else {
-          return _options.props.size;
-        }
-      }
-    },
-    visible: {
-      key: '',
-      handler(d) {
-        if (
-          d.clipShape === null ||
-          (d.clipShape === undefined && _options.props.clipShape === null)
-        ) {
-          return false;
-        } else if (
-          (d.shape && d.shape === 'clipImage') ||
-          (!d.shape && _options.props.shape === 'clipImage')
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    },
-    ...shapeParamsBinding(_options, 'clipShape', [
-      'parameter1',
-      'parameter2',
-      'geometryString'
-    ]),
-    figure: {
-      key: '',
-      handler(d) {
-        if (
-          d.shapeParams &&
-          d.shapeParams.clipShape &&
-          d.shapeParams.clipShape.geometryString
-        ) {
-          return 'None';
-        } else if (d.clipShape) {
-          return d.clipShape;
-        } else {
-          return _options.props.clipShape;
-        }
-      }
-    }
-  });
-}
 
 export function innerPanelBinding($, go, _options) {
   return binding($, go, {
@@ -146,351 +134,17 @@ export function innerPanelBinding($, go, _options) {
           return go.Panel[_options.props.layout];
         }
       }
-    }
-  });
-}
-export function picturePanelBinding($, go, _options) {
-  return binding($, go, {
-    isCliping: {
+    },
+    margin: {
       key: '',
       handler(d) {
-        if (
-          (d.shape && d.shape === 'clipImage') ||
-          (!d.shape && _options.props.shape === 'clipImage')
-        ) {
-          return true;
+        if (typeof d.figureMargin === 'number') {
+          return d.figureMargin;
+        } else if (d.figureMargin instanceof Array) {
+          return new go.Margin(...d.figureMargin);
         } else {
-          return false;
+          return _options.props.figureMargin;
         }
-      }
-    },
-    visible: {
-      key: '',
-      handler(d) {
-        if (
-          (d.shape && ['image', 'clipImage'].includes(d.shape)) ||
-          (!d.shape && ['image', 'clipImage'].includes(_options.props.shape))
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    }
-  });
-}
-export function pictureBinding($, go, _options) {
-  return binding($, go, {
-    source: { key: 'image' },
-    errorFunction: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return (pic, e) => {
-          if (n.data.brokenImage) {
-            let img = new Image();
-            img.src = n.data.brokenImage;
-            img.onload = () => {
-              pic.source = n.data.brokenImage;
-            };
-            img.onerror = () => {
-              pic.source = defaultImage;
-            };
-          } else {
-            pic.source = defaultImage;
-          }
-        };
-      }
-    },
-    width: {
-      key: '',
-      handler(d) {
-        if (d.size) {
-          return d.size;
-        } else {
-          return _options.props.size;
-        }
-      }
-    },
-    height: {
-      key: '',
-      handler(d) {
-        if (d.size) {
-          return d.size;
-        } else {
-          return _options.props.size;
-        }
-      }
-    }
-  });
-}
-export function pictureCircleBinding($, go, _options) {
-  return binding($, go, {
-    visible: {
-      key: '',
-      handler(d) {
-        if (
-          d.stateShape === null ||
-          (d.stateShape === undefined && _options.props.stateShape === null)
-        ) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-    },
-    width: {
-      key: '',
-      handler(d) {
-        if (d.size) {
-          return d.size;
-        } else {
-          return _options.props.size;
-        }
-      }
-    },
-    height: {
-      key: '',
-      handler(d) {
-        if (d.size) {
-          return d.size;
-        } else {
-          return _options.props.size;
-        }
-      }
-    },
-    stroke: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'strokeColor');
-      }
-    },
-    strokeWidth: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'strokeWidth');
-      }
-    },
-    fill: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'background');
-      }
-    },
-    ...shapeParamsBinding(_options, 'stateShape', [
-      'parameter1',
-      'parameter2',
-      'geometryString'
-    ]),
-    figure: {
-      key: '',
-      handler(d) {
-        if (
-          d.shapeParams &&
-          d.shapeParams.stateShape &&
-          d.shapeParams.stateShape.geometryString
-        ) {
-          return 'None';
-        } else if (d.stateShape) {
-          return d.stateShape;
-        } else {
-          return _options.props.stateShape;
-        }
-      }
-    }
-  });
-}
-export function pictureHolderBinding($, go, _options) {
-  return binding($, go, {
-    visible: {
-      key: '',
-      handler(d) {
-        if (
-          (d.shape && ['clipImage', 'image'].includes(d.shape)) ||
-          (!d.shape && ['image', 'clipImage'].includes(_options.props.shape))
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    },
-    width: {
-      key: '',
-      handler(d) {
-        if (d.size) {
-          return d.size;
-        } else {
-          return _options.props.size;
-        }
-      }
-    },
-    height: {
-      key: '',
-      handler(d) {
-        if (d.size) {
-          return d.size;
-        } else {
-          return _options.props.size;
-        }
-      }
-    },
-    strokeWidth: {
-      key: '',
-      handler(d) {
-        let select = _options.props.select || 0;
-        let normal = _options.props.normal || 0;
-        let highlight = _options.props.highlight || 0;
-        let hover = _options.props.hover || 0;
-        return Math.max(select, normal, highlight, hover) + 5;
-      }
-    },
-    ...shapeParamsBinding(_options, 'figureShape', [
-      'parameter1',
-      'parameter2',
-      'geometryString'
-    ]),
-    figure: {
-      key: '',
-      handler(d) {
-        if (
-          d.shapeParams &&
-          d.shapeParams.holderShape &&
-          d.shapeParams.holderShape.geometryString
-        ) {
-          return 'None';
-        } else if (d.clipShape) {
-          return d.clipShape;
-        } else {
-          return _options.props.clipShape;
-        }
-      }
-    }
-  });
-}
-export function shapeBinding($, go, _options) {
-  return binding($, go, {
-    visible: {
-      key: '',
-      handler(d) {
-        if (
-          (d.shape && ['clipImage', 'image', 'icon'].includes(d.shape)) ||
-          (!d.shape &&
-            ['clipImage', 'image', 'icon'].includes(_options.props.shape))
-        ) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-    },
-    fill: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'background');
-      }
-    },
-    stroke: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'strokeColor');
-      }
-    },
-    strokeWidth: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'strokeWidth');
-      }
-    },
-    width: {
-      key: '',
-      handler(d) {
-        return d.size;
-      }
-    },
-    height: {
-      key: '',
-      handler(d) {
-        return d.size;
-      }
-    },
-    ...shapeParamsBinding(_options, 'figureShape', [
-      'parameter1',
-      'parameter2',
-      'geometryString'
-    ]),
-    figure: {
-      key: '',
-      handler(d) {
-        if (
-          d.shapeParams &&
-          d.shapeParams.figureShape &&
-          d.shapeParams.figureShape.geometryString
-        ) {
-          return 'None';
-        } else if (
-          d.shape &&
-          !['clipImage', 'image', 'icon'].includes(d.shape)
-        ) {
-          return d.shape;
-        } else if (
-          !d.shape &&
-          !['clipImage', 'image', 'icon'].includes(_options.props.shape)
-        ) {
-          return _options.props.shape;
-        }
-      }
-    }
-  });
-}
-export function iconfontBinding($, go, _options) {
-  return binding($, go, {
-    visible: {
-      key: '',
-      handler(d) {
-        if (
-          (d.shape && d.shape === 'icon') ||
-          (!d.shape && _options.props.shape === 'icon')
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    },
-    text: {
-      key: '',
-      handler(d) {
-        if (d.icon && typeof d.icon === 'string') {
-          return d.icon;
-        } else if (d.icon && d.icon.text) {
-          return d.icon.text;
-        } else {
-          return _options.props.icon.text;
-        }
-      }
-    },
-    font: {
-      key: '',
-      handler(d) {
-        if (d.icon && d.icon.iconfont) {
-          return d.icon.iconfont;
-        } else {
-          return _options.props.icon.iconfont;
-        }
-      }
-    },
-    stroke: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'iconColor');
       }
     }
   });
@@ -514,13 +168,7 @@ export function nodeBinding($, go, _options) {
     },
     scale: {
       key: '',
-      handler(d) {
-        if (d.scale) {
-          return d.scale;
-        } else {
-          return _options.props.scale;
-        }
-      }
+      handler: getHandler($, go, _options, ['scale'])
     }
   });
 }
@@ -528,33 +176,15 @@ export function tooltipShape($, go, _options) {
   return binding($, go, {
     fill: {
       key: '',
-      handler(d) {
-        if (d.tooltip && d.tooltip.background) {
-          return d.tooltip.background;
-        } else {
-          return _options.props.tooltip.background;
-        }
-      }
+      handler: getHandler($, go, _options, ['tooltip', 'background'])
     },
     stroke: {
       key: '',
-      handler(d) {
-        if (d.tooltip && d.tooltip.stroke) {
-          return d.tooltip.stroke;
-        } else {
-          return _options.props.tooltip.stroke;
-        }
-      }
+      handler: getHandler($, go, _options, ['tooltip', 'stroke'])
     },
     strokeWidth: {
       key: '',
-      handler(d) {
-        if (d.tooltip && d.tooltip.strokeWidth) {
-          return d.tooltip.strokeWidth;
-        } else {
-          return _options.props.tooltip.strokeWidth;
-        }
-      }
+      handler: getHandler($, go, _options, ['tooltip', 'strokeWidth'])
     }
   });
 }
@@ -594,354 +224,11 @@ export function tooltipBinding($, go, _options) {
     },
     stroke: {
       key: '',
-      handler(d) {
-        if (d.tooltip && d.tooltip.color) {
-          return d.tooltip.color;
-        } else if (_options.props.tooltip && _options.props.tooltip.color) {
-          return _options.props.tooltip.color;
-        } else {
-          return '#fff';
-        }
-      }
+      handler: getHandler($, go, _options, ['tooltip', 'color'])
     },
     font: {
       key: '',
-      handler(d) {
-        if (d.tooltip && d.tooltip.font) {
-          return d.tooltip.font;
-        } else {
-          return _options.props.tooltip.font;
-        }
-      }
-    }
-  });
-}
-export function labelArrayBinding($, go, _options) {
-  return binding($, go, {
-    text: {
-      key: '',
-      handler(t) {
-        return t.text;
-      }
-    },
-    margin: {
-      key: '',
-      handler(t, n) {
-        let d = n.part.data;
-        if (d.label && d.label.margin) {
-          if (typeof d.label.margin === 'number') {
-            return d.label.margin;
-          } else if (d.label.margin instanceof Array) {
-            return new go.Margin(...d.label.margin);
-          } else {
-            return new go.Margin(..._options.props.label.margin);
-          }
-        } else {
-          return new go.Margin(..._options.props.label.margin);
-        }
-      }
-    },
-    font: {
-      key: '',
-      handler(t, n) {
-        let d = n.part.data;
-        if (d.label && d.label.font) {
-          return d.label.font;
-        } else {
-          return _options.label.font;
-        }
-      }
-    },
-    stroke: {
-      type: 'ofObject',
-      key: '',
-      handler(t, o) {
-        let n = o.part;
-        return bindSelect(n, _options, 'labelColor');
-      }
-    }
-  });
-}
-export function labelArrayPanelBinding($, go, _options) {
-  return binding($, go, {
-    itemArray: {
-      key: '',
-      handler(d) {
-        if (d.label && d.label instanceof Array) {
-          return d.label;
-        } else if (d.label && d.label.text && d.label.text instanceof Array) {
-          return d.label.text;
-        } else {
-          return _options.props.label.text;
-        }
-      }
-    },
-    visible: {
-      key: '',
-      handler(d) {
-        if (d.label && d.label instanceof Array) {
-          return true;
-        } else if (d.label && d.label.text instanceof Array) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    }
-  });
-}
-export function labelBinding($, go, _options) {
-  return binding($, go, {
-    text: {
-      key: '',
-      handler(d) {
-        if (d.label === undefined) {
-          return '';
-        } else if (typeof d.label === 'string') {
-          return d.label;
-        } else if (typeof d.label === 'object') {
-          return d.label.text;
-        }
-      }
-    },
-    visible: {
-      key: '',
-      handler(d) {
-        if (
-          d.label === undefined ||
-          (typeof d.label === 'object' && !d.label.text) ||
-          (typeof d.label === 'object' && d.label.show === false) ||
-          (typeof d.label === 'object' && typeof d.label.text !== 'string')
-        ) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-    },
-    font: {
-      key: '',
-      handler(d) {
-        if (d.label && d.label.font) {
-          return d.label.font;
-        } else {
-          return _options.label.font;
-        }
-      }
-    },
-    stroke: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'labelColor');
-      }
-    },
-    editable: {
-      key: '',
-      handler(d) {
-        if (d.label.editable) {
-          return true;
-        } else {
-          return _options.props.label.editable;
-        }
-      }
-    },
-    margin: {
-      key: '',
-      handler(d) {
-        if (d.label && d.label.margin) {
-          if (typeof d.label.margin === 'number') {
-            return d.label.margin;
-          } else if (d.label.margin instanceof Array) {
-            return new go.Margin(...d.label.margin);
-          } else {
-            return new go.Margin(..._options.props.label.margin);
-          }
-        } else {
-          return new go.Margin(..._options.props.label.margin);
-        }
-      }
-    }
-  });
-}
-export function labelShapeBinding($, go, _options) {
-  return binding($, go, {
-    visible: {
-      key: '',
-      handler(d) {
-        if (
-          d.label === undefined ||
-          (typeof d.label === 'object' && !d.label.text) ||
-          (typeof d.label === 'object' && d.label.show === false) ||
-          (typeof d.label === 'object' &&
-            d.label.show === undefined &&
-            _options.props.label.show === false)
-        ) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-    },
-    fill: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'labelBackground');
-      }
-    },
-    stroke: {
-      type: 'ofObject',
-      key: '',
-      handler(n) {
-        return bindSelect(n, _options, 'labelStroke');
-      }
-    }
-  });
-}
-
-export function tagOuterPanelBinding($, go, _options) {
-  return binding($, go, {
-    visible: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.text) {
-          return true;
-        } else if (d.tag && !d.tag.text) {
-          return false;
-        } else if (_options.props.tag.text) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    },
-    alignment: {
-      key: '',
-      handler(d) {
-        let placement;
-        if (d.tag && d.tag.placement) {
-          placement = d.tag.placement;
-        } else {
-          placement = _options.props.tag.placement;
-        }
-        let x = 0.5,
-          y = 0.5;
-        if (typeof placement === 'string') {
-          if (placement.includes('top')) {
-            y = 0;
-          } else if (placement.includes('bottom')) {
-            y = 1;
-          }
-          if (placement.includes('left')) {
-            x = 0;
-          } else if (placement.includes('right')) {
-            x = 1;
-          }
-        } else if (placement instanceof Array) {
-          x = placement[0];
-          y = placement[1];
-        }
-        return new go.Spot(x, y);
-      }
-    }
-  });
-}
-export function tagShapeBinding($, go, _options) {
-  return binding($, go, {
-    fill: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.fill) {
-          return d.tag.fill;
-        } else {
-          return _options.props.tag.fill;
-        }
-      }
-    },
-    figure: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.figure) {
-          return d.tag.figure;
-        } else {
-          return _options.props.tag.figure;
-        }
-      }
-    },
-    stroke: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.stroke) {
-          return d.tag.stroke;
-        } else {
-          return _options.props.tag.stroke;
-        }
-      }
-    },
-    strokeWidth: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.strokeWidth) {
-          return d.tag.strokeWidth;
-        } else {
-          return _options.props.tag.strokeWidth;
-        }
-      }
-    },
-    strokeDashArray: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.strokeDashArray) {
-          return d.tag.strokeDashArray;
-        } else {
-          return _options.props.tag.strokeDashArray;
-        }
-      }
-    }
-  });
-}
-export function tagBinding($, go, _options) {
-  return binding($, go, {
-    text: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.text) {
-          return d.tag.text;
-        } else {
-          return _options.props.tag.text;
-        }
-      }
-    },
-    stroke: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.color) {
-          return d.tag.color;
-        } else {
-          return _options.props.tag.color;
-        }
-      }
-    },
-    font: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.font) {
-          return d.tag.font;
-        } else {
-          return _options.props.tag.font;
-        }
-      }
-    },
-    margin: {
-      key: '',
-      handler(d) {
-        if (d.tag && d.tag.padding) {
-          return d.tag.padding;
-        } else {
-          return _options.props.tag.padding;
-        }
-      }
+      handler: getHandler($, go, _options, ['tooltip', 'font'])
     }
   });
 }
