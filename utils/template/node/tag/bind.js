@@ -51,7 +51,7 @@ export function tagShapeBinding($, go, _options) {
   return binding($, go, {
     fill: {
       key: '',
-      handler: getHandler($, go, _options, ['tag', 'fill'])
+      handler: getHandler($, go, _options, ['tag', 'background'])
     },
     figure: {
       key: '',
@@ -74,6 +74,20 @@ export function tagShapeBinding($, go, _options) {
 
 export function tagBinding($, go, _options) {
   return binding($, go, {
+    visible: {
+      key: '',
+      handler(d) {
+        if (
+          d.tag === undefined ||
+          (typeof d.tag === 'object' && !d.tag.text) ||
+          (typeof d.tag === 'object' && typeof d.tag.text !== 'string')
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
     text: {
       key: '',
       handler: getHandler($, go, _options, ['tag', 'text'])
@@ -88,7 +102,100 @@ export function tagBinding($, go, _options) {
     },
     margin: {
       key: '',
-      handler: getHandler($, go, _options, ['tag', 'padding'])
+      handler(d) {
+        if (d.tag && d.tag.margin) {
+          if (typeof d.tag.margin === 'number') {
+            return d.tag.margin;
+          } else if (d.tag.margin instanceof Array) {
+            return new go.Margin(...d.tag.margin);
+          } else {
+            return new go.Margin(..._options.props.tag.margin);
+          }
+        } else if (typeof _options.props.tag.margin === 'number') {
+          return _options.props.tag.margin;
+        } else {
+          return new go.Margin(..._options.props.tag.margin);
+        }
+      }
+    },
+  });
+}
+export function tagArrayBinding($, go, _options) {
+  return binding($, go, {
+    text: {
+      key: '',
+      handler(t) {
+        return t.text;
+      }
+    },
+    margin: {
+      key: '',
+      handler(t, n) {
+        let d = n.part.data;
+        if (d.tag && d.tag.margin) {
+          if (typeof d.tag.margin === 'number') {
+            return d.tag.margin;
+          } else if (d.tag.margin instanceof Array) {
+            return new go.Margin(...d.tag.margin);
+          } else {
+            return new go.Margin(..._options.props.tag.margin);
+          }
+        } else if (typeof _options.props.tag.margin === 'number') {
+          return _options.props.tag.margin;
+        } else {
+          return new go.Margin(..._options.props.tag.margin);
+        }
+      }
+    },
+    font: {
+      key: '',
+      handler(t, n) {
+        let d = n.part.data;
+        if (d.tag && d.tag.font) {
+          return d.tag.font;
+        } else {
+          return _options.props.tag.font;
+        }
+      }
+    },
+    stroke: {
+      key: '',
+      handler(t, o) {
+        let d = o.part.data;
+        if (d.tag && d.tag.color) {
+          return d.tag.color;
+        } else {
+          return _options.props.tag.color;
+        }
+      }
+    }
+  });
+}
+export function tagArrayPanelBinding($, go, _options) {
+  return binding($, go, {
+    itemArray: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag instanceof Array) {
+          return d.tag;
+        } else if (d.tag && d.tag.text && d.tag.text instanceof Array) {
+          return d.tag.text;
+        } else {
+          return _options.props.tag.text;
+        }
+      }
+    },
+    visible: {
+      key: '',
+      handler(d) {
+        if (d.tag && d.tag instanceof Array) {
+          return true;
+        } else if (d.tag && d.tag.text instanceof Array) {
+          return true;
+        } else {
+          return false;
+        }
+      }
     }
   });
 }

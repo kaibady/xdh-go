@@ -1,16 +1,37 @@
 import { defaultImage } from '../default';
 import { getHandler, shapeParamsBinding, bindToState } from '../bindings';
 import { binding } from '../../../node-parts/index';
+function getSizeHandler($, go, _options, type) {
+  let index;
+  switch (type) {
+    case 'width':
+      index = 0;
+      break;
+    case 'height':
+      index = 1;
+      break;
+  }
+  let fun = d => {
+    if (typeof d.size === 'number') {
+      return d.size;
+    } else if (d.size instanceof Array) {
+      return d.size[index];
+    } else {
+      return _options.props.size[index];
+    }
+  };
+  return fun
+}
 // 绑定图片裁剪
 export function pictureClipBinding($, go, _options) {
   return binding($, go, {
     width: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'width')
     },
     height: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'height')
     },
     visible: {
       key: '',
@@ -118,11 +139,27 @@ export function pictureBinding($, go, _options) {
     },
     width: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'width')
     },
     height: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'height')
+    }
+  });
+}
+export function figurePanelBinding($, go, _options) {
+  return binding($, go, {
+    margin: {
+      key: '',
+      handler(d) {
+        if (typeof d.figureMargin === 'number') {
+          return d.figureMargin;
+        } else if (d.figureMargin instanceof Array) {
+          return new go.Margin(...d.figureMargin);
+        } else {
+          return _options.props.figureMargin;
+        }
+      }
     }
   });
 }
@@ -143,11 +180,11 @@ export function pictureCircleBinding($, go, _options) {
     },
     width: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'width')
     },
     height: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'height')
     },
     stroke: {
       type: 'ofObject',
@@ -210,11 +247,11 @@ export function pictureHolderBinding($, go, _options) {
     },
     width: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'width')
     },
     height: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'height')
     },
     strokeWidth: {
       key: '',
@@ -288,11 +325,11 @@ export function shapeBinding($, go, _options) {
     },
     width: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'width')
     },
     height: {
       key: '',
-      handler: getHandler($, go, _options, ['size'])
+      handler: getSizeHandler($, go, _options, 'height')
     },
     ...shapeParamsBinding(_options, 'figureShape', [
       'parameter1',
@@ -352,7 +389,7 @@ export function iconfontBinding($, go, _options) {
     },
     font: {
       key: '',
-      handler: getHandler($, go, _options, ['icon', 'iconfont'])
+      handler: getHandler($, go, _options, ['icon', 'font'])
     },
     stroke: {
       type: 'ofObject',

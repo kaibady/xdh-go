@@ -175,16 +175,7 @@
         return nodeTmpl($, go, {
           props: {
             shape: 'RoundedRectangle',
-            size: 80,
-            stateShape: null,
-            background: {
-              normal: 'blue',
-              highlight: '#0000aa',
-              hover: '#cc0000',
-              select: '#ffee00'
-            },
-            labelStroke: '#000',
-            labelColor: '#000'
+            size: 80
           }
         });
       },

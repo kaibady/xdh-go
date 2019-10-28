@@ -49,14 +49,14 @@ nodes=  [
       :config="config"
       :layout="layout"
       ref="diagram"
-      height="150px"
+      height="200px"
       @on-ready="diagramReady"
     ></xdh-go>
   </div>
 </template>
 <script>
   import { XdhGo, nodeTmpl } from 'xdh-go';
-    let imgPath = '/xdh-go/';
+  let imgPath = '/xdh-go/';
   export default {
     components: {
       XdhGo
@@ -66,7 +66,11 @@ nodes=  [
         model: 'GraphLinksModel',
         nodes: [
           {
-            label: [{ text: '文本1' }, { text: '文本2' }],
+            label: {
+              font: '18px "Microsoft Yahei"',
+              margin: 5,
+              text: [{ text: '灰度模式文本1' }, { text: '灰度模式文本2' }]
+            },
             labelColor: {
               hover: 'blue'
             },
@@ -81,8 +85,7 @@ nodes=  [
             labelColor: {
               hover: 'blue'
             },
-            containerShape: null,
-            isGray: true
+            containerShape: null
           },
           {
             label: {
@@ -91,14 +94,13 @@ nodes=  [
             layout: 'Horizontal',
             size: 40,
             shape: 'Rectangle',
-            isGray: true,
             background: { normal: '#f06600' }
           },
           {
             label: 'node3',
-            layout: 'Vertical',
+            layout: 'Spot',
             labelColor: {
-              hover: '#fff'
+              hover: 'red'
             },
             labelStroke: {
               hover: 'transparent'
@@ -143,159 +145,125 @@ nodes=  [
 
 # 默认参数
 
-以下通用节点参数分类，定义时通过 nodeTmpl 第三个参数的 props 传入，或再节点数据中定义。
-### 参数状态
-一些参数包含了5种状态：normal: 正常状态;highlight:节点isHighlighed为true;hover:鼠标经过时;select:节点为选中状态;gray:灰度模式。在使用时可为不同状态定义不同的颜色或宽度。
-### 图形类型
-多个参数使用go.Shape的内置图形类型，包括：
-"Rectangle", "Square", "RoundedRectangle", "Border", "Ellipse", "Circle", "TriangleRight", "TriangleDown", "TriangleLeft", "TriangleUp", "Triangle", "Diamond", "LineH", "LineV", "BarH", "BarV", "MinusLine", "PlusLine", "XLine"
-### 节点参数
-|参数|参数说明|类型|可选值|默认值|
-|----|-------|----|----|----|
-|layout| 节点布局（即图形和文字的排布方式）|String|常用:'Vertical'/'Horizontal'/'Spot',其余见go.PanelLayout|'Vertical'|
-|hidden| 节点是否可见 |Boolean|false/true|false|
-|shape| 图形类型 |String|'image'/'clipImage'/'icon'/(go.Shape内置图形类型)|'Rectangle'|
-|stateShape| 状态框形状 |String|go.Shape内置图形类型|'Circle'|
-|figureMargin| 图形的外边距，影响节点的占位及tag的位置 |Number/Array|-|20|
-|containerShape| 节点的外框形状 |String/null|null/(go.Shape内置图形类型)|null,不可见|
-|containerBackground| 节点的外框背景色 |Object|-|gray状态为#ccc,其余状态为'#85a5ff'|
-|containerStrokeColor| 节点的外框边框色 |Object|-|gray状态为#ccc,其余状态为'#061178'|
-|loc| 节点位置,双向数据绑定 |String|-|'0 0'|
+以下通用节点参数分类，定义时通过 nodeTmpl 第三个参数的 props 传入，或在节点数据中定义。
 
-### image/clipImage相关参数
-shape参数为'image'/'clipImage'时有效
+### 参数状态
+
+一些参数包含了 5 种状态：
+
+> normal: 正常状态;
+
+> highlight:节点 isHighlighed 为 true;
+
+> hover:鼠标经过时;
+
+> select:节点为选中状态;
+
+> gray:灰度模式。
+
+在使用时可为不同状态定义不同的颜色或宽度。
+
+### 图形类型
+
+多个参数使用 go.Shape 的内置图形类型，包括：
+"Rectangle", "Square", "RoundedRectangle", "Border", "Ellipse", "Circle", "TriangleRight", "TriangleDown", "TriangleLeft", "TriangleUp", "Triangle", "Diamond", "LineH", "LineV", "BarH", "BarV", "MinusLine", "PlusLine", "XLine"
+
+### 布局类型
+
+layout 参数类型来自 go.PanelLayout 类型，包括:
+'Position'，'Horizontal', 'Vertical', 'Spot', 'Auto',
+'Table', 'Viewbox', 'TableRow', 'TableColumn', 'Link',
+'Grid', 'Graduated'
+
+### 节点参数
+
+| 参数                 | 参数说明                                      | 类型         | 可选值                                                    | 默认值                              |
+| -------------------- | --------------------------------------------- | ------------ | --------------------------------------------------------- | ----------------------------------- |
+| layout               | 节点布局（即图形和文字的排布方式）            | String       | 常用:'Vertical'/'Horizontal'/'Spot',其余见 go.PanelLayout | 'Vertical'                          |
+| opacity              | 节点透明度                                    | Number       | 0~1                                                       | 1                                   |
+| scale                | 节点缩放比                                    | Number       | -                                                         | 1                                   |
+| nodeMargin         | 节点内容的外边距，影响节点的占位及 tag 的位置 | Number/Array | -                                                         | 20                                  |
+| containerShape       | 节点的外框形状                                | String/null  | null/(go.Shape 内置图形类型)                              | null,不可见                         |
+| containerBackground  | 节点的外框背景色                              | Object       | -                                                         | gray 状态为#ccc,其余状态为'#85a5ff' |
+| containerStrokeColor | 节点的外框边框色                              | Object       | -                                                         | gray 状态为#ccc,其余状态为'#061178' |
+| loc                  | 节点位置,双向数据绑定                         | String       | -                                                         | '0 0'                               |
+
+### 图形相关参数
+
+| 参数                       | 参数说明                | 类型          | 可选值                                               | 默认值                                                      |
+| -------------------------- | ----------------------- | ------------- | ---------------------------------------------------- | ----------------------------------------------------------- |
+| shape                      | 图形类型                | String        | 'image'/'clipImage'/'icon'/(go.Shape 内置图形类型)   | 'Rectangle'                                                 |
+| stateShape                 | 状态框形状              | String        | go.Shape 内置图形类型                                | 'Circle'                                                    |
+| size                       | 图形的尺寸              | Number/Array  | Number 类型时，宽高一致；如果是数组类型，则为[宽,高] | [50,50]                                                     |
+| figureMargin         | 图形的外边距 | Number/Array | -                                                         | 20                                  |
+| background                 | 图形背景色              | Object/String | -                                                    | gray 状态为'#ccc',其它为'#91d5ff'                           |
+| strokeColor                | 状态框边框色            | Object/String | -                                                    | gray 状态为'#ccc',normal 为'#0050b3',其它为'#c41d7f'        |
+| strokeWidth                | 状态框边框宽度          | Number        | -                                                    | 五种状态，默认为 2                                          |
+| shapeParams                | 图形的形状参数          | Object        | -                                                    | -                                                           |
+| shapeParams.figureShape    | shape 形状参数          | Object        | -                                                    | {parameter1: NaN,parameter2: NaN,geometryString: undefined} |
+| shapeParams.clipShape      | clipShape 形状参数      | Object        | -                                                    | {parameter1: NaN,parameter2: NaN,geometryString: undefined} |
+| shapeParams.stateShape     | stateShape 形状参数     | Object        | -                                                    | {parameter1: NaN,parameter2: NaN,geometryString: undefined} |
+| shapeParams.containerShape | containerShape 形状参数 | Object        | -                                                    | {parameter1: NaN,parameter2: NaN,geometryString: undefined} |
+
+### image/clipImage 相关参数
+
+shape 参数为'image'/'clipImage'时有效
 |参数|说明|类型|可选值|默认值|
 |----|----|----|----|----|
 |image|图片地址|String|-|undefined|
 |brokenImage|加载失败时默认显示的图片地址|String|-|undefined|
-|clipShape|图片的裁剪外框,shape为'clipImage'时有效|String|-|'Circle'|
+|clipShape|图片的裁剪外框,shape 为'clipImage'时有效|String/null|go.Shape 预置图形类型，如果传 null 则不裁剪|'Circle'|
 
-### icon相关参数
-shape参数为'icon'时有效
+### icon 相关参数
+
+shape 参数为'icon'时有效
 |参数|说明|类型|可选值|默认值|
 |----|----|----|----|----|
 |icon|字体图标类型参数|Object/String|-|-|
-|icon.iconfont|字体图标iconfont|String|-|'30px "iconfont"',font-family类型默认为iconfont|
+|icon.font|字体图标 iconfont|String|-|'30px "iconfont"',font-family 类型默认为 iconfont|
 |icon.text|字体图标内容|String|-|'\uE7BD'|
+|iconColor|图标颜色|Object/String|-|gray 状态为'#ccc', 其它为'#1890ff'|
 
+### label 相关参数
 
-```
-/**
-状态值说明：
-    normal：正常状态,
-    highlight: 节点isHighlighted为true时
-    select: 节点isSelected为true是
-    hover: 节点鼠标经过时
-    gray: 灰度模式，通过数据中的isGray控制
-**/
-{
-     /**
-        图形类型，包括:
-        icon 字体图标类型
-        image 图片类型
-        clipImage 带裁剪形状的图片类型
-        其它类型都判断为 go.Shape 所预定义的形状类型，如Rectangle等
-     **/
-    shape: 'Rectangle',
+| 参数            | 说明               | 类型          | 可选值                                                                               | 默认值                                    |
+| --------------- | ------------------ | ------------- | ------------------------------------------------------------------------------------ | ----------------------------------------- |
+| label           | 文字内容及样式     | Object/String | -                                                                                    | -                                         |
+| label.text      | 文字内容           | Array/String  | 如果类型为 String，则为单行文本；如果为 Array，则为多行文本，格式为[{text: 'text1'}] | ''                                        |
+| label.editable  | 文字内容是否可编辑 | Boolean       | -                                                                                    | false                                     |
+| label.show      | 文字内容是否显示   | Boolean       | -                                                                                    | true                                      |
+| label.font      | 文字样式           | String        | -                                                                                    | '14px "iconfont"'                         |
+| label.margin    | 文字外边距         | Number        | -                                                                                    | 10                                        |
+| labelStroke     | 文字外框边框色     | Object/String | -                                                                                    | 五种状态, 默认'transparent'               |
+| labelColor      | 文字颜色           | Object/String | -                                                                                    | gray 状态默认'#ccc',其它默认'#000'        |
+| labelBackground | 文字框背景色       | Object/String | -                                                                                    | gray 状态默认'#ccc',其它默认'transparent' |
 
-    // 节点布局
-    // 可选值：'Position'，'Horizontal', 'Vertical', 'Spot', 'Auto',
-    //     'Table', 'Viewbox', 'TableRow', 'TableColumn', 'Link',
-            'Grid', 'Graduated',
-    layout: 'Vertical',
+### tag 相关参数
 
-    // 是否隐藏节点，占位仍在，只设置透明度为0
-    hidden: false,
+节点附加标签
+|参数|说明|类型|可选值|默认值|
+|----|----|----|----|----|
+|tag|节点附加标签相关参数|Object|-|-|
+|tag.placement|标签位置|String|'top-right'/'top'/'top-left'/'left'/'center'/'right'/'bottom-left'/'bottom'/'bottom-right'|'top-right'|
+|tag.text|文本内容|String|-|''|
+|tag.color|文本颜色|String|-|'#000'|
+|tag.figure|文字外框形状|String|go.Shape 内置图形|'RoundedRectangle'|
+|tag.background|文本框背景色|String|-|'#40a9ff'|
+|tag.stroke|文本框边框色|String|-|'#003a8c'|
+|tag.strokeWidth|文本框边框宽度|Number|-|1|
+|tag.strokeDashArray|文本框边框虚线设置|null/Array|-|null|
+|tag.font|文本样式|String|-|'14px "Microsoft Yahei"'|
+|tag.margin|文本的外边距|Number/Array|-|5|
 
-    // 图片地址，shape为 'image'或'clipImage'时有效
-    image: undefined,
+### tooltip 相关参数
 
-    // 如果图片加载失败，所要显示的图片地址
-    brokenImage: undefined,
-
-    // 裁剪形状，shape为 clipImage时有效
-    clipShape: 'Circle',
-
-    // 状态框, 设为null时不显示
-    stateShape: 'Circle'
-
-    // 背景色
-    background: {
-      normal: 'yellow',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff'
-    },
-
-    // 边框颜色，可简写, 如 strokeColor: '#ccc',简写时四种状态都为同一种颜色
-    strokeColor: {
-      normal: '#ccc',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff'
-    },
-
-    // 边框宽度，可简写, 如 strokeWidth: 1,简写时四种状态都为同一宽度
-    strokeWidth: {
-      normal: 3,
-      highlight: 4,
-      hover: 4,
-      select: 5
-    },
-
-    // 整个节点的放大比例
-    scale: 1,
-
-    // 节点图标区域的尺寸，宽高相同
-    size: 25,
-
-    // 节点字体图标内容，shape为icon时有效
-    icon: {
-      iconfont: '30px "iconfont"',
-      text: '\uE7BD'
-    },
-
-    // 节点位置，双向数据绑定
-    loc: '0 0',
-
-    // tooltip提示，如果text的内容为空，则不显示tooltip
-    tooltip: {
-      stroke: 'rgba(0,0,0,0.6)',  // tooltip边框颜色
-      background: '',   // tooltip背景色
-      text: ''
-    },
-
-      // 标签内容及样式, 可简写,如 label: 'node1', 简写时文本内容会赋值给text,其它与默认值相同
-    label: {
-      text: '',
-      show: true,
-      editable: false,
-      font: '14px "iconfont"',
-      margin: [10, 10, 10, 10]
-    },
-
-     // 标签颜色, 可简写, 如 labelStroke: '#ccc',简写时四种状态都为同一种颜色
-    labelStroke: {
-      normal: '#000',
-      highlight: '#fff',
-      hover: '#fff',
-      select: '#fff'
-    },
-   // 标签文字，可简写, 如 labelColor: '#ccc',简写时四种状态都为同一种颜色
-    labelColor: {
-      normal: '#000',
-      highlight: '#000',
-      hover: '#000',
-      select: '#000'
-    },
-
-     // 标签背景色，可简写, 如 labelBackground: '#ccc',简写时四种状态都为同一种颜色
-    labelBackground: {
-      normal: '#ccc',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff'
-    }
-  };
-}
-```
+tooltip 提示参数
+|参数|说明|类型|可选值|默认值|
+|----|----|----|----|----|
+|tooltip|tooltip 相关参数|Object|-|-|
+|tooltip.stroke|tooltip 边框颜色|String|-|'#003a8c'|
+|tooltip.color|tooltip 文本颜色|String|-|'#fff'|
+|tooltip.strokeWidth|tooltip 文本框边框宽度|Number|-|1|
+|tooltip.font|文本样式|String|-|'14px "Microsoft Yahei"'|
+|tooltip.background|文本框背景色|String|-|'rgba(0,0,0,0.6)'|
+|tooltip.text|文本内容|String|-|''|

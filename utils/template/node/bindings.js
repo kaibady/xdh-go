@@ -138,26 +138,27 @@ export function innerPanelBinding($, go, _options) {
     margin: {
       key: '',
       handler(d) {
-        if (typeof d.figureMargin === 'number') {
+        if (typeof d.nodeMargin === 'number') {
           return d.figureMargin;
-        } else if (d.figureMargin instanceof Array) {
-          return new go.Margin(...d.figureMargin);
+        } else if (d.nodeMargin instanceof Array) {
+          return new go.Margin(...d.nodeMargin);
         } else {
-          return _options.props.figureMargin;
+          return _options.props.nodeMargin;
         }
       }
     }
   });
 }
+
 export function nodeBinding($, go, _options) {
   return binding($, go, {
     opacity: {
       key: '',
       handler(d) {
-        if (d.hidden) {
-          return 0;
+        if (d.opacity) {
+          return d.opacity;
         } else {
-          return 1;
+          return _options.props.opacity;
         }
       }
     },

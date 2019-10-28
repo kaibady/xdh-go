@@ -2,7 +2,6 @@ import { panel, node, tooltip } from '../../node-parts';
 import { handleNodeDefault } from './default';
 import figure from './figure/index';
 import label from './label/index';
-import tag from './tag/index';
 import container from './container/index';
 import {
   innerPanelBinding,
@@ -110,8 +109,7 @@ export default function($, go, options) {
             ],
             binding: innerPanelBinding($, go, _options)
           }),
-          // 附加标签
-          tag($, go, _options),
+         
           ...extendUp,
           ..._options.props._outerPanelOptions.parts
         ]

@@ -1,12 +1,14 @@
 import { panel, picture, iconfont, shape } from '../../../node-parts';
+import tag from '../tag/index';
 import {
   pictureBinding,
   pictureCircleBinding,
-  pictureHolderBinding,
+  // pictureHolderBinding,
   picturePanelBinding,
   shapeBinding,
   pictureClipBinding,
-  iconfontBinding
+  iconfontBinding,
+  figurePanelBinding
 } from './bind';
 export default function figure($, go, _options) {
   return panel($, go, {
@@ -19,17 +21,17 @@ export default function figure($, go, _options) {
     },
     parts: [
       // 增加一个不可见的环，放置外圈尺寸在改变时影响外部尺寸，导致布局变动
-      shape($, go, {
-        props: {
-          figure: 'Circle',
-          fill: 'transparent',
-          stroke: 'transparent',
-          portId: 'tHolder',
-          ..._options.props._figureHolderOptions.props
-        },
-        parts: [..._options.props._figureHolderOptions.parts],
-        binding: pictureHolderBinding($, go, _options)
-      }),
+      // shape($, go, {
+      //   props: {
+      //     figure: 'Circle',
+      //     fill: 'transparent',
+      //     stroke: 'transparent',
+      //     portId: 'tHolder',
+      //     ..._options.props._figureHolderOptions.props
+      //   },
+      //   parts: [..._options.props._figureHolderOptions.parts],
+      //   binding: pictureHolderBinding($, go, _options)
+      // }),
       // 表示状态的圈
       shape($, go, {
         props: {
@@ -78,7 +80,10 @@ export default function figure($, go, _options) {
         binding: iconfontBinding($, go, _options),
         parts: [..._options.props._iconOptions.parts]
       }),
+       // 附加标签
+       tag($, go, _options),
       ..._options.props._figurePanelOptions.parts
-    ]
+    ],
+    binding: figurePanelBinding($, go, _options)
   });
 }

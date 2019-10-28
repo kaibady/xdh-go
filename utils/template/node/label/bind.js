@@ -1,8 +1,12 @@
 import { getHandler, bindToState } from '../bindings';
 import { binding } from '../../../node-parts/index';
+function textArrayTwoWay(d, temp) {
+  temp.text = d;
+}
 export function labelArrayBinding($, go, _options) {
   return binding($, go, {
     text: {
+      type: ['makeTwoWay', textArrayTwoWay],
       key: '',
       handler(t) {
         return t.text;
@@ -20,8 +24,21 @@ export function labelArrayBinding($, go, _options) {
           } else {
             return new go.Margin(..._options.props.label.margin);
           }
+        } else if (typeof _options.props.label.margin === 'number') {
+          return _options.props.label.margin;
         } else {
           return new go.Margin(..._options.props.label.margin);
+        }
+      }
+    },
+    editable: {
+      key: '',
+      handler(t, n) {
+        let d = n.part.data;
+        if (d.label && d.label.editable) {
+          return d.label.editable;
+        } else {
+          return _options.props.label.editable;
         }
       }
     },
@@ -74,9 +91,17 @@ export function labelArrayPanelBinding($, go, _options) {
     }
   });
 }
+function textTwoWay(d, obj) {
+  if (typeof obj.label === 'string') {
+    obj.label = d;
+  } else if (typeof obj.label === 'object') {
+    obj.label.text = d;
+  }
+}
 export function labelBinding($, go, _options) {
   return binding($, go, {
     text: {
+      type: ['makeTwoWay', textTwoWay],
       key: '',
       handler(d) {
         if (d.label === undefined) {
@@ -129,6 +154,8 @@ export function labelBinding($, go, _options) {
           } else {
             return new go.Margin(..._options.props.label.margin);
           }
+        } else if (typeof _options.props.label.margin === 'number') {
+          return _options.props.label.margin;
         } else {
           return new go.Margin(..._options.props.label.margin);
         }

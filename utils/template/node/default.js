@@ -2,12 +2,13 @@ export const defaultImage = `data:image/svg+xml;utf8,<svg version="1.1" xmlns="h
 export let getDefaultProps = ($, go) => {
   return {
     layout: 'Vertical', // 节点布局
-    hidden: false, // 隐藏
+    opacity: 1, // 透明度
     shape: 'Rectangle',
     stateShape: 'Circle',
-    figureMargin: 20,
+    scale: 1,
+    nodeMargin: 10,
+    figureMargin: 10,
     clipShape: 'Circle',
-
     image: undefined,
     brokenImage: undefined,
     labelStroke: {
@@ -25,24 +26,24 @@ export let getDefaultProps = ($, go) => {
       gray: '#ccc'
     },
     labelBackground: {
-      normal: '#ccc',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff',
+      normal: 'transparent',
+      highlight: 'transparent',
+      hover: 'transparent',
+      select: 'transparent',
       gray: '#ccc'
     },
     label: {
       text: '',
       show: true,
       editable: false,
-      font: '14px "iconfont"',
-      margin: 10
+      font: '14px "Microsoft Yahei"',
+      margin: 0
     },
     iconColor: {
-      normal: '#ccc',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff',
+      normal: '#1890ff',
+      highlight: '#1890ff',
+      hover: '#1890ff',
+      select: '#1890ff',
       gray: '#ccc'
     },
 
@@ -57,11 +58,11 @@ export let getDefaultProps = ($, go) => {
         parameter2: NaN,
         geometryString: undefined
       },
-      holderShape: {
-        parameter1: NaN,
-        parameter2: NaN,
-        geometryString: undefined
-      },
+      // holderShape: {
+      //   parameter1: NaN,
+      //   parameter2: NaN,
+      //   geometryString: undefined
+      // },
       stateShape: {
         parameter1: NaN,
         parameter2: NaN,
@@ -73,7 +74,6 @@ export let getDefaultProps = ($, go) => {
         geometryString: undefined
       }
     },
-
 
     containerShape: null,
     containerBackground: {
@@ -91,51 +91,51 @@ export let getDefaultProps = ($, go) => {
       gray: '#ccc'
     },
     background: {
-      normal: 'yellow',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff',
+      normal: '#91d5ff',
+      highlight: '#91d5ff',
+      hover: '#91d5ff',
+      select: '#91d5ff',
       gray: '#ccc'
     },
     strokeColor: {
-      normal: '#ccc',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff',
+      normal: '#0050b3',
+      highlight: '#c41d7f',
+      hover: '#c41d7f',
+      select: '#c41d7f',
       gray: '#ccc'
     },
     strokeWidth: {
-      normal: 3,
-      highlight: 4,
-      hover: 4,
-      select: 4,
-      gray: 4
+      normal: 2,
+      highlight: 2,
+      hover: 2,
+      select: 2,
+      gray: 2
     },
-    scale: 1,
-    size: 50,
+
+    size: [50, 50],
     icon: {
-      iconfont: '30px "iconfont"',
+      font: '30px "iconfont"',
       text: '\uE7BD'
     },
     loc: '0 0',
     tooltip: {
-      stroke: '#000',
+      stroke: '#003a8c',
       color: '#fff',
       strokeWidth: 1,
-      font: '14px',
+      font: '14px "Microsoft Yahei"',
       background: 'rgba(0,0,0,0.6)',
       text: ''
     },
     tag: {
       placement: 'top-right',
       figure: 'RoundedRectangle',
-      fill: '#40a9ff',
+      background: '#40a9ff',
       stroke: '#003a8c',
       strokeWidth: 1,
       strokeDashArray: null,
       color: '#000',
       font: '14px "Microsoft Yahei"',
-      padding: 5,
+      margin: 5,
       text: ''
     },
     _nodeOptions: {
@@ -155,10 +155,10 @@ export let getDefaultProps = ($, go) => {
       props: {},
       parts: []
     },
-    _figureHolderOptions: {
-      props: {},
-      parts: []
-    },
+    // _figureHolderOptions: {
+    //   props: {},
+    //   parts: []
+    // },
     _stateShapeOptions: {
       props: {},
       parts: []
@@ -244,6 +244,7 @@ export function handleNodeDefault($, go, options = {}) {
     'container',
     'tooltip',
     'icon',
+    'size',
     'shapeParams'
   ];
   for (let name in defaultProps) {
@@ -262,6 +263,13 @@ export function handleNodeDefault($, go, options = {}) {
             }
           }
           _options.props[name] = obj;
+        } else if (name === 'size') {
+          // size另外处理,将数字转为数组
+          if (typeof _options.props.size === 'number') {
+            _options.props.size = [_options.props.size, _options.props.size];
+          } else if (!(_options.props.size instanceof Array)) {
+            _options.props.size = defaultProps.size;
+          }
         } else {
           let obj = {};
           for (let n1 in defaultProps[name]) {

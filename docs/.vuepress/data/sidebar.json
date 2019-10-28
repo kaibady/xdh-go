@@ -29,7 +29,7 @@
     {
       "title": "通用节点",
       "collapsable": false,
-      "children": ["base", "image", "clip-image", "icon", "shape", "extension"]
+      "children": ["base", "node", "figure", "label", "tag", "tooltip", "extension"]
     }
   ],
   "/commonLink/": [
