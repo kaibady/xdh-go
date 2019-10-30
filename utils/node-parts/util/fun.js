@@ -64,3 +64,55 @@ export function extendOption(defaultProps, options = {}) {
   }
   return _options;
 }
+/**
+ * 设置灰度模式
+ * @param {Object} options 
+ * @param {Object} options.diagram go.Diagram对象 
+ * @param {Object} options.nodes 高亮节点
+ * @param {Object} options.mode 高亮模式，'highlight'/'select'
+ */
+export function setGray(options = {}) {
+  let defaultOption = {
+    diagram: null,
+    nodes: [],
+    mode: 'select'
+  };
+  let _options = Object.assign({}, defaultOption, options);
+  if (_options.diagram) {
+    let model = _options.diagram.model;
+    _options.diagram.nodes.each(N => {
+      if (_options.nodes.indexOf(N) > -1) {
+        switch (_options.mode) {
+          case 'select':
+            N.isSelected = true;
+            break;
+          case 'highlight':
+            N.isHighlighted = true;
+            break;
+        }
+      } else {
+        model.set(N.data, 'isGray', true);
+      }
+    });
+  }
+}
+/**
+ * 取消灰度模式
+ * @param {Object} options 
+ * @param {Object} options.diagram go.Diagram对象 
+ */
+export function removeGray(options = {}) {
+  let defaultOption = {
+    diagram: null,
+    reset: true
+  };
+  let _options = Object.assign({}, defaultOption, options);
+  if (_options.diagram) {
+    let model = _options.diagram.model;
+    _options.diagram.nodes.each(N => {
+      model.set(N.data, 'isGray', false);
+      N.isSelected = false;
+      N.isHighlighted = false;
+    });
+  }
+}

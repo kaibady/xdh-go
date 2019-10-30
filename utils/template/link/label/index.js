@@ -1,21 +1,23 @@
-import { panel, textBlock, shape } from '../../../node-parts';
 import {
-  labelBinding,
-  labelPanelBinding,
   labelShapeBinding,
+  labelPanelBinding,
+  labelBinding,
   labelArrayBinding,
   labelArrayPanelBinding
 } from './bind';
-export default function label($, go, _options) {
+import { textBlock, shape, panel } from '../../../node-parts';
+export function label($, go, _options) {
   return panel($, go, {
     type: 'auto',
     props: {
-      ..._options.props._labelOuterPanelOptions.props
+      segmentOffset: new go.Point(0, 10),
+      alignmentFocus: new go.Spot(0.5, 0, 0, 0),
+      ..._options.props._outerPanelOptions.props
     },
     parts: [
       shape($, go, {
         props: {
-          figure: 'Rectangle',
+          stroke: null,
           ..._options.props._labelShapeOptions.props
         },
         binding: labelShapeBinding($, go, _options)
@@ -23,12 +25,13 @@ export default function label($, go, _options) {
       panel($, go, {
         type: 'ver',
         props: {
-          ..._options.props._labelInnerPanelOptions.props
+          ..._options.props._innerPanelOptions.props
         },
         parts: [
-          // 单行文本
+          // label 文字
           textBlock($, go, {
             props: {
+              stroke: '#000',
               ..._options.props._labelTextOptions.props
             },
             binding: labelBinding($, go, _options)
@@ -48,10 +51,10 @@ export default function label($, go, _options) {
             },
             binding: labelArrayPanelBinding($, go, _options)
           }),
-          ..._options.props._labelInnerPanelOptions.parts
+          ..._options.props._innerPanelOptions.parts
         ]
       }),
-      ..._options.props._labelInnerPanelOptions.parts
+      ..._options.props._outerPanelOptions.parts
     ],
     binding: labelPanelBinding($, go, _options)
   });

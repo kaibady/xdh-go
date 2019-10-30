@@ -1,4 +1,4 @@
-import { getHandler, bindToState } from '../bindings';
+import { bindToState, getHandler } from '../bindings';
 import { binding } from '../../../node-parts/index';
 function textArrayTwoWay(d, temp) {
   temp.text = d;
@@ -100,6 +100,10 @@ function textTwoWay(d, obj) {
 }
 export function labelBinding($, go, _options) {
   return binding($, go, {
+    font: {
+      key: '',
+      handler: getHandler($, go, _options, ['label', 'font'])
+    },
     text: {
       type: ['makeTwoWay', textTwoWay],
       key: '',
@@ -113,35 +117,12 @@ export function labelBinding($, go, _options) {
         }
       }
     },
-    visible: {
-      key: '',
-      handler(d) {
-        if (
-          d.label === undefined ||
-          (typeof d.label === 'object' && !d.label.text) ||
-          (typeof d.label === 'object' && d.label.show === false) ||
-          (typeof d.label === 'object' && typeof d.label.text !== 'string')
-        ) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-    },
-    font: {
-      key: '',
-      handler: getHandler($, go, _options, ['label', 'font'])
-    },
     stroke: {
       type: 'ofObject',
       key: '',
       handler(n) {
         return bindToState(n, _options, 'labelColor');
       }
-    },
-    editable: {
-      key: '',
-      handler: getHandler($, go, _options, ['label', 'editable'])
     },
     margin: {
       key: '',
@@ -160,9 +141,25 @@ export function labelBinding($, go, _options) {
           return new go.Margin(..._options.props.label.margin);
         }
       }
+    },
+    visible: {
+      key: '',
+      handler(d) {
+        if (
+          d.label === undefined ||
+          (typeof d.label === 'object' && !d.label.text) ||
+          (typeof d.label === 'object' && d.label.show === false) ||
+          (typeof d.label === 'object' && typeof d.label.text !== 'string')
+        ) {
+          return false;
+        } else {
+          return true;
+        }
+      }
     }
   });
 }
+
 export function labelShapeBinding($, go, _options) {
   return binding($, go, {
     fill: {
@@ -197,19 +194,6 @@ export function labelPanelBinding($, go, _options) {
           return true;
         } else {
           return false;
-        }
-      }
-    },
-    portId: {
-      key: '',
-      handler(d) {
-        if (
-          (d.linkPort !== undefined && d.linkPort === 'tLabel') ||
-          (d.linkPort === undefined && _options.props.linkPort === 'tLabel')
-        ) {
-          return '';
-        } else {
-          return 'tLabel';
         }
       }
     }

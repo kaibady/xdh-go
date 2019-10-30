@@ -73,7 +73,6 @@ export default function($, go, options) {
   handleHover(_options);
   return node($, go, {
     props: {
-      portId: 'tNode',
       shadowVisible: true,
       toolTip: tooltip($, go, {
         shape: { binding: tooltipShape($, go, _options) },
@@ -87,7 +86,6 @@ export default function($, go, options) {
       panel($, go, {
         type: 'auto',
         props: {
-          portId: 'tPanel1',
           ..._options.props._outerPanelOptions.props
         },
         parts: [
@@ -97,7 +95,6 @@ export default function($, go, options) {
           panel($, go, {
             type: 'ver',
             props: {
-              portId: 'tPanel2',
               ..._options.props._innerPanelOptions.props
             },
             parts: [

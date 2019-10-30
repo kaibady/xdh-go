@@ -32,6 +32,8 @@ links=  [
         ]
 ```
 
+## 示例
+
 :::demo
 
 ```html
@@ -71,30 +73,18 @@ links=  [
           },
           {
             key: 'c',
-            label: 'node3'
+            label: 'node3',
+            linkPort: 'tNode'
           },
           {
             key: 'd',
-            label: 'node4'
+            label: 'node4',
+            linkPort: 'tNode'
           }
         ],
         links: [
-          { from: 'a', to: 'b', label: 'link1', arrows: 'to' },
-          {
-            from: 'c',
-            to: 'd',
-            label: 'link2',
-            arrows: {
-              to: {
-                type: 'Triangle',
-                scale: 1.5
-              },
-              from: {
-                type: 'Circle'
-              }
-            },
-            arrowFill: 'transparent'
-          }
+          { from: 'a', to: 'b', type: 'route' },
+          { from: 'c', to: 'd', dashes: true, label: '虚线' }
         ]
       };
     },
@@ -105,33 +95,20 @@ links=  [
         };
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, { setsPortSpots: false });
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {
           props: {
-            shape: 'Rectangle',
-            size: 40,
-            background: '#f0f0f0',
-            strokeColor: 'red',
-            labelBackground: 'transparent',
-            labelColor: '#000',
-            _figureHolderOptions: {
-              props: {
-                portId: ''
-              }
-            }
+            shape: 'Circle',
+            size: 80
           }
         });
       },
       linkTemplate($, go) {
         return linkTmpl($, go, {
           props: {
-            arrows: {
-              to: {
-                type: 'Standard'
-              }
-            }
+            arrows: 'to'
           }
         });
       },
@@ -145,110 +122,67 @@ links=  [
 
 # 默认参数
 
-以下是通用节点的默认参数设置，定义时通过 linkTmpl 第三个参数的 props 传入。其中带下划线的参数为扩展参数，是为了满足特定需求下能改变内部元素的样式及增加内容，但这些参数不能被节点数据中的参数覆盖。
+以下是通用节点的默认参数设置，定义时通过 linkTmpl 第三个参数的 props 传入。
 
-后面将有特定部分讲解扩展参数的使用
+### 参数状态
 
-```
-/**
-状态值说明：
-    normal：正常状态,
-    highlight: 节点isHighlighted为true时
-    select: 节点isSelected为true是
-    hover: 节点鼠标经过时
-**/
-{
-   /**
-    箭头类型及参数，可简写, 如 arrows: 'from, to', 简写时scale变量跟随默认值，包含有from则 from的show为true, to亦然
-   **/
-    arrows: {
-      to: {
-        type: 'Standard',
-        scale: 1,
-        show: false
-      },
-      from: {
-        type: 'Standard',
-        scale: 1,
-        show: false
-      }
-    },
+一些参数包含了 5 种状态：
 
-    // go.Link的curve属性
-    curve: go.Link.Bezier,
+> normal: 正常状态;
 
-    // go.Link的curviness属性
-    curviness: 10,
+> highlight:节点 isHighlighed 为 true;
 
-    // go.Link的corner属性
-    corner: 0,
+> hover:鼠标经过时;
 
-    // go.Link的routing属性
-    routing: go.Link.Normal,
+> select:节点为选中状态;
 
-    // go.Link的smoothness属性
-    smoothness: 0.5,
+> gray:灰度模式。
 
-    // 是否为虚线，传false或true, 或一个数组，如dashes: [8,4,8,4]
-    dashes: false,
+在使用时可为不同状态定义不同的颜色或宽度。
 
-    // 连线是否显示，为false时，设置opacity为0
-    hidden: false,
+## 连线参数
 
-     // 连线宽度，可简写, 如 strokeWidth: 1,简写时四种状态都为同一宽度
-    strokeWidth: {
-      normal: 1,
-      hover: 2,
-      highlight: 2,
-      select: 2
-    },
+| 参数            | 说明                   | 类型          | 可选值                                           | 默认值                                                |
+| --------------- | ---------------------- | ------------- | ------------------------------------------------ | ----------------------------------------------------- |
+| opacity         | 连线整体透明度         | Object        | -                                                | 1                                                     |
+| dashes          | 虚线设置               | Boolean/Array | -                                                | false                                                 |
+| type            | 连线类型               | String        | 'curve'(曲线)/ 'straight'(直线) / 'route'(路径)) | 'curve'                                               |
+| fromShortLength | 连线始端与箭头的距离   | Number        | -                                                | 0                                                     |
+| toShortLength   | 连线末端端与箭头的距离 | Number        | -                                                | 0                                                     |
+| lineWidth       | 连线及箭头的线条宽度   | Number/Object | -                                                | normal 状态及 gray 状态为 1,其余为 2                  |
+| lineColor       | 连线及箭头的线条颜色   | Number/Object | -                                                | normal 状态为'#000',gray 状态为'#ccc',其余为'#66b1ff' |
 
-     // 连线颜色，可简写, 如 strokeColor: '#ccc',简写时四种状态都为同一种颜色
-    strokeColor: {
-      normal: '#ccc',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff'
-    },
+## 箭头
 
-    // 箭头内部填充颜色，可简写, 如 arrowFill: '#ccc',简写时四种状态都为同一种颜色
-    arrowFill: {
-      normal: '#000',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff'
-    },
+| 参数              | 说明             | 类型          | 可选值 | 默认值                            |
+| ----------------- | ---------------- | ------------- | ------ | --------------------------------- |
+| arrows            | 箭头配置参数     | Object/String | -      | -                                 |
+| arrows.from       | 始端箭头配置参数 | Object        | -      | -                                 |
+| arrows.from.type  | 始端箭头形状     | String        | -      | 'Standard'                        |
+| arrows.from.scale | 始端箭头缩放比   | Number        | -      | 1                                 |
+| arrows.from.show  | 始端箭头是否显示 | Boolean       | -      | false                             |
+| arrows.to         | 末端箭头配置参数 | Object        | -      | -                                 |
+| arrows.to.type    | 末端箭头形状     | String        | -      | 'Standard'                        |
+| arrows.to.scale   | 末端箭头缩放比   | Number        | -      | 1                                 |
+| arrows.to.show    | 末端箭头是否显示 | Boolean       | -      | false                             |
+| arrowFill         | 箭头内部颜色     | String/Object | -      | gray 状态为'#ccc'，其余默认'#000' |
+| arrowStroke       | 箭头边框颜色     | String/Object | -      | gray 状态为'#ccc'，其余默认'#000' |
 
-     // 标签颜色, 可简写, 如 labelStroke: '#ccc',简写时四种状态都为同一种颜色
-    labelStroke: {
-      normal: '#000',
-      hover: 'blue',
-      highlight: 'blue',
-      select: 'blue'
-    },
+arrows 如果简写为字符串，如'from,to',则对应的箭头 show 属性为 true,其余跟随默认值
 
-     // 标签文字，可简写, 如 labelColor: '#ccc',简写时四种状态都为同一种颜色
-    labelColor: {
-      normal: '#000',
-      highlight: '#fff',
-      hover: '#fff',
-      select: '#fff'
-    },
+## label 文字
 
-     // 标签背景色，可简写, 如 labelBackground: '#ccc',简写时四种状态都为同一种颜色
-    labelBackground: {
-      normal: '#ccc',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff'
-    },
-
-     // 标签内容及样式, 可简写,如 label: 'link1', 简写时文本内容会赋值给text,其它与默认值相同
-    label: {
-      text: '',
-      font: '13px sans-serif',
-      scale: 1
-    }
-  };
-}
-```
+| 参数            | 说明               | 类型          | 可选值                                                                               | 默认值                                    |
+| --------------- | ------------------ | ------------- | ------------------------------------------------------------------------------------ | ----------------------------------------- |
+| label           | 文字内容及样式     | Object/String | -                                                                                    | -                                         |
+| label.text      | 文字内容           | Array/String  | 如果类型为 String，则为单行文本；如果为 Array，则为多行文本，格式为[{text: 'text1'}] | ''                                        |
+| label.editable  | 文字内容是否可编辑 | Boolean       | -                                                                                    | false                                     |
+| label.show      | 文字内容是否显示   | Boolean       | -                                                                                    | true                                      |
+| label.font      | 文字样式           | String        | -                                                                                    | '14px "iconfont"'                         |
+| label.margin    | 文字外边距         | Number        | -                                                                                    | 10                                        |
+| label.offsetX   | 文字横向偏移量     | Number        | -                                                                                    | 0                                         |
+| label.offsetY   | 文字纵向偏移量     | Number        | -                                                                                    | 0                                         |
+| label.segment   | 文字位于连线的位置 | Number        | -                                                                                    | 1                                         |
+| labelStroke     | 文字外框边框色     | Object/String | -                                                                                    | 五种状态, 默认'transparent'               |
+| labelColor      | 文字颜色           | Object/String | -                                                                                    | gray 状态默认'#ccc',其它默认'#000'        |
+| labelBackground | 文字框背景色       | Object/String | -                                                                                    | gray 状态默认'#ccc',其它默认'transparent' |

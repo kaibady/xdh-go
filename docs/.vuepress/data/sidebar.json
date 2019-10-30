@@ -29,14 +29,23 @@
     {
       "title": "通用节点",
       "collapsable": false,
-      "children": ["base", "node", "figure", "label", "tag", "tooltip", "extension"]
+      "children": [
+        "base",
+        "node",
+        "figure",
+        "label",
+        "tag",
+        "tooltip",
+        "gray",
+        "extension"
+      ]
     }
   ],
   "/commonLink/": [
     {
       "title": "通用连线",
       "collapsable": false,
-      "children": ["base", "arrows", "lines", "extension"]
+      "children": ["base", "lines", "arrows", "label", "extension"]
     }
   ],
   "/animation/": [

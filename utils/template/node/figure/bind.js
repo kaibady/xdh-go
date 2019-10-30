@@ -20,7 +20,7 @@ function getSizeHandler($, go, _options, type) {
       return _options.props.size[index];
     }
   };
-  return fun
+  return fun;
 }
 // 绑定图片裁剪
 export function pictureClipBinding($, go, _options) {
@@ -149,6 +149,19 @@ export function pictureBinding($, go, _options) {
 }
 export function figurePanelBinding($, go, _options) {
   return binding($, go, {
+    portId: {
+      key: '',
+      handler(d) {
+        if (
+          (d.linkPort !== undefined && d.linkPort === 'tFigure') ||
+          (d.linkPort === undefined && _options.props.linkPort === 'tFigure')
+        ) {
+          return '';
+        } else {
+          return 'tFigure';
+        }
+      }
+    },
     margin: {
       key: '',
       handler(d) {

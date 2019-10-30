@@ -5,10 +5,11 @@
 | layout               | 节点布局（即图形和文字的排布方式）            | String       | 常用:'Vertical'/'Horizontal'/'Spot',其余见 go.PanelLayout | 'Vertical'                          |
 | opacity              | 节点透明度                                    | Number       | 0~1                                                       | 1                                   |
 | scale                | 节点缩放比                                    | Number       | -                                                         | 1                                   |
-| figureMargin         | 节点内容的外边距，影响节点的占位及 tag 的位置 | Number/Array | -                                                         | 20                                  |
+| nodeMargin           | 节点内容的外边距，影响节点的占位及 tag 的位置 | Number/Array | -                                                         | 20                                  |
 | containerShape       | 节点的外框形状                                | String/null  | null/(go.Shape 内置图形类型)                              | null,不可见                         |
 | containerBackground  | 节点的外框背景色                              | Object       | -                                                         | gray 状态为#ccc,其余状态为'#85a5ff' |
 | containerStrokeColor | 节点的外框边框色                              | Object       | -                                                         | gray 状态为#ccc,其余状态为'#061178' |
+| linkPort             | 连线指向节点的哪个位置                        | String       | 'tNode'/'tFigure'/'tLabel'                   | 'tFigure'                           |
 | loc                  | 节点位置,双向数据绑定                         | String       | -                                                         | '0 0'                               |
 
 ## layout,opacity,scale,loc
@@ -104,9 +105,101 @@
 
 :::
 
+## linkPort
+
+拖拽节点，并比较 linkPort 不同设置下连线指向的差别。
+:::demo
+
+```html
+<template>
+  <div>
+    <xdh-go
+      :nodes="nodes"
+      :links="links"
+      :type="model"
+      :node-template="nodeTemplate"
+      :link-template="linkTemplate"
+      :config="config"
+      :layout="layout"
+      ref="diagram"
+      height="500px"
+      @on-ready="diagramReady"
+    ></xdh-go>
+  </div>
+</template>
+<script>
+  import { XdhGo, nodeTmpl, linkTmpl } from 'xdh-go';
+  export default {
+    components: {
+      XdhGo
+    },
+    data() {
+      return {
+        model: 'GraphLinksModel',
+        nodes: [
+          {
+            key: 1,
+            label: 'linkPort:\'tNode\'',
+            linkPort: 'tNode',
+            containerShape: 'RoundedRectangle'
+          },
+          {
+            key: 2,
+            label: 'linkPort:\'tNode\'',
+            linkPort: 'toNode'
+          },
+          {
+            key: 3,
+            label: 'linkPort:\'tFigure\'',
+            linkPort: 'tFigure'
+          },
+          {
+            key: 4,
+            label: 'linkPort:\'tLabel\'',
+            linkPort: 'tLabel'
+          }
+        ],
+        links: [
+          { from: 1, to: 2 },
+          { from: 3, to: 4 }
+        ]
+      };
+    },
+    methods: {
+      config($, go) {
+        return {
+          initialContentAlignment: go.Spot.Center
+        };
+      },
+      layout($, go) {
+        return $(go.LayeredDigraphLayout, { setsPortSpots: false });
+      },
+      nodeTemplate($, go) {
+        return nodeTmpl($, go, {
+          props: {
+            shape: 'Circle',
+            size: 80
+          }
+        });
+      },
+      linkTemplate($, go) {
+        return linkTmpl($, go, {
+          props: {
+            arrows: 'to'
+          }
+        });
+      },
+      diagramReady(diagram, $, go) {}
+    }
+  };
+</script>
+```
+
+:::
+
 ## 节点外框相关参数
 
-containerShape,containerBackground,containerColor, figureMargin
+containerShape,containerBackground,containerColor, nodeMargin
 :::demo
 
 ```html
@@ -139,30 +232,30 @@ containerShape,containerBackground,containerColor, figureMargin
             containerStrokeColor: { normal: '#531dab' },
             containerBackground: { normal: '#d3adf7' },
             tag: { text: 'tag', placement: [0.8, 0] },
-            label: ['Rectangle', 'figureMargin:0'],
-            figureMargin: 0
+            label: [{ text: 'Rectangle' }, { text: 'figureMargin:0' }],
+            nodeMargin: 0
           },
           {
             containerShape: 'RoundedRectangle',
             containerStrokeColor: { normal: '#531dab' },
             containerBackground: { normal: '#d3adf7' },
             tag: { text: 'tag', placement: [0.8, 0] },
-            label: ['Rectangle', 'figureMargin:15'],
-            figureMargin: 15
+            label: [{ text: 'Rectangle' }, { text: 'figureMargin:15' }],
+            nodeMargin: 15
           },
           {
             containerShape: 'Diamond',
             containerStrokeColor: { normal: '#00474f' },
             containerBackground: { normal: '#36cfc9' },
-            label: ['Diamond', 'figureMargin:5'],
-            figureMargin: 5
+            label: [{ text: 'Diamond' }, { text: 'figureMargin:5' }],
+            nodeMargin: 5
           },
           {
             layout: 'Horizontal',
             containerShape: 'Ellipse',
             containerStrokeColor: { normal: '#135200' },
             containerBackground: { normal: '#73d13d' },
-            label: ['Ellipse', 'figureMargin:0']
+            label: [{ text: 'Ellipse' }, { text: 'figureMargin:0' }]
           }
         ]
       };

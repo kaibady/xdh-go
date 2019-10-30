@@ -152,6 +152,19 @@ export function innerPanelBinding($, go, _options) {
 
 export function nodeBinding($, go, _options) {
   return binding($, go, {
+    portId: {
+      key: '',
+      handler(d) {
+        if (
+          (d.linkPort !== undefined && d.linkPort === 'tNode') ||
+          (d.linkPort === undefined && _options.props.linkPort === 'tNode')
+        ) {
+          return '';
+        } else {
+          return 'tNode';
+        }
+      }
+    },
     opacity: {
       key: '',
       handler(d) {

@@ -12,52 +12,81 @@ export let getDefaultProps = ($, go) => {
         show: false
       }
     },
-    curve: go.Link.Bezier,
-    curviness: 10,
-    corner: 0,
-    routing: go.Link.Normal,
-    smoothness: 0.5,
+    type: 'curve',
+    fromShortLength: 0,
+    toShortLength: 0,
+    // curve: go.Link.Bezier,
+    // curviness: 10,
+    // corner: 0,
+    // routing: go.Link.Normal,
+    // smoothness: 0.5,
     dashes: false,
-    hidden: false,
-    strokeWidth: {
+    opacity: 1,
+    lineWidth: {
       normal: 1,
       hover: 2,
       highlight: 2,
-      select: 2
+      select: 2,
+      gray: 1
     },
-    strokeColor: {
+    lineColor: {
       normal: '#000',
       highlight: '#66b1ff',
       hover: '#66b1ff',
-      select: '#66b1ff'
+      select: '#66b1ff',
+      gray: '#ccc'
     },
     arrowFill: {
       normal: '#000',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff'
+      highlight: '#000',
+      hover: '#000',
+      select: '#000',
+      gray: '#ccc'
+    },
+    arrowStroke: {
+      normal: '#000',
+      highlight: '#000',
+      hover: '#000',
+      select: '#000',
+      gray: '#ccc'
+    },
+    arrowStrokeWidth: {
+      normal: 1,
+      hover: 1,
+      highlight: 1,
+      select: 1,
+      gray: 1
     },
     labelStroke: {
-      normal: '#000',
-      hover: 'blue',
-      highlight: 'blue',
-      select: 'blue'
+      normal: 'transparent',
+      hover: 'transparent',
+      highlight: 'transparent',
+      select: 'transparent',
+      gray: '#ccc'
     },
     labelColor: {
       normal: '#000',
-      highlight: '#fff',
-      hover: '#fff',
-      select: '#fff'
+      highlight: '#000',
+      hover: '#000',
+      select: '#000',
+      gray: '#ccc'
     },
     labelBackground: {
-      normal: '#ccc',
-      highlight: '#66b1ff',
-      hover: '#66b1ff',
-      select: '#66b1ff'
+      normal: 'transparent',
+      highlight: 'transparent',
+      hover: 'transparent',
+      select: 'transparent',
+      gray: '#ccc'
     },
     label: {
       text: '',
-      font: '13px sans-serif'
+      font: '13px sans-serif',
+      editable: false,
+      show: false,
+      margin: 5,
+      offsetX: 0,
+      offsetY: 0,
+      segment: 1
     },
     _linkOptions: {
       props: {},
@@ -114,34 +143,18 @@ export function handleLinkDefault($, go, options = {}) {
   let extendNames = [
     'label',
     'labelStroke',
-    'strokeColor',
-    'strokeWidth',
+    'labelBackground',
+    'lineColor',
+    'lineWidth',
     'arrowFill',
+    'arrowStrokeWidth',
+    'arrowStroke',
     'arrows'
   ];
   for (let name in defaultProps) {
     // 如果是简化参数，把参数值按对象的定义方法设置
     if (extendNames.includes(name)) {
-      if (typeof _options.props[name] !== 'object') {
-        // 这三种类型在简化传值时，默认传的是text,其它取默认
-        if (['label'].includes(name)) {
-          let obj = {};
-          for (let n1 in defaultProps[name]) {
-            if (n1 === 'text') {
-              obj[n1] = _options.props[name] || defaultProps[name][n1];
-            } else {
-              obj[n1] = defaultProps[name][n1];
-            }
-          }
-          _options.props[name] = obj;
-        } else {
-          let obj = {};
-          for (let n1 in defaultProps[name]) {
-            obj[n1] = _options.props[name] || defaultProps[name][n1];
-          }
-          _options.props[name] = obj;
-        }
-      } else if (name === 'arrows') {
+      if (name === 'arrows') {
         // 如果arrows是字符串，看是否包含to,from分别设置他们的show属性
         let type = typeof _options.props[name];
         let arrows = { to: {}, from: {} };
@@ -172,8 +185,27 @@ export function handleLinkDefault($, go, options = {}) {
             }
           }
         });
-        
+
         _options.props.arrows = arrows;
+      } else if (typeof _options.props[name] !== 'object') {
+        // 这三种类型在简化传值时，默认传的是text,其它取默认
+        if (['label'].includes(name)) {
+          let obj = {};
+          for (let n1 in defaultProps[name]) {
+            if (n1 === 'text') {
+              obj[n1] = _options.props[name] || defaultProps[name][n1];
+            } else {
+              obj[n1] = defaultProps[name][n1];
+            }
+          }
+          _options.props[name] = obj;
+        } else {
+          let obj = {};
+          for (let n1 in defaultProps[name]) {
+            obj[n1] = _options.props[name] || defaultProps[name][n1];
+          }
+          _options.props[name] = obj;
+        }
       } else {
         for (let n1 in defaultProps[name]) {
           _options.props[name][n1] =

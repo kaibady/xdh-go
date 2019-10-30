@@ -10,6 +10,8 @@ import tag from './tag';
 import mark from './mark';
 import binding from './binding';
 import link from './link';
+// 公共方法
+import { setGray, removeGray } from './util/fun';
 export {
   panel,
   horPanel,
@@ -25,5 +27,8 @@ export {
   tooltip,
   picture,
   textBlock,
-  binding
+  binding,
+  // 公共方法
+  setGray,
+  removeGray
 };

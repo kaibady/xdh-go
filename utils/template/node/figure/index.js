@@ -14,9 +14,6 @@ export default function figure($, go, _options) {
   return panel($, go, {
     type: 'spot',
     porps: {
-      portId: 'tFigure',
-      fromPortSpot: true,
-      toPortSport: true,
       ..._options.props._figurePanelOptions.props
     },
     parts: [
@@ -37,7 +34,7 @@ export default function figure($, go, _options) {
         props: {
           figure: 'Circle',
           background: 'transparent',
-          portId: 'tStateShape',
+          portId: 'StateShape',
           ..._options.props._stateShapeOptions.props
         },
         parts: [..._options.props._stateShapeOptions.parts],
@@ -57,7 +54,6 @@ export default function figure($, go, _options) {
           binding: picturePanelBinding($, go, _options)
         },
         props: {
-          portId: 'tFigure',
           ..._options.props._pictureOptions.props
         },
         binding: pictureBinding($, go, _options)
@@ -65,7 +61,6 @@ export default function figure($, go, _options) {
       // 图形类型
       shape($, go, {
         props: {
-          portId: 'tFigure',
           fill: '#000',
           ..._options.props._shapeOptions.props
         },
@@ -74,7 +69,6 @@ export default function figure($, go, _options) {
       }),
       iconfont($, go, {
         props: {
-          portId: 'tFigure',
           ..._options.props._iconOptions.props
         },
         binding: iconfontBinding($, go, _options),
