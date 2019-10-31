@@ -419,29 +419,17 @@ easeInOutBounce
               mouseEnter: [
                 {
                   objectName: 'tFigure',
-                  duration: 500,
+                  duration: 300,
                   prop: 'scale',
                   keyFrame: [1, 1.2]
-                },
-                {
-                  objectName: 'tLabel',
-                  duration: 500,
-                  prop: 'margin',
-                  keyFrame: [0, 20]
                 }
               ],
               mouseLeave: [
                 {
                   objectName: 'tFigure',
-                  duration: 500,
+                  duration: 300,
                   prop: 'scale',
                   keyFrame: [1.2, 1]
-                },
-                {
-                  objectName: 'tLabel',
-                  duration: 500,
-                  prop: 'margin',
-                  keyFrame: [20, 0]
                 }
               ]
             }
@@ -493,7 +481,8 @@ easeInOutBounce
         return $(go.LayeredDigraphLayout, {
           setsPortSpots: false,
           layerSpacing: 150,
-          direction: 90
+          direction: 90,
+          isOngoing: false
         });
       },
       nodeTemplate($, go) {

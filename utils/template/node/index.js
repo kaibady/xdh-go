@@ -50,20 +50,20 @@ function handleAnimation(e, n, event) {
       if (ret[0] === event) {
         let configs = ret[1];
         configs.forEach(con => {
-          let obj = node.findObject(con.objectName);
+          let obj = node;
           console.log(con, obj)
           tween(
             con.keyFrame[0],
             con.keyFrame[1],
+            con.duration,
             animateFun['easeOutCirc'],
             state => {
               obj[con.prop] = state;
             }
-          ).then(() => {
-            diagram.skipsUndoManager = oldskips;
-          });
+          );
         });
       }
+      diagram.skipsUndoManager = oldskips;
     });
   }
 }
