@@ -178,7 +178,6 @@ export function labelShapeBinding($, go, _options) {
     }
   });
 }
-
 export function labelPanelBinding($, go, _options) {
   return binding($, go, {
     visible: {
@@ -195,6 +194,86 @@ export function labelPanelBinding($, go, _options) {
         } else {
           return false;
         }
+      }
+    },
+    segmentFraction: {
+      key: '',
+      handler(d) {
+        let placementStr, fraction;
+        if (d && d.label && d.label.placement) {
+          placementStr = d.label.placement;
+        } else {
+          placementStr = _options.props.label.placement;
+        }
+        if (placementStr.includes('start')) {
+          fraction = 0.1;
+        } else if (placementStr.includes('end')) {
+          fraction = 0.1;
+        } else {
+          fraction = 0.5;
+        }
+        return fraction;
+      }
+    },
+    alignmentFocus: {
+      key: '',
+      handler(d) {
+        const placementOffset = 5;
+        let spot = [0, 0, 0, 0];
+        let placementStr, pos;
+        if (d && d.label && d.label.placement) {
+          placementStr = d.label.placement;
+        } else {
+          placementStr = _options.props.label.placement;
+        }
+        if (placementStr.includes('top')) {
+          spot[1] = 1;
+          spot[3] = placementOffset;
+        } else if (placementStr.includes('middle')) {
+          spot[1] = 0.5;
+        } else if (placementStr.includes('bottom')) {
+          spot[1] = 0;
+          spot[3] = -placementOffset;
+        }
+        if (placementStr.includes('start')) {
+          spot[0] = 0;
+        } else if (placementStr.includes('end')) {
+          spot[0] = 1;
+        } else {
+          spot[0] = 0.5;
+        }
+        pos = new go.Spot(...spot);
+        return pos;
+      }
+    },
+    segmentIndex: {
+      type: ['ofObject'],
+      key: '',
+      handler(n) {
+        let d = n.data;
+        let midSegment = Math.floor((n.pointsCount - 1) / 2);
+        let placementStr, placement, segment;
+        if (d && d.label && d.label.placement) {
+          placementStr = d.label.placement;
+        } else {
+          placementStr = _options.props.label.placement;
+        }
+        if (placementStr.includes('start')) {
+          placement = 'start';
+        } else if (placementStr.includes('end')) {
+          placement = 'end';
+        }
+        switch (placement) {
+          case 'start':
+            segment = 0;
+            break;
+          case 'end':
+            segment = -1;
+            break;
+          default:
+            segment = midSegment;
+        }
+        return segment;
       }
     }
   });

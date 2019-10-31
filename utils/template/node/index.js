@@ -3,6 +3,8 @@ import { handleNodeDefault } from './default';
 import figure from './figure/index';
 import label from './label/index';
 import container from './container/index';
+import * as animateFun from '../../animation/tween';
+let tween = animateFun.default;
 import {
   innerPanelBinding,
   nodeBinding,
@@ -30,23 +32,61 @@ function handleParts(_options) {
     extendDown
   };
 }
+function handleAnimation(e, n, event) {
+  /**
+   * objectName,duration,prop,keyFrame
+   */
+  let node = n.part;
+  console.log(node);
+  if (!node || !node.data.animation) {
+    return;
+  } else {
+    let diagram = node.diagram;
+    let oldskips = diagram.skipsUndoManager;
+    diagram.skipsUndoManager = true;
+    console.log(Object.entries(node.data.animation));
+    Object.entries(node.data.animation).forEach(ret => {
+      console.log(ret);
+      if (ret[0] === event) {
+        let configs = ret[1];
+        configs.forEach(con => {
+          let obj = node.findObject(con.objectName);
+          console.log(con, obj)
+          tween(
+            con.keyFrame[0],
+            con.keyFrame[1],
+            animateFun['easeOutCirc'],
+            state => {
+              obj[con.prop] = state;
+            }
+          ).then(() => {
+            diagram.skipsUndoManager = oldskips;
+          });
+        });
+      }
+    });
+  }
+}
 /**
  * @function
- * @name handleHover
+ * @name handleEvents
  * @description 处理节点mouseEnter,mouseLeave和isHover参数
  * @param {Object} _options 节点配置
  */
-function handleHover(_options) {
+function handleEvents(_options) {
   if (_options.events.mouseEnter) {
     let hoverFun = _options.events.mouseEnter;
     let overideFun = function(e, n) {
       n.diagram.model.set(n.data, 'isHover', true);
+      console.log(handleAnimation);
+      handleAnimation(e, n, 'mouseEnter');
       hoverFun(e, n);
     };
     _options.events.mouseEnter = overideFun;
   } else {
     let overideFun = function(e, n) {
       n.diagram.model.set(n.data, 'isHover', true);
+      handleAnimation(e, n, 'mouseEnter');
     };
     _options.events.mouseEnter = overideFun;
   }
@@ -54,12 +94,14 @@ function handleHover(_options) {
     let hoverFun = _options.events.mouseLeave;
     let overideFun = function(e, n) {
       n.diagram.model.set(n.data, 'isHover', false);
+      handleAnimation(e, n, 'mouseLeave');
       hoverFun(e, n);
     };
     _options.events.mouseLeave = overideFun;
   } else {
     let overideFun = function(e, n) {
       n.diagram.model.set(n.data, 'isHover', false);
+      handleAnimation(e, n, 'mouseLeave');
     };
     _options.events.mouseLeave = overideFun;
   }
@@ -70,9 +112,10 @@ export default function($, go, options) {
   // 处理parts, 用于扩展节点
   let { extendUp, extendDown } = handleParts(_options);
   // 处理事件
-  handleHover(_options);
+  handleEvents(_options);
   return node($, go, {
     props: {
+      name: 'tNode',
       shadowVisible: true,
       toolTip: tooltip($, go, {
         shape: { binding: tooltipShape($, go, _options) },
@@ -106,7 +149,7 @@ export default function($, go, options) {
             ],
             binding: innerPanelBinding($, go, _options)
           }),
-         
+
           ...extendUp,
           ..._options.props._outerPanelOptions.parts
         ]

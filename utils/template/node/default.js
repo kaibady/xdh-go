@@ -59,11 +59,11 @@ export let getDefaultProps = ($, go) => {
         parameter2: NaN,
         geometryString: undefined
       },
-      // holderShape: {
-      //   parameter1: NaN,
-      //   parameter2: NaN,
-      //   geometryString: undefined
-      // },
+      holderShape: {
+        parameter1: NaN,
+        parameter2: NaN,
+        geometryString: undefined
+      },
       stateShape: {
         parameter1: NaN,
         parameter2: NaN,
@@ -156,10 +156,10 @@ export let getDefaultProps = ($, go) => {
       props: {},
       parts: []
     },
-    // _figureHolderOptions: {
-    //   props: {},
-    //   parts: []
-    // },
+    _figureHolderOptions: {
+      props: {},
+      parts: []
+    },
     _stateShapeOptions: {
       props: {},
       parts: []

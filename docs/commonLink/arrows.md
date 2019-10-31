@@ -15,7 +15,7 @@
 | arrows.to.show    | 末端箭头是否显示 | Boolean       | -      | false                             |
 | arrowFill         | 箭头内部颜色     | String/Object | -      | gray 状态为'#ccc'，其余默认'#000' |
 | arrowStroke       | 箭头边框颜色     | String/Object | -      | gray 状态为'#ccc'，其余默认'#000' |
-| arrowWidth        | 箭头形状宽度     | String/Object | -      | 5 种状态，默认 1                  |
+| arrowStrokeWidth        | 箭头形状宽度     | String/Object | -      | 5 种状态，默认 1                  |
 
 arrows 如果简写为字符串，如'from,to',则对应的箭头 show 属性为 true,其余跟随默认值
 
@@ -33,7 +33,7 @@ arrows 如果简写为字符串，如'from,to',则对应的箭头 show 属性为
       :config="config"
       :layout="layout"
       ref="diagram"
-      height="500px"
+      height="700px"
       @on-ready="diagramReady"
     ></xdh-go>
   </div>

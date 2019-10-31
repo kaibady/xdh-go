@@ -10,6 +10,7 @@ export default function label($, go, _options) {
   return panel($, go, {
     type: 'auto',
     props: {
+      name: 'tLabel',
       ..._options.props._labelOuterPanelOptions.props
     },
     parts: [

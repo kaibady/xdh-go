@@ -110,11 +110,7 @@ export function pictureBinding($, go, _options) {
     source: {
       key: '',
       handler(d) {
-        if (d.isGray) {
-          return '';
-        } else {
-          return d.image;
-        }
+        return d.image;
       }
     },
     errorFunction: {
@@ -122,11 +118,12 @@ export function pictureBinding($, go, _options) {
       key: '',
       handler(n) {
         return (pic, e) => {
-          if (n.data.brokenImage) {
+          let brokenImage = n.data.brokenImage || _options.props.brokenImage;
+          if (brokenImage) {
             let img = new Image();
-            img.src = n.data.brokenImage;
+            img.src = brokenImage;
             img.onload = () => {
-              pic.source = n.data.brokenImage;
+              pic.source = brokenImage;
             };
             img.onerror = () => {
               pic.source = defaultImage;
@@ -266,16 +263,6 @@ export function pictureHolderBinding($, go, _options) {
       key: '',
       handler: getSizeHandler($, go, _options, 'height')
     },
-    strokeWidth: {
-      key: '',
-      handler(d) {
-        let select = _options.props.select || 0;
-        let normal = _options.props.normal || 0;
-        let highlight = _options.props.highlight || 0;
-        let hover = _options.props.hover || 0;
-        return Math.max(select, normal, highlight, hover) + 5;
-      }
-    },
     ...shapeParamsBinding(_options, 'figureShape', [
       'parameter1',
       'parameter2',
@@ -294,6 +281,32 @@ export function pictureHolderBinding($, go, _options) {
           return d.clipShape;
         } else {
           return _options.props.clipShape;
+        }
+      }
+    },
+    fill: {
+      key: '',
+      handler(d) {
+        if (d.isGray) {
+          let grayColor;
+          if (d.background && d.background.gray) {
+            grayColor = d.background.gray;
+          } else {
+            grayColor = _options.props.background.gray;
+          }
+          return grayColor;
+        } else {
+          return 'transparent';
+        }
+      }
+    },
+    opacity: {
+      key: '',
+      handler(d) {
+        if (d.isGray) {
+          return 0.7;
+        } else {
+          return 0;
         }
       }
     }

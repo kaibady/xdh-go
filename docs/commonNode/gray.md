@@ -11,6 +11,7 @@ setGray
 | options | 方法配置 | Object | - | - |
 | options.diagram | go.Diagram 对象 | Diagram | - | null |
 | options.nodes | 需要高亮的节点(其余置灰) | Array | 节点对象数组 | [] |
+| options.links | 需要高亮的连线(其余置灰) | Array | 节点对象数组 | [] |
 | options.mode | 高亮模式,使用 highlight 或 select 样式 |String | 'highlight'/'select' | 'select' |
 
 removeGray
@@ -71,7 +72,9 @@ removeGray
           },
           {
             key: 5,
-            label: 'node5'
+            label: 'node5',
+            shape: 'clipImage',
+            image: '/xdh-go/img/node/circleimage/1.png'
           }
         ],
         links: [
@@ -110,13 +113,17 @@ removeGray
             },
             doubleClick: (ev, obj) => {
               let node = obj.part;
-              let nodes = [];
+              let nodes = [],
+                links = [];
               removeGray({ diagram: node.diagram });
               nodes.push(node);
+              node.findLinksConnected().each(L => {
+                links.push(L);
+              });
               node.findNodesConnected().each(N => {
                 nodes.push(N);
               });
-              setGray({ diagram: node.diagram, nodes: nodes });
+              setGray({ diagram: node.diagram, nodes: nodes, links: links });
             }
           }
         });

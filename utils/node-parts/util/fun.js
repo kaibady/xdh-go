@@ -27,7 +27,7 @@ export function genOption(defaultProps, options = {}) {
         _options.props[name] === undefined
           ? [...defaultProps[name]]
           : _options.props[name];
-    } else if(typeof defaultProps[name] === 'object') {
+    } else if (typeof defaultProps[name] === 'object') {
       for (let n1 in defaultProps[name]) {
         _options.props[name][n1] =
           _options.props[name][n1] === undefined
@@ -66,8 +66,8 @@ export function extendOption(defaultProps, options = {}) {
 }
 /**
  * 设置灰度模式
- * @param {Object} options 
- * @param {Object} options.diagram go.Diagram对象 
+ * @param {Object} options
+ * @param {Object} options.diagram go.Diagram对象
  * @param {Object} options.nodes 高亮节点
  * @param {Object} options.mode 高亮模式，'highlight'/'select'
  */
@@ -75,6 +75,7 @@ export function setGray(options = {}) {
   let defaultOption = {
     diagram: null,
     nodes: [],
+    links: [],
     mode: 'select'
   };
   let _options = Object.assign({}, defaultOption, options);
@@ -94,12 +95,26 @@ export function setGray(options = {}) {
         model.set(N.data, 'isGray', true);
       }
     });
+    _options.diagram.links.each(L => {
+      if (_options.links.indexOf(L) > -1) {
+        switch (_options.mode) {
+          case 'select':
+            L.isSelected = true;
+            break;
+          case 'highlight':
+            L.isHighlighted = true;
+            break;
+        }
+      } else {
+        model.set(L.data, 'isGray', true);
+      }
+    });
   }
 }
 /**
  * 取消灰度模式
- * @param {Object} options 
- * @param {Object} options.diagram go.Diagram对象 
+ * @param {Object} options
+ * @param {Object} options.diagram go.Diagram对象
  */
 export function removeGray(options = {}) {
   let defaultOption = {
@@ -113,6 +128,11 @@ export function removeGray(options = {}) {
       model.set(N.data, 'isGray', false);
       N.isSelected = false;
       N.isHighlighted = false;
+    });
+    _options.diagram.links.each(L => {
+      model.set(L.data, 'isGray', false);
+      L.isSelected = false;
+      L.isHighlighted = false;
     });
   }
 }

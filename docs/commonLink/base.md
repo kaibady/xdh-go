@@ -167,22 +167,21 @@ links=  [
 | arrows.to.show    | 末端箭头是否显示 | Boolean       | -      | false                             |
 | arrowFill         | 箭头内部颜色     | String/Object | -      | gray 状态为'#ccc'，其余默认'#000' |
 | arrowStroke       | 箭头边框颜色     | String/Object | -      | gray 状态为'#ccc'，其余默认'#000' |
+| arrowStrokeWidth  | 箭头形状宽度     | String/Object | -      | 5 种状态，默认 1                  |
 
 arrows 如果简写为字符串，如'from,to',则对应的箭头 show 属性为 true,其余跟随默认值
 
 ## label 文字
 
-| 参数            | 说明               | 类型          | 可选值                                                                               | 默认值                                    |
-| --------------- | ------------------ | ------------- | ------------------------------------------------------------------------------------ | ----------------------------------------- |
-| label           | 文字内容及样式     | Object/String | -                                                                                    | -                                         |
-| label.text      | 文字内容           | Array/String  | 如果类型为 String，则为单行文本；如果为 Array，则为多行文本，格式为[{text: 'text1'}] | ''                                        |
-| label.editable  | 文字内容是否可编辑 | Boolean       | -                                                                                    | false                                     |
-| label.show      | 文字内容是否显示   | Boolean       | -                                                                                    | true                                      |
-| label.font      | 文字样式           | String        | -                                                                                    | '14px "iconfont"'                         |
-| label.margin    | 文字外边距         | Number        | -                                                                                    | 10                                        |
-| label.offsetX   | 文字横向偏移量     | Number        | -                                                                                    | 0                                         |
-| label.offsetY   | 文字纵向偏移量     | Number        | -                                                                                    | 0                                         |
-| label.segment   | 文字位于连线的位置 | Number        | -                                                                                    | 1                                         |
-| labelStroke     | 文字外框边框色     | Object/String | -                                                                                    | 五种状态, 默认'transparent'               |
-| labelColor      | 文字颜色           | Object/String | -                                                                                    | gray 状态默认'#ccc',其它默认'#000'        |
-| labelBackground | 文字框背景色       | Object/String | -                                                                                    | gray 状态默认'#ccc',其它默认'transparent' |
+| 参数            | 说明                 | 类型          | 可选值                                                                                                | 默认值            |
+| --------------- | -------------------- | ------------- | ----------------------------------------------------------------------------------------------------- | ----------------- |
+| label           | 文字内容及样式       | Object/String | -                                                                                                     | -                 |
+| label.text      | 文字内容             | Array/String  | 如果类型为 String，则为单行文本；如果为 Array，则为多行文本，格式为[{text: 'text1'}]                  | ''                |
+| label.editable  | 文字内容是否可编辑   | Boolean       | -                                                                                                     | false             |
+| label.show      | 文字内容是否显示     | Boolean       | -                                                                                                     | true              |
+| label.font      | 文字样式             | String        | -                                                                                                     | '14px "iconfont"' |
+| label.margin    | 文字外边距           | Number        | -                                                                                                     | 10                |
+| label.placement | 文字相对与连线的位置 | String        | 'top'/'middle'/'bottom'/'start-top'/'start-middle'/'start-bottom'/'end-top'/'end-middle'/'end-bottom' | 'top'          |
+| labelStroke | 文字外框边框色 | Object/String | - | 五种状态, 默认'transparent' |
+| labelColor | 文字颜色 | Object/String | - | gray 状态默认'#ccc',其它默认'#000' |
+| labelBackground | 文字框背景色 | Object/String | - | gray 状态默认'#ccc',其它默认'transparent' |

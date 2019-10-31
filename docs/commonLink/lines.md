@@ -26,7 +26,7 @@
       :config="config"
       :layout="layout"
       ref="diagram"
-      height="500px"
+      height="900px"
       @on-ready="diagramReady"
     ></xdh-go>
   </div>
@@ -89,7 +89,11 @@
         };
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, { setsPortSpots: false });
+        return $(go.LayeredDigraphLayout, {
+          setsPortSpots: false,
+          layerSpacing: 150,
+          columnSpacing: 10
+        });
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {

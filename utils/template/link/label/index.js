@@ -10,8 +10,6 @@ export function label($, go, _options) {
   return panel($, go, {
     type: 'auto',
     props: {
-      segmentOffset: new go.Point(0, 10),
-      alignmentFocus: new go.Spot(0.5, 0, 0, 0),
       ..._options.props._outerPanelOptions.props
     },
     parts: [

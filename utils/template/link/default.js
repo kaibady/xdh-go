@@ -84,6 +84,7 @@ export let getDefaultProps = ($, go) => {
       editable: false,
       show: false,
       margin: 5,
+      placement: 'top',
       offsetX: 0,
       offsetY: 0,
       segment: 1

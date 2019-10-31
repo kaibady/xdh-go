@@ -3,7 +3,7 @@ import tag from '../tag/index';
 import {
   pictureBinding,
   pictureCircleBinding,
-  // pictureHolderBinding,
+  pictureHolderBinding,
   picturePanelBinding,
   shapeBinding,
   pictureClipBinding,
@@ -14,21 +14,10 @@ export default function figure($, go, _options) {
   return panel($, go, {
     type: 'spot',
     porps: {
+      name: 'tFigure',
       ..._options.props._figurePanelOptions.props
     },
     parts: [
-      // 增加一个不可见的环，放置外圈尺寸在改变时影响外部尺寸，导致布局变动
-      // shape($, go, {
-      //   props: {
-      //     figure: 'Circle',
-      //     fill: 'transparent',
-      //     stroke: 'transparent',
-      //     portId: 'tHolder',
-      //     ..._options.props._figureHolderOptions.props
-      //   },
-      //   parts: [..._options.props._figureHolderOptions.parts],
-      //   binding: pictureHolderBinding($, go, _options)
-      // }),
       // 表示状态的圈
       shape($, go, {
         props: {
@@ -58,6 +47,16 @@ export default function figure($, go, _options) {
         },
         binding: pictureBinding($, go, _options)
       }),
+      // 增加一个不可见的环，放置外圈尺寸在改变时影响外部尺寸，导致布局变动
+      shape($, go, {
+        props: {
+          fill: 'red',
+          stroke: 'transparent',
+          ..._options.props._figureHolderOptions.props
+        },
+        parts: [..._options.props._figureHolderOptions.parts],
+        binding: pictureHolderBinding($, go, _options)
+      }),
       // 图形类型
       shape($, go, {
         props: {
@@ -74,8 +73,8 @@ export default function figure($, go, _options) {
         binding: iconfontBinding($, go, _options),
         parts: [..._options.props._iconOptions.parts]
       }),
-       // 附加标签
-       tag($, go, _options),
+      // 附加标签
+      tag($, go, _options),
       ..._options.props._figurePanelOptions.parts
     ],
     binding: figurePanelBinding($, go, _options)

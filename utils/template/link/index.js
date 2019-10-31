@@ -1,10 +1,8 @@
 import { link } from '../../node-parts';
-import {
-  linkBinding
-} from './bindings';
-import {label} from './label'
-import {line, lineHolder} from './line'
-import {toArrow, fromArrow} from './arrow'
+import { linkBinding } from './bindings';
+import { label } from './label';
+import { line, lineHolder } from './line';
+import { toArrow, fromArrow } from './arrow';
 import { handleLinkDefault } from './default';
 export default function($, go, options) {
   let _options = handleLinkDefault($, go, options);

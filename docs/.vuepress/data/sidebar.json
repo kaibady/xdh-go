@@ -45,7 +45,7 @@
     {
       "title": "通用连线",
       "collapsable": false,
-      "children": ["base", "lines", "arrows", "label", "extension"]
+      "children": ["base", "lines", "arrows", "label", "gray", "extension"]
     }
   ],
   "/animation/": [

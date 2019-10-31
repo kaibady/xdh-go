@@ -379,3 +379,143 @@ easeInOutBounce
 ```
 
 :::
+
+## 在节点上定义动画
+
+如果使用通用节点方法，可在节点中添加动画配置
+:::demo
+
+```html
+<template>
+  <div>
+    <xdh-go
+      :nodes="nodes"
+      :links="links"
+      :type="model"
+      :node-template="nodeTemplate"
+      :link-template="linkTemplate"
+      :config="config"
+      :layout="layout"
+      ref="diagram"
+      height="700px"
+      @on-ready="diagramReady"
+    ></xdh-go>
+  </div>
+</template>
+<script>
+  import { XdhGo, nodeTmpl, linkTmpl } from 'xdh-go';
+  export default {
+    components: {
+      XdhGo
+    },
+    data() {
+      return {
+        model: 'GraphLinksModel',
+        nodes: [
+          {
+            key: 1,
+            label: 'node1',
+            animation: {
+              mouseEnter: [
+                {
+                  objectName: 'tFigure',
+                  duration: 500,
+                  prop: 'scale',
+                  keyFrame: [1, 1.2]
+                },
+                {
+                  objectName: 'tLabel',
+                  duration: 500,
+                  prop: 'margin',
+                  keyFrame: [0, 20]
+                }
+              ],
+              mouseLeave: [
+                {
+                  objectName: 'tFigure',
+                  duration: 500,
+                  prop: 'scale',
+                  keyFrame: [1.2, 1]
+                },
+                {
+                  objectName: 'tLabel',
+                  duration: 500,
+                  prop: 'margin',
+                  keyFrame: [20, 0]
+                }
+              ]
+            }
+          },
+          {
+            key: 2,
+            label: 'node2'
+          },
+          {
+            key: 3,
+            label: 'node3'
+          },
+          {
+            key: 4,
+            label: 'node4'
+          },
+          {
+            key: 5,
+            label: 'node5'
+          }
+        ],
+        links: [
+          {
+            from: 1,
+            to: 2
+          },
+          {
+            from: 1,
+            to: 3
+          },
+          {
+            from: 1,
+            to: 4
+          },
+          {
+            from: 1,
+            to: 5
+          }
+        ]
+      };
+    },
+    methods: {
+      config($, go) {
+        return {
+          initialContentAlignment: go.Spot.Center
+        };
+      },
+      layout($, go) {
+        return $(go.LayeredDigraphLayout, {
+          setsPortSpots: false,
+          layerSpacing: 150,
+          direction: 90
+        });
+      },
+      nodeTemplate($, go) {
+        return nodeTmpl($, go, {
+          props: {
+            shape: 'Circle',
+            size: 80
+          }
+        });
+      },
+      linkTemplate($, go) {
+        return linkTmpl($, go, {
+          props: {
+            arrows: 'to',
+            labelBackground: '#ffe58f'
+          }
+        });
+      },
+      diagramReady(diagram, $, go) {}
+    }
+  };
+</script>
+```
+
+:::
