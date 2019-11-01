@@ -5,23 +5,25 @@
  */
 
 // 动画每秒60帧
-const UPDATE_TIME = 1000 / 60
+const UPDATE_TIME = 1000 / 60;
 
-const pow = Math.pow
-const sqrt = Math.sqrt
-const sin = Math.sin
-const cos = Math.cos
-const PI = Math.PI
-const c1 = 1.70158
-const c2 = c1 * 1.525
-const c3 = c1 + 1
-const c4 = (2 * PI) / 3
-const c5 = (2 * PI) / 4.5
+const pow = Math.pow;
+const sqrt = Math.sqrt;
+const sin = Math.sin;
+const cos = Math.cos;
+const PI = Math.PI;
+const c1 = 1.70158;
+const c2 = c1 * 1.525;
+const c3 = c1 + 1;
+const c4 = (2 * PI) / 3;
+const c5 = (2 * PI) / 4.5;
 
 // 动画执行函数
-const rAF = window.requestAnimationFrame || function (cb) {
-  setTimeout(cb, UPDATE_TIME)
-}
+const rAF =
+  window.requestAnimationFrame ||
+  function(cb) {
+    setTimeout(cb, UPDATE_TIME);
+  };
 
 /**
  * 缓动动画函数
@@ -40,40 +42,64 @@ const rAF = window.requestAnimationFrame || function (cb) {
  *      // to do something
  *  })
  */
-export default function (startValue, endValue, during, easingFunc, stepCb) {
+let animationPool = {};
+let relateObjectState = {};
+export default function(
+  startValue,
+  endValue,
+  during,
+  easingFunc,
+  stepCb,
+  finishCb,
+  relateId // 相关节点的__gohashid
+) {
+  if (relateId && relateObjectState[relateId] !== undefined) {
+    startValue = relateObjectState[relateId].state;
+    clearAnimation(relateObjectState[relateId].animationId);
+  }
   // 改变的值大小
-  const changeValue = endValue - startValue
+  let changeValue = endValue - startValue;
   // 指定时间内更新的次数
-  const updateCount = during / UPDATE_TIME
+  const updateCount = during / UPDATE_TIME;
   // 每次更新的值距离
-  const perUpdateDistance = 1 / updateCount
-  let position = 0
-  return new Promise(resolve => {
-    function step() {
-      const state = startValue + changeValue * easingFunc(position)
-      stepCb(state)
-      position += perUpdateDistance
-      if (position < 1) {
-        rAF(step)
-      } else {
-        rAF(() => {
-          stepCb(endValue)
-          resolve()
-        })
-      }
+  const perUpdateDistance = 1 / updateCount;
+  let position = 0;
+  let animationId = `${new Date().getTime()}${Math.floor(
+    Math.random() * 100000
+  )}`;
+  animationPool[animationId] = function() {
+    const state = startValue + changeValue * easingFunc(position);
+    if (relateId) {
+      relateObjectState[relateId] = { state, animationId };
     }
-
-    step()
-  })
+    stepCb(state);
+    position += perUpdateDistance;
+    if (position < 1 && animationPool[animationId]) {
+      rAF(animationPool[animationId]);
+    } else {
+      rAF(() => {
+        stepCb(endValue);
+        finishCb();
+        if (relateId) {
+          delete relateObjectState[relateId];
+        }
+        delete animationPool[animationId];
+      });
+    }
+  };
+  animationPool[animationId]();
+  return animationId;
 }
-
+export function clearAnimation(animationId) {
+  delete animationPool[animationId];
+}
 /**
  * easeInQuad
  * @param {number} x
  * @returns {number}
  */
 export function easeInQuad(x) {
-  return x * x
+  return x * x;
 }
 
 /**
@@ -82,7 +108,7 @@ export function easeInQuad(x) {
  * @returns {number}
  */
 export function easeOutQuad(x) {
-  return 1 - (1 - x) * (1 - x)
+  return 1 - (1 - x) * (1 - x);
 }
 
 /**
@@ -91,7 +117,7 @@ export function easeOutQuad(x) {
  * @returns {number}
  */
 export function easeInOutQuad(x) {
-  return x < 0.5 ? 2 * x * x : 1 - pow(-2 * x + 2, 2) / 2
+  return x < 0.5 ? 2 * x * x : 1 - pow(-2 * x + 2, 2) / 2;
 }
 
 /**
@@ -100,7 +126,7 @@ export function easeInOutQuad(x) {
  * @returns {number}
  */
 export function easeInCubic(x) {
-  return x * x * x
+  return x * x * x;
 }
 
 /**
@@ -109,7 +135,7 @@ export function easeInCubic(x) {
  * @returns {number}
  */
 export function easeOutCubic(x) {
-  return 1 - pow(1 - x, 3)
+  return 1 - pow(1 - x, 3);
 }
 
 /**
@@ -136,7 +162,7 @@ export function easeInQuart(x) {
  * @returns {number}
  */
 export function easeOutQuart(x) {
-  return 1 - pow(1 - x, 4)
+  return 1 - pow(1 - x, 4);
 }
 
 /**
@@ -154,7 +180,7 @@ export function easeInOutQuart(x) {
  * @returns {number}
  */
 export function easeInQuint(x) {
-  return x * x * x * x * x
+  return x * x * x * x * x;
 }
 
 /**
@@ -163,7 +189,7 @@ export function easeInQuint(x) {
  * @returns {number}
  */
 export function easeOutQuint(x) {
-  return 1 - pow(1 - x, 5)
+  return 1 - pow(1 - x, 5);
 }
 
 /**
@@ -181,7 +207,7 @@ export function easeInOutQuint(x) {
  * @returns {number}
  */
 export function easeInSine(x) {
-  return 1 - cos(x * PI / 2)
+  return 1 - cos((x * PI) / 2);
 }
 
 /**
@@ -190,7 +216,7 @@ export function easeInSine(x) {
  * @returns {number}
  */
 export function easeOutSine(x) {
-  return sin(x * PI / 2)
+  return sin((x * PI) / 2);
 }
 
 /**
@@ -199,7 +225,7 @@ export function easeOutSine(x) {
  * @returns {number}
  */
 export function easeInOutSine(x) {
-  return -(cos(PI * x) - 1) / 2
+  return -(cos(PI * x) - 1) / 2;
 }
 
 /**
@@ -208,7 +234,7 @@ export function easeInOutSine(x) {
  * @returns {number}
  */
 export function easeInExpo(x) {
-  return x === 0 ? 0 : pow(2, 10 * x - 10)
+  return x === 0 ? 0 : pow(2, 10 * x - 10);
 }
 
 /**
@@ -217,11 +243,17 @@ export function easeInExpo(x) {
  * @returns {number}
  */
 export function easeOutExpo(x) {
-  return x === 1 ? 1 : 1 - pow(2, -10 * x)
+  return x === 1 ? 1 : 1 - pow(2, -10 * x);
 }
 
 export function easeInOutExpo(x) {
-  return x === 0 ? 0 : x === 1 ? 1 : x < 0.5 ? pow(2, 20 * x - 10) / 2 : (2 - pow(2, -20 * x + 10)) / 2
+  return x === 0
+    ? 0
+    : x === 1
+    ? 1
+    : x < 0.5
+    ? pow(2, 20 * x - 10) / 2
+    : (2 - pow(2, -20 * x + 10)) / 2;
 }
 
 /**
@@ -230,7 +262,7 @@ export function easeInOutExpo(x) {
  * @returns {number}
  */
 export function easeInCirc(x) {
-  return 1 - sqrt(1 - pow(x, 2))
+  return 1 - sqrt(1 - pow(x, 2));
 }
 
 /**
@@ -239,11 +271,13 @@ export function easeInCirc(x) {
  * @returns {number}
  */
 export function easeOutCirc(x) {
-  return sqrt(1 - pow(x - 1, 2))
+  return sqrt(1 - pow(x - 1, 2));
 }
 
 export function easeInOutCirc(x) {
-  return x < 0.5 ? (1 - sqrt(1 - pow(2 * x, 2))) / 2 : (sqrt(1 - pow(-2 * x + 2, 2)) + 1) / 2
+  return x < 0.5
+    ? (1 - sqrt(1 - pow(2 * x, 2))) / 2
+    : (sqrt(1 - pow(-2 * x + 2, 2)) + 1) / 2;
 }
 
 /**
@@ -252,7 +286,11 @@ export function easeInOutCirc(x) {
  * @returns {number}
  */
 export function easeInElastic(x) {
-  return x === 0 ? 0 : x === 1 ? 1 : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4)
+  return x === 0
+    ? 0
+    : x === 1
+    ? 1
+    : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4);
 }
 
 /**
@@ -261,11 +299,21 @@ export function easeInElastic(x) {
  * @returns {number}
  */
 export function easeOutElastic(x) {
-  return x === 0 ? 0 : x === 1 ? 1 : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1
+  return x === 0
+    ? 0
+    : x === 1
+    ? 1
+    : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1;
 }
 
 export function easeInOutElastic(x) {
-  return x === 0 ? 0 : x === 1 ? 1 : x < 0.5 ? -(pow(2, 20 * x - 10) * sin((20 * x - 11.125) * c5)) / 2 : pow(2, -20 * x + 10) * sin((20 * x - 11.125) * c5) / 2 + 1
+  return x === 0
+    ? 0
+    : x === 1
+    ? 1
+    : x < 0.5
+    ? -(pow(2, 20 * x - 10) * sin((20 * x - 11.125) * c5)) / 2
+    : (pow(2, -20 * x + 10) * sin((20 * x - 11.125) * c5)) / 2 + 1;
 }
 
 /**
@@ -274,7 +322,7 @@ export function easeInOutElastic(x) {
  * @returns {number}
  */
 export function easeInBack(x) {
-  return c3 * x * x * x - c1 * x * x
+  return c3 * x * x * x - c1 * x * x;
 }
 
 /**
@@ -283,7 +331,7 @@ export function easeInBack(x) {
  * @returns {number}
  */
 export function easeOutBack(x) {
-  return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2)
+  return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2);
 }
 
 /**
@@ -292,7 +340,9 @@ export function easeOutBack(x) {
  * @returns {number}
  */
 export function easeInOutBack(x) {
-  return x < 0.5 ? (pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2 : (pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2
+  return x < 0.5
+    ? (pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
+    : (pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
 }
 
 /**
@@ -301,7 +351,7 @@ export function easeInOutBack(x) {
  * @returns {number}
  */
 export function easeInBounce(x) {
-  return 1 - easeOutBounce(1 - x)
+  return 1 - easeOutBounce(1 - x);
 }
 
 /**
@@ -310,16 +360,16 @@ export function easeInBounce(x) {
  * @returns {number}
  */
 export function easeOutBounce(x) {
-  let n1 = 7.5625
-  let d1 = 2.75
+  let n1 = 7.5625;
+  let d1 = 2.75;
   if (x < 1 / d1) {
-    return n1 * x * x
+    return n1 * x * x;
   } else if (x < 2 / d1) {
-    return n1 * (x -= (1.5 / d1)) * x + 0.75;
+    return n1 * (x -= 1.5 / d1) * x + 0.75;
   } else if (x < 2.5 / d1) {
-    return n1 * (x -= (2.25 / d1)) * x + 0.9375;
+    return n1 * (x -= 2.25 / d1) * x + 0.9375;
   } else {
-    return n1 * (x -= (2.625 / d1)) * x + 0.984375;
+    return n1 * (x -= 2.625 / d1) * x + 0.984375;
   }
 }
 
@@ -329,5 +379,7 @@ export function easeOutBounce(x) {
  * @returns {number}
  */
 export function easeInOutBounce(x) {
-  return x < 0.5 ? (1 - easeOutBounce(1 - 2 * x)) / 2 : (1 + easeOutBounce(2 * x - 1)) / 2
+  return x < 0.5
+    ? (1 - easeOutBounce(1 - 2 * x)) / 2
+    : (1 + easeOutBounce(2 * x - 1)) / 2;
 }

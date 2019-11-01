@@ -51,14 +51,19 @@ function handleAnimation(e, n, event) {
         let configs = ret[1];
         configs.forEach(con => {
           let obj = node;
-          console.log(con, obj)
+          let obj1 = node.findObject('tFigure');
+          obj1.isAnimated = false;
+          console.log(con, obj, obj1);
           tween(
             con.keyFrame[0],
             con.keyFrame[1],
             con.duration,
             animateFun['easeOutCirc'],
             state => {
-              obj[con.prop] = state;
+              obj1[con.prop] = state;
+            },
+            () => {
+              obj1.isAnimated = true;
             }
           );
         });

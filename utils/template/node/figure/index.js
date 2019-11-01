@@ -13,7 +13,7 @@ import {
 export default function figure($, go, _options) {
   return panel($, go, {
     type: 'spot',
-    porps: {
+    props: {
       name: 'tFigure',
       ..._options.props._figurePanelOptions.props
     },

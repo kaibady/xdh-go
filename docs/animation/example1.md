@@ -419,7 +419,7 @@ easeInOutBounce
               mouseEnter: [
                 {
                   objectName: 'tFigure',
-                  duration: 300,
+                  duration: 200,
                   prop: 'scale',
                   keyFrame: [1, 1.2]
                 }
@@ -427,7 +427,7 @@ easeInOutBounce
               mouseLeave: [
                 {
                   objectName: 'tFigure',
-                  duration: 300,
+                  duration: 200,
                   prop: 'scale',
                   keyFrame: [1.2, 1]
                 }
