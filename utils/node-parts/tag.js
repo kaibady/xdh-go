@@ -5,6 +5,7 @@ import binding from './binding';
 export default function($, go, options = {}) {
   let _options = Object.assign(
     {
+      name: '',
       figure: 'RoundedRectangle',
       fill: '#40a9ff',
       stroke: '#003a8c',
@@ -14,12 +15,17 @@ export default function($, go, options = {}) {
       textKey: 'text',
       font: '14px "Microsoft Yahei"',
       textArrayKey: 'label',
-      padding: 10
+      padding: 10,
+      visible: true
     },
     options
   );
   return panel($, go, {
     type: 'auto',
+    props: {
+      ..._options.props,
+      name: _options.name
+    },
     parts: [
       shape($, go, {
         props: {
@@ -41,7 +47,10 @@ export default function($, go, options = {}) {
           visible: {
             key: '',
             handler(d) {
-              if (d.text && typeof d.text === 'string') {
+              if (
+                d[_options.textKey] &&
+                typeof d[_options.textKey] === 'string'
+              ) {
                 return true;
               } else {
                 return false;
@@ -82,6 +91,21 @@ export default function($, go, options = {}) {
           }
         })
       })
-    ]
+    ],
+    binding: binding($, go, {
+      visible: {
+        key: '',
+        handler(d) {
+          if (
+            (d[_options.textKey] && typeof d[_options.textKey] === 'string') ||
+            (d[_options.textKey] && d[_options.textKey] instanceof Array)
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      }
+    })
   });
 }

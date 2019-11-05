@@ -37,6 +37,7 @@
         "tag",
         "tooltip",
         "gray",
+        "animate",
         "extension"
       ]
     }
@@ -46,13 +47,6 @@
       "title": "通用连线",
       "collapsable": false,
       "children": ["base", "lines", "arrows", "label", "gray", "extension"]
-    }
-  ],
-  "/animation/": [
-    {
-      "title": "动效",
-      "collapsable": false,
-      "children": ["example1"]
     }
   ],
   "/applys/": [

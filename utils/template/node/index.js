@@ -3,8 +3,8 @@ import { handleNodeDefault } from './default';
 import figure from './figure/index';
 import label from './label/index';
 import container from './container/index';
-import * as animateFun from '../../animation/tween';
-let tween = animateFun.default;
+import handleAnimation from '../../animation/tween';
+
 import {
   innerPanelBinding,
   nodeBinding,
@@ -32,46 +32,7 @@ function handleParts(_options) {
     extendDown
   };
 }
-function handleAnimation(e, n, event) {
-  /**
-   * objectName,duration,prop,keyFrame
-   */
-  let node = n.part;
-  console.log(node);
-  if (!node || !node.data.animation) {
-    return;
-  } else {
-    let diagram = node.diagram;
-    let oldskips = diagram.skipsUndoManager;
-    diagram.skipsUndoManager = true;
-    console.log(Object.entries(node.data.animation));
-    Object.entries(node.data.animation).forEach(ret => {
-      console.log(ret);
-      if (ret[0] === event) {
-        let configs = ret[1];
-        configs.forEach(con => {
-          let obj = node;
-          let obj1 = node.findObject('tFigure');
-          obj1.isAnimated = false;
-          console.log(con, obj, obj1);
-          tween(
-            con.keyFrame[0],
-            con.keyFrame[1],
-            con.duration,
-            animateFun['easeOutCirc'],
-            state => {
-              obj1[con.prop] = state;
-            },
-            () => {
-              obj1.isAnimated = true;
-            }
-          );
-        });
-      }
-      diagram.skipsUndoManager = oldskips;
-    });
-  }
-}
+
 /**
  * @function
  * @name handleEvents
@@ -83,15 +44,15 @@ function handleEvents(_options) {
     let hoverFun = _options.events.mouseEnter;
     let overideFun = function(e, n) {
       n.diagram.model.set(n.data, 'isHover', true);
-      console.log(handleAnimation);
-      handleAnimation(e, n, 'mouseEnter');
+      handleAnimation(e, n, 'mouseEnter', _options, go);
       hoverFun(e, n);
     };
     _options.events.mouseEnter = overideFun;
   } else {
     let overideFun = function(e, n) {
+      // console.log('mouseEnter', n);
       n.diagram.model.set(n.data, 'isHover', true);
-      handleAnimation(e, n, 'mouseEnter');
+      handleAnimation(e, n, 'mouseEnter', _options, go);
     };
     _options.events.mouseEnter = overideFun;
   }
@@ -99,16 +60,45 @@ function handleEvents(_options) {
     let hoverFun = _options.events.mouseLeave;
     let overideFun = function(e, n) {
       n.diagram.model.set(n.data, 'isHover', false);
-      handleAnimation(e, n, 'mouseLeave');
+      handleAnimation(e, n, 'mouseLeave', _options, go);
       hoverFun(e, n);
     };
     _options.events.mouseLeave = overideFun;
   } else {
     let overideFun = function(e, n) {
+      // console.log('mouseLeave', n);
       n.diagram.model.set(n.data, 'isHover', false);
-      handleAnimation(e, n, 'mouseLeave');
+      handleAnimation(e, n, 'mouseLeave', _options, go);
     };
     _options.events.mouseLeave = overideFun;
+  }
+  if (_options.events.click) {
+    let originFun = _options.events.click;
+    let overideFun = function(e, n) {
+      handleAnimation(e, n, 'click', _options, go);
+      originFun(e, n);
+    };
+    _options.events.click = overideFun;
+  } else {
+    let overideFun = function(e, n) {
+      // console.log('click', n);
+      handleAnimation(e, n, 'click', _options, go);
+    };
+    _options.events.click = overideFun;
+  }
+  if (_options.events.doubleClick) {
+    let originFun = _options.events.doubleClick;
+    let overideFun = function(e, n) {
+      handleAnimation(e, n, 'dbclick', _options, go);
+      originFun(e, n);
+    };
+    _options.events.doubleClick = overideFun;
+  } else {
+    let overideFun = function(e, n) {
+      // console.log('dbclick', n);
+      handleAnimation(e, n, 'dbclick', _options, go);
+    };
+    _options.events.doubleClick = overideFun;
   }
 }
 export default function($, go, options) {

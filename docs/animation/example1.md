@@ -2,385 +2,30 @@
 
 gojs 对节点的动画没有特别的进行扩展，但在 sample 示例中有使用 window.requestAnimationFrame 来实现动画效果。举例如下：
 
-## 基本原理
 
-:::demo
-
-```html
-<template>
-  <div>
-    <xdh-go
-      :nodes="nodes"
-      :type="model"
-      :config="config"
-      :node-template="nodeTemplate"
-      :layout="layout"
-      ref="diagram"
-      height="300px"
-      @on-ready="diagramReady"
-    ></xdh-go>
-  </div>
-</template>
-<script>
-  import { XdhGo, utils } from 'xdh-go';
-  let { node, textBlock, shape, binding } = utils;
-  export default {
-    components: {
-      XdhGo
-    },
-    data() {
-      return {
-        model: 'GraphLinksModel',
-        nodes: [
-          {
-            text: 'node1',
-            stroke: 'red',
-            fill: '#f0f0f0',
-            loc: ''
-          },
-          {
-            text: 'node2',
-            stroke: 'blue',
-            fill: '#fe00fe',
-            loc: ''
-          },
-          {
-            text: 'node3',
-            stroke: '#ff9900',
-            fill: '#fefe00',
-            font: 'bold 18pt "Microsoft Yahei"',
-            loc: ''
-          }
-        ]
-      };
-    },
-    methods: {
-      config($, go) {
-        return {
-          initialContentAlignment: go.Spot.Center
-        };
-      },
-      layout($, go) {
-        return $(go.GridLayout, {
-          isOngoing: false,
-          spacing: new go.Size(40, 40)
-        });
-      },
-      diagramReady(diagram, $, go) {},
-      scaleAnimate() {},
-      zoomOut(node) {
-        let animateStep = 0.01;
-        let diagram = node.diagram;
-        this.scaleAnimate = () => {
-          if (node.data.animation) {
-            let oldskips = diagram.skipsUndoManager;
-            diagram.skipsUndoManager = true;
-            let borderObj = node.findObject('Bd');
-            if (borderObj) {
-              let obj = borderObj;
-              if (obj) {
-                let N = obj.part;
-                if (N.scale > 1.1) {
-                  N.scale = 1.1;
-                }
-                N.scale = N.scale + animateStep;
-              }
-            }
-            diagram.skipsUndoManager = oldskips;
-            window.requestAnimationFrame(this.scaleAnimate);
-          }
-        };
-        window.requestAnimationFrame(this.scaleAnimate);
-      },
-      zoomIn(node) {
-        node.data.animation = false;
-        node.scale = 1;
-      },
-      nodeTemplate($, go) {
-        return node($, go, {
-          type: 'spot',
-          events: {
-            mouseEnter: (e, obj) => {
-              obj.data.animation = true;
-              this.zoomOut(obj.part);
-            },
-            mouseLeave: (e, obj) => {
-              this.zoomIn(obj.part);
-            }
-          },
-          parts: [
-            shape($, go, {
-              type: 'RoundedRectangle',
-              props: {
-                name: 'Bd',
-                strokeWidth: 3,
-                alignment: go.Spot.Center
-              },
-              binding: binding($, go, {
-                fill: 'fill',
-                stroke: {
-                  type: 'ofObject',
-                  key: '',
-                  handler(n) {
-                    return n.isSelected ? 'red' : '#000';
-                  }
-                }
-              })
-            }),
-            textBlock($, go, {
-              props: {
-                font: 'bold 14pt serif'
-              },
-              binding: binding($, go, {
-                text: 'text',
-                stroke: 'stroke',
-                font: 'font'
-              })
-            })
-          ]
-        });
-      }
-    }
-  };
-</script>
-```
-
-:::
-
-## 动效扩展
-
-在此原理基础上，可以使用 tween 动画函数简化动画的实现。
-动画函数包括：
-easeInQuad,
-easeOutQuad,
-easeInOutQuad,
-easeInCubic,
-easeOutCubic,
-easeInOutCubic,
-easeInQuart,
-easeOutQuart,
-easeInOutQuart,
-easeInQuint,
-easeOutQuint,
-easeInOutQuint,
-easeInSine,
-easeOutSine,
-easeInOutSine,
-easeInExpo,
-easeOutExpo,
-easeInOutExpo,
-easeInCirc,
-easeOutCirc,
-easeInOutCirc,
-easeInElastic,
-easeOutElastic,
-easeInOutElastic,
-easeInBack,
-easeOutBack,
-easeInOutBack,
-easeInBounce,
-easeOutBounce,
-easeInOutBounce
-:::demo
-
-```html
-<template>
-  <div>
-    <xdh-go
-      :nodes="nodes"
-      :type="model"
-      :config="config"
-      :node-template="nodeTemplate"
-      :layout="layout"
-      ref="diagram"
-      height="300px"
-      @on-ready="diagramReady"
-    ></xdh-go>
-  </div>
-</template>
-<script>
-  import { XdhGo, utils, animation } from 'xdh-go';
-  let { node, textBlock, shape, binding } = utils;
-  let { func, tween } = animation;
-  export default {
-    components: {
-      XdhGo
-    },
-    data() {
-      return {
-        model: 'GraphLinksModel',
-        nodes: [
-          {
-            text: 'node1',
-            stroke: 'red',
-            fill: '#f0f0f0',
-            animate: 'type1'
-          },
-          {
-            text: 'node2',
-            stroke: 'blue',
-            fill: '#fe00fe',
-            loc: '',
-            animate: 'type2'
-          },
-          {
-            text: 'node3',
-            stroke: '#ff9900',
-            fill: '#fefe00',
-            font: 'bold 18pt "Microsoft Yahei"',
-            animate: 'type3'
-          }
-        ]
-      };
-    },
-    methods: {
-      config($, go) {
-        return {
-          initialContentAlignment: go.Spot.Center
-        };
-      },
-      layout($, go) {
-        return $(go.GridLayout, {
-          isOngoing: false,
-          spacing: new go.Size(40, 40)
-        });
-      },
-      diagramReady(diagram, $, go) {},
-      nodeTemplate($, go) {
-        return node($, go, {
-          type: 'spot',
-          props: {
-            rotateObjectName: 'centerObj'
-          },
-          events: {
-            mouseEnter: (e, obj) => {
-              let diagram = obj.part.diagram;
-              let oldskips = diagram.skipsUndoManager;
-              diagram.skipsUndoManager = true;
-              switch (obj.part.data.animate) {
-                case 'type1':
-                  // 节点放大
-                  tween(1, 1.1, 300, func['easeOutCirc'], state => {
-                    obj.part.scale = state;
-                  });
-                  break;
-                case 'type2':
-                  // 节点旋转
-                  obj.part.data.animating = true;
-                  tween(0, 10, 300, func['easeOutCirc'], state => {
-                    obj.part.angle = state;
-                  });
-                  break;
-                case 'type3':
-                  // 节点变形
-                  let height = obj.part.findObject('Bd').height;
-                  tween(0, 5, 300, func['easeOutCirc'], state => {
-                    obj.part.findObject('Bd').margin = new go.Margin(
-                      state,
-                      0,
-                      0,
-                      0
-                    );
-                  });
-                  tween(
-                    height,
-                    height - 10,
-                    300,
-                    func['easeOutCirc'],
-                    state => {
-                      obj.part.findObject('Bd').height = state;
-                    }
-                  );
-                  break;
-              }
-              diagram.skipsUndoManager = oldskips;
-            },
-            mouseLeave: (e, obj) => {
-              let diagram = obj.part.diagram;
-              let oldskips = diagram.skipsUndoManager;
-              diagram.skipsUndoManager = true;
-              switch (obj.part.data.animate) {
-                case 'type1':
-                  // 节点放大
-                  tween(1.1, 1, 300, func['easeOutCirc'], state => {
-                    obj.part.scale = state;
-                  });
-                  break;
-                case 'type2':
-                  // 节点旋转
-                  obj.part.data.animating = true;
-                  tween(10, 0, 300, func['easeOutCirc'], state => {
-                    obj.part.angle = state;
-                  });
-                  break;
-                case 'type3':
-                  // 节点变形
-                  let height = obj.part.findObject('Bd').height;
-                  let y = obj.part.location.y;
-                  tween(5, 0, 300, func['easeOutCirc'], state => {
-                    obj.part.findObject('Bd').margin = new go.Margin(
-                      state,
-                      0,
-                      0,
-                      0
-                    );
-                  });
-                  tween(
-                    height,
-                    height + 10,
-                    300,
-                    func['easeOutCirc'],
-                    state => {
-                      obj.part.findObject('Bd').height = state;
-                    }
-                  );
-                  break;
-              }
-              diagram.skipsUndoManager = oldskips;
-            }
-          },
-          parts: [
-            shape($, go, {
-              type: 'RoundedRectangle',
-              props: {
-                name: 'Bd',
-                strokeWidth: 3,
-                alignment: go.Spot.Center,
-                width: 80,
-                height: 80
-              },
-              binding: binding($, go, {
-                fill: 'fill',
-                stroke: {
-                  type: 'ofObject',
-                  key: '',
-                  handler(n) {
-                    return n.isSelected ? 'red' : '#000';
-                  }
-                }
-              })
-            }),
-            textBlock($, go, {
-              props: {
-                font: 'bold 14pt serif'
-              },
-              binding: binding($, go, {
-                text: 'text',
-                stroke: 'stroke',
-                font: 'font'
-              })
-            })
-          ]
-        });
-      }
-    }
-  };
-</script>
-```
-
-:::
 
 ## 在节点上定义动画
+
+动画参数
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| ----------------- | ---------------- | ------------- | ------ | --------------------------------- |
+| animation | 动画参数 | [Object] | - | - |
+| animation[n].trigger | 动画触发事件 | String | 'always'/'mouseEnter'/ 'mouseLeave'/'click'/'dbclick'| 'mouseEnter' |
+| animation[n].objectName | 动画施加的对象名称或者节点数据的属性 | String | 1.通用节点：'tNode'(节点对象)/'tFigure'(图形对象)/'tLabel'(文字对象) 2.自定义对象的 name 名称。3.节点数据'data',或对象内的属性，如, 'data.strokeWidth' |''|
+| animation[n].duration | 动画持续时间，毫秒 | Number | -|300|
+| animation[n].prop | 动画对象需要变更的属性 | String | -|''|
+| animation[n].propType | 动画对象属性的类型， | String |'spot'/'number'/'size'/'margin'/'rect'/'point'/'rgba'|根据 prop 自动匹配属性的类型，但有些属性可以有多种类型，需指定|
+| animation[n].keyFrame | 动画开始和结束的属性值 | Array | 根据 propType 不同传不同的数组类型，见补充说明 |[0, 1]|
+| animation[n].keyType | 属性值是相对变化或绝对变化 | String | 'relative'/'absolute' |'absolute'|
+| animation[n].name | 动画名称，与 prevName 配合使用 | String | - |''|
+| animation[n].prevName | 上一个动画名称，如果为空字串则直接执行，如果不为空则在指定动画结束后再执行 | String | - |''|
+| animation[n].delay | 动画延迟的时间，毫秒 | Number | - |0|
+| animation[n].repeatCount | 动画重复的次数 | Number | - |1|
+| animation[n].direction | 动画重复时，偶数次是否反向播放 | String | 'normal'/'alternate' |'normal'|
+| animation[n].easingFunc | 动画速度曲线 | [String/Function],String 类型是内置方法名称，Function 类型为自定义方法 | - |['easeInQuad']|
+
+
+
 
 如果使用通用节点方法，可在节点中添加动画配置
 :::demo
@@ -415,24 +60,38 @@ easeInOutBounce
           {
             key: 1,
             label: 'node1',
-            animation: {
-              mouseEnter: [
-                {
-                  objectName: 'tFigure',
-                  duration: 200,
-                  prop: 'scale',
-                  keyFrame: [1, 1.2]
-                }
-              ],
-              mouseLeave: [
-                {
-                  objectName: 'tFigure',
-                  duration: 200,
-                  prop: 'scale',
-                  keyFrame: [1.2, 1]
-                }
-              ]
-            }
+            animation: [
+              {
+                trigger: 'mouseEnter',
+                objectName: 'tFigure',
+                duration: 1000,
+                name: 'redtogreen',
+                prop: 'background',
+                propType: 'rgba',
+                repeatCount: 4,
+                direction: 'alternate',
+                keyFrame: [[0, 255, 0, 1], [0, 0, 255, 1]],
+                easingFunc: [
+                  'easeInQuad',
+                  'easeInQuad',
+                  'easeInQuad',
+                  'easeInQuad'
+                ]
+              },
+              {
+                prevName: 'redtogreen',
+                trigger: 'mouseEnter',
+                objectName: 'tFigure',
+                duration: 1000,
+                prop: 'scale',
+                propType: 'number',
+                keyFrame: [1, 1.5],
+                easingFunc: [
+                  'easeInQuad',
+                  'easeInQuad'
+                ]
+              }
+            ]
           },
           {
             key: 2,

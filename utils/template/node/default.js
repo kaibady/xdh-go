@@ -139,6 +139,7 @@ export let getDefaultProps = ($, go) => {
       margin: 5,
       text: ''
     },
+    animation: null,
     _nodeOptions: {
       props: {},
       parts: []
@@ -246,7 +247,8 @@ export function handleNodeDefault($, go, options = {}) {
     'tooltip',
     'icon',
     'size',
-    'shapeParams'
+    'shapeParams',
+    'animation'
   ];
   for (let name in defaultProps) {
     // 如果是简化参数，把参数值按对象的定义方法设置
@@ -271,6 +273,9 @@ export function handleNodeDefault($, go, options = {}) {
           } else if (!(_options.props.size instanceof Array)) {
             _options.props.size = defaultProps.size;
           }
+        } else if (name === 'animation') {
+          _options.props.animation =
+            _options.props.animation || defaultProps.animation;
         } else {
           let obj = {};
           for (let n1 in defaultProps[name]) {
