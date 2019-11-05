@@ -39,7 +39,7 @@ function handleParts(_options) {
  * @description 处理节点mouseEnter,mouseLeave和isHover参数
  * @param {Object} _options 节点配置
  */
-function handleEvents(_options) {
+function handleEvents(_options, $, go) {
   if (_options.events.mouseEnter) {
     let hoverFun = _options.events.mouseEnter;
     let overideFun = function(e, n) {
@@ -107,7 +107,7 @@ export default function($, go, options) {
   // 处理parts, 用于扩展节点
   let { extendUp, extendDown } = handleParts(_options);
   // 处理事件
-  handleEvents(_options);
+  handleEvents(_options, $, go);
   return node($, go, {
     props: {
       name: 'tNode',

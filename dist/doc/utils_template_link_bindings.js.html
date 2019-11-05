@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/template/link/bindings.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/template/link/bindings.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { binding } from '../../node-parts';
+export function bindToState(n, _options, bindProp) {
+  let d = n.data;
+  let props = _options.props;
+  if (d.isGray) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &amp;&amp;
+      d[bindProp].gray !== undefined
+    ) {
+      return d[bindProp].gray;
+    } else {
+      return props[bindProp].gray;
+    }
+  } else if (n.isSelected) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &amp;&amp;
+      d[bindProp].select !== undefined
+    ) {
+      return d[bindProp].select;
+    } else {
+      return props[bindProp].select;
+    }
+  } else if (d.isHover) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &amp;&amp;
+      d[bindProp].hover !== undefined
+    ) {
+      return d[bindProp].hover;
+    } else {
+      return props[bindProp].hover;
+    }
+  } else if (n.isHighlighted) {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &amp;&amp;
+      d[bindProp].highlight !== undefined
+    ) {
+      return d[bindProp].highlight;
+    } else {
+      return props[bindProp].highlight;
+    }
+  } else {
+    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
+      return d[bindProp];
+    } else if (
+      typeof d[bindProp] === 'object' &amp;&amp;
+      d[bindProp].normal !== undefined
+    ) {
+      return d[bindProp].normal;
+    } else {
+      return props[bindProp].normal;
+    }
+  }
+}
+/**
+ *
+ * @param {Object} $
+ * @param {Object} go
+ * @param {Object} _options
+ * @param {Array} propArr 参数数组，如 ['tag', 'text']
+ */
+export function getHandler($, go, _options, propArr) {
+  let p1 = propArr[0],
+    p2 = propArr[1];
+  let fun;
+  if (p1 &amp;&amp; p2) {
+    fun = d => {
+      if (d[p1] &amp;&amp; d[p1][p2]) {
+        return d[p1][p2];
+      } else {
+        return _options.props[p1][p2];
+      }
+    };
+  } else if (p1) {
+    fun = d => {
+      if (d[p1]) {
+        return d[p1];
+      } else {
+        return _options.props[p1];
+      }
+    };
+  }
+
+  return fun;
+}
+export function linkBinding($, go, _options) {
+  return binding($, go, {
+    curve: {
+      key: '',
+      handler(d) {
+        if (d.type &amp;&amp; d.type === 'curve') {
+          return go.Link.Bezier;
+        } else if(d.type &amp;&amp; d.type === 'straight') {
+          return go.Link.None;
+        } else if(d.type &amp;&amp; d.type === 'route') {
+          return go.Link.JumpGap;
+        } else {
+          return go.Link.Bezier;
+        }
+      }
+    },
+    curviness: {
+      key: '',
+      handler(d) {
+        if (d.type &amp;&amp; d.type === 'curve') {
+          return NaN;
+        } else if(d.type &amp;&amp; d.type === 'straight') {
+          return 0;
+        } else if(d.type &amp;&amp; d.type === 'route') {
+          return 20;
+        } else {
+          return 20;
+        }
+      }
+    },
+    corner: {
+      key: '',
+      handler(d) {
+       if(d.type &amp;&amp; d.type === 'route') {
+          return 10;
+        } else {
+          return 0;
+        }
+      }
+    },
+    routing: {
+      key: '',
+      handler(d) {
+        if(d.type &amp;&amp; d.type === 'route') {
+          return go.Link.AvoidsNodes;
+        } else {
+          return go.Link.Normal;
+        }
+      }
+    },
+    smoothness: {
+      key: '',
+      handler(d) {
+        if (d.smoothness !== undefined) {
+          return d.smoothness;
+        } else {
+          return _options.props.smoothness;
+        }
+      }
+    },
+    opacity: {
+      key: '',
+      handler(d) {
+        if (d.opacity) {
+          return d.opacity;
+        } else {
+          return _options.props.opacity;
+        }
+      }
+    },
+    fromShortLength: {
+      key: '',
+      handler: getHandler($, go, _options, ['fromShortLength'])
+    },
+    toShortLength: {
+      key: '',
+      handler: getHandler($, go, _options, ['toShortLength'])
+    }
+  });
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-utils_directives_draggable.html">utils/directives/draggable</a></li><li><a href="module-utils_directives_resizable.html">utils/directives/resizable</a></li><li><a href="module-utils_events.html">utils/events</a></li><li><a href="module-utils_storage.html">utils/storage</a></li><li><a href="module-xdh-go.html">xdh-go</a></li><li><a href="module-xdh-go-circle-menu.html">xdh-go-circle-menu</a></li><li><a href="module-xdh-go-draft.html">xdh-go-draft</a></li><li><a href="module-xdh-go-html.html">xdh-go-html</a></li><li><a href="module-xdh-go-layout.html">xdh-go-layout</a></li><li><a href="module-xdh-go-overview.html">xdh-go-overview</a></li><li><a href="module-xdh-go-search.html">xdh-go-search</a></li><li><a href="module-xdh-go-select.html">xdh-go-select</a></li><li><a href="module-xdh-go-snapshot.html">xdh-go-snapshot</a></li><li><a href="module-xdh-go-tool.html">xdh-go-tool</a></li><li><a href="module-xdh-go-tooltiip.html">xdh-go-tooltiip</a></li><li><a href="module-xdh-go-view.html">xdh-go-view</a></li><li><a href="module-xdh-go-viewer.html">xdh-go-viewer</a></li></ul><h3>Classes</h3><ul><li><a href="module-utils_directives_draggable-Draggable.html">Draggable</a></li><li><a href="module-utils_directives_resizable-Resizable.html">Resizable</a></li><li><a href="module-utils_events-Events.html">Events</a></li></ul><h3>Events</h3><ul><li><a href="module-xdh-go-view.html#~event:item-click">item-click</a></li><li><a href="module-xdh-go-select.html#~event:on-change">on-change</a></li><li><a href="module-xdh-go-search.html#~event:on-error">on-error</a></li><li><a href="module-xdh-go-circle-menu.html#~event:on-item-click">on-item-click</a></li><li><a href="module-xdh-go.html#~event:on-load-data">on-load-data</a></li><li><a href="module-xdh-go.html#~event:on-ready">on-ready</a></li><li><a href="module-xdh-go-search.html#~event:on-search">on-search</a></li><li><a href="module-xdh-go-snapshot.html#~event:on-snap">on-snap</a></li></ul><h3>Global</h3><ul><li><a href="global.html#animationPool">animationPool</a></li><li><a href="global.html#bindToState">bindToState</a></li><li><a href="global.html#ease">ease</a></li><li><a href="global.html#easeInBack">easeInBack</a></li><li><a href="global.html#easeInBounce">easeInBounce</a></li><li><a href="global.html#easeInCirc">easeInCirc</a></li><li><a href="global.html#easeInCubic">easeInCubic</a></li><li><a href="global.html#easeInElastic">easeInElastic</a></li><li><a href="global.html#easeInExpo">easeInExpo</a></li><li><a href="global.html#easeInOutBack">easeInOutBack</a></li><li><a href="global.html#easeInOutBounce">easeInOutBounce</a></li><li><a href="global.html#easeInOutCubic">easeInOutCubic</a></li><li><a href="global.html#easeInOutQuad">easeInOutQuad</a></li><li><a href="global.html#easeInOutQuart">easeInOutQuart</a></li><li><a href="global.html#easeInOutQuint">easeInOutQuint</a></li><li><a href="global.html#easeInOutSine">easeInOutSine</a></li><li><a href="global.html#easeInQuad">easeInQuad</a></li><li><a href="global.html#easeInQuart">easeInQuart</a></li><li><a href="global.html#easeInQuint">easeInQuint</a></li><li><a href="global.html#easeInSine">easeInSine</a></li><li><a href="global.html#easeOutBack">easeOutBack</a></li><li><a href="global.html#easeOutBounce">easeOutBounce</a></li><li><a href="global.html#easeOutCirc">easeOutCirc</a></li><li><a href="global.html#easeOutCubic">easeOutCubic</a></li><li><a href="global.html#easeOutElastic">easeOutElastic</a></li><li><a href="global.html#easeOutExpo">easeOutExpo</a></li><li><a href="global.html#easeOutQuad">easeOutQuad</a></li><li><a href="global.html#easeOutQuart">easeOutQuart</a></li><li><a href="global.html#easeOutQuint">easeOutQuint</a></li><li><a href="global.html#easeOutSine">easeOutSine</a></li><li><a href="global.html#extendOption">extendOption</a></li><li><a href="global.html#genOption">genOption</a></li><li><a href="global.html#getHandler">getHandler</a></li><li><a href="global.html#handleEvents">handleEvents</a></li><li><a href="global.html#handleParts">handleParts</a></li><li><a href="global.html#horPanel%25E6%25B0%25B4%25E5%25B9%25B3%25E5%25B8%2583%25E5%25B1%2580">horPanel 水平布局</a></li><li><a href="global.html#makePort">makePort</a></li><li><a href="global.html#node%25E8%258A%2582%25E7%2582%25B9%25E5%25AE%259A%25E4%25B9%2589">node 节点定义</a></li><li><a href="global.html#removeGray">removeGray</a></li><li><a href="global.html#setGray">setGray</a></li><li><a href="global.html#shapeParamsBinding">shapeParamsBinding</a></li><li><a href="global.html#spotPanelspot%25E5%25B8%2583%25E5%25B1%2580">spotPanel spot布局</a></li><li><a href="global.html#verPanel%25E5%259E%2582%25E7%259B%25B4%25E5%25B8%2583%25E5%25B1%2580">verPanel 垂直布局</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Nov 05 2019 16:15:35 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

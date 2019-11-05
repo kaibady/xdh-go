@@ -189,9 +189,7 @@ function getPropObj(go, state, propType) {
 }
 export default function handleAnimation(e, n, event, _options, go) {
   let node = n.part;
-  if (!node) {
-    return;
-  } else {
+  if (node) {
     let animation = node.data.animation || _options.props.animation;
     if (!animation || !(animation instanceof Array)) {
       return;
@@ -255,6 +253,8 @@ export function tween(options = {}) {
     options
   );
   // console.log(_options);
+  let startValue = _options.keyFrame[0];
+  let endValue = _options.keyFrame[1];
   if (
     _options.relateObjectId &&
     relateObjectState[_options.relateObjectId] !== undefined &&
@@ -263,8 +263,6 @@ export function tween(options = {}) {
     startValue = relateObjectState[_options.relateObjectId].state;
     clearAnimation(relateObjectState[_options.relateObjectId].animationId);
   }
-  let startValue = _options.keyFrame[0];
-  let endValue = _options.keyFrame[1];
   // 改变的值大小
   let changeValue;
   let repeatCount = 0;

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/template/node/index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/template/node/index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { panel, node, tooltip } from '../../node-parts';
+import { handleNodeDefault } from './default';
+import figure from './figure/index';
+import label from './label/index';
+import container from './container/index';
+import handleAnimation from '../../animation/tween';
+
+import {
+  innerPanelBinding,
+  nodeBinding,
+  tooltipBinding,
+  tooltipShape,
+  tooltipAdornment
+} from './bindings';
+/**
+ * @function
+ * @name handleParts
+ * @description 处理节点parts参数
+ * @param {Object} _options 节点配置
+ */
+function handleParts(_options) {
+  let extendUp = [],
+    extendDown = [];
+  if (_options.parts &amp;&amp; _options.parts instanceof Array) {
+    extendUp = [..._options.parts];
+  } else if (_options.parts &amp;&amp; (_options.parts.up || _options.parts.down)) {
+    extendUp = [...(_options.parts.up || [])];
+    extendDown = [...(_options.parts.down || [])];
+  }
+  return {
+    extendUp,
+    extendDown
+  };
+}
+
+/**
+ * @function
+ * @name handleEvents
+ * @description 处理节点mouseEnter,mouseLeave和isHover参数
+ * @param {Object} _options 节点配置
+ */
+function handleEvents(_options) {
+  if (_options.events.mouseEnter) {
+    let hoverFun = _options.events.mouseEnter;
+    let overideFun = function(e, n) {
+      n.diagram.model.set(n.data, 'isHover', true);
+      handleAnimation(e, n, 'mouseEnter', _options, go);
+      hoverFun(e, n);
+    };
+    _options.events.mouseEnter = overideFun;
+  } else {
+    let overideFun = function(e, n) {
+      // console.log('mouseEnter', n);
+      n.diagram.model.set(n.data, 'isHover', true);
+      handleAnimation(e, n, 'mouseEnter', _options, go);
+    };
+    _options.events.mouseEnter = overideFun;
+  }
+  if (_options.events.mouseLeave) {
+    let hoverFun = _options.events.mouseLeave;
+    let overideFun = function(e, n) {
+      n.diagram.model.set(n.data, 'isHover', false);
+      handleAnimation(e, n, 'mouseLeave', _options, go);
+      hoverFun(e, n);
+    };
+    _options.events.mouseLeave = overideFun;
+  } else {
+    let overideFun = function(e, n) {
+      // console.log('mouseLeave', n);
+      n.diagram.model.set(n.data, 'isHover', false);
+      handleAnimation(e, n, 'mouseLeave', _options, go);
+    };
+    _options.events.mouseLeave = overideFun;
+  }
+  if (_options.events.click) {
+    let originFun = _options.events.click;
+    let overideFun = function(e, n) {
+      handleAnimation(e, n, 'click', _options, go);
+      originFun(e, n);
+    };
+    _options.events.click = overideFun;
+  } else {
+    let overideFun = function(e, n) {
+      // console.log('click', n);
+      handleAnimation(e, n, 'click', _options, go);
+    };
+    _options.events.click = overideFun;
+  }
+  if (_options.events.doubleClick) {
+    let originFun = _options.events.doubleClick;
+    let overideFun = function(e, n) {
+      handleAnimation(e, n, 'dbclick', _options, go);
+      originFun(e, n);
+    };
+    _options.events.doubleClick = overideFun;
+  } else {
+    let overideFun = function(e, n) {
+      // console.log('dbclick', n);
+      handleAnimation(e, n, 'dbclick', _options, go);
+    };
+    _options.events.doubleClick = overideFun;
+  }
+}
+export default function($, go, options) {
+  let _options = handleNodeDefault($, go, options);
+  // console.log('node options', _options);
+  // 处理parts, 用于扩展节点
+  let { extendUp, extendDown } = handleParts(_options);
+  // 处理事件
+  handleEvents(_options);
+  return node($, go, {
+    props: {
+      name: 'tNode',
+      shadowVisible: true,
+      toolTip: tooltip($, go, {
+        shape: { binding: tooltipShape($, go, _options) },
+        adornment: { binding: tooltipAdornment($, go, _options) },
+        binding: tooltipBinding($, go, _options)
+      }),
+      ..._options.props._nodeOptions.props
+    },
+    binding: nodeBinding($, go, _options),
+    parts: [
+      panel($, go, {
+        type: 'auto',
+        props: {
+          ..._options.props._outerPanelOptions.props
+        },
+        parts: [
+          ...extendDown,
+          // 节点外框
+          container($, go, _options),
+          panel($, go, {
+            type: 'ver',
+            props: {
+              ..._options.props._innerPanelOptions.props
+            },
+            parts: [
+              // 图形部分，包括四种类型
+              figure($, go, _options),
+              // 文字部分
+              label($, go, _options),
+              ..._options.props._innerPanelOptions.parts
+            ],
+            binding: innerPanelBinding($, go, _options)
+          }),
+
+          ...extendUp,
+          ..._options.props._outerPanelOptions.parts
+        ]
+      }),
+      ..._options.props._nodeOptions.parts
+    ],
+    events: _options.events
+  });
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-utils_directives_draggable.html">utils/directives/draggable</a></li><li><a href="module-utils_directives_resizable.html">utils/directives/resizable</a></li><li><a href="module-utils_events.html">utils/events</a></li><li><a href="module-utils_storage.html">utils/storage</a></li><li><a href="module-xdh-go.html">xdh-go</a></li><li><a href="module-xdh-go-circle-menu.html">xdh-go-circle-menu</a></li><li><a href="module-xdh-go-draft.html">xdh-go-draft</a></li><li><a href="module-xdh-go-html.html">xdh-go-html</a></li><li><a href="module-xdh-go-layout.html">xdh-go-layout</a></li><li><a href="module-xdh-go-overview.html">xdh-go-overview</a></li><li><a href="module-xdh-go-search.html">xdh-go-search</a></li><li><a href="module-xdh-go-select.html">xdh-go-select</a></li><li><a href="module-xdh-go-snapshot.html">xdh-go-snapshot</a></li><li><a href="module-xdh-go-tool.html">xdh-go-tool</a></li><li><a href="module-xdh-go-tooltiip.html">xdh-go-tooltiip</a></li><li><a href="module-xdh-go-view.html">xdh-go-view</a></li><li><a href="module-xdh-go-viewer.html">xdh-go-viewer</a></li></ul><h3>Classes</h3><ul><li><a href="module-utils_directives_draggable-Draggable.html">Draggable</a></li><li><a href="module-utils_directives_resizable-Resizable.html">Resizable</a></li><li><a href="module-utils_events-Events.html">Events</a></li></ul><h3>Events</h3><ul><li><a href="module-xdh-go-view.html#~event:item-click">item-click</a></li><li><a href="module-xdh-go-select.html#~event:on-change">on-change</a></li><li><a href="module-xdh-go-search.html#~event:on-error">on-error</a></li><li><a href="module-xdh-go-circle-menu.html#~event:on-item-click">on-item-click</a></li><li><a href="module-xdh-go.html#~event:on-load-data">on-load-data</a></li><li><a href="module-xdh-go.html#~event:on-ready">on-ready</a></li><li><a href="module-xdh-go-search.html#~event:on-search">on-search</a></li><li><a href="module-xdh-go-snapshot.html#~event:on-snap">on-snap</a></li></ul><h3>Global</h3><ul><li><a href="global.html#animationPool">animationPool</a></li><li><a href="global.html#bindToState">bindToState</a></li><li><a href="global.html#ease">ease</a></li><li><a href="global.html#easeInBack">easeInBack</a></li><li><a href="global.html#easeInBounce">easeInBounce</a></li><li><a href="global.html#easeInCirc">easeInCirc</a></li><li><a href="global.html#easeInCubic">easeInCubic</a></li><li><a href="global.html#easeInElastic">easeInElastic</a></li><li><a href="global.html#easeInExpo">easeInExpo</a></li><li><a href="global.html#easeInOutBack">easeInOutBack</a></li><li><a href="global.html#easeInOutBounce">easeInOutBounce</a></li><li><a href="global.html#easeInOutCubic">easeInOutCubic</a></li><li><a href="global.html#easeInOutQuad">easeInOutQuad</a></li><li><a href="global.html#easeInOutQuart">easeInOutQuart</a></li><li><a href="global.html#easeInOutQuint">easeInOutQuint</a></li><li><a href="global.html#easeInOutSine">easeInOutSine</a></li><li><a href="global.html#easeInQuad">easeInQuad</a></li><li><a href="global.html#easeInQuart">easeInQuart</a></li><li><a href="global.html#easeInQuint">easeInQuint</a></li><li><a href="global.html#easeInSine">easeInSine</a></li><li><a href="global.html#easeOutBack">easeOutBack</a></li><li><a href="global.html#easeOutBounce">easeOutBounce</a></li><li><a href="global.html#easeOutCirc">easeOutCirc</a></li><li><a href="global.html#easeOutCubic">easeOutCubic</a></li><li><a href="global.html#easeOutElastic">easeOutElastic</a></li><li><a href="global.html#easeOutExpo">easeOutExpo</a></li><li><a href="global.html#easeOutQuad">easeOutQuad</a></li><li><a href="global.html#easeOutQuart">easeOutQuart</a></li><li><a href="global.html#easeOutQuint">easeOutQuint</a></li><li><a href="global.html#easeOutSine">easeOutSine</a></li><li><a href="global.html#extendOption">extendOption</a></li><li><a href="global.html#genOption">genOption</a></li><li><a href="global.html#getHandler">getHandler</a></li><li><a href="global.html#handleEvents">handleEvents</a></li><li><a href="global.html#handleParts">handleParts</a></li><li><a href="global.html#horPanel%25E6%25B0%25B4%25E5%25B9%25B3%25E5%25B8%2583%25E5%25B1%2580">horPanel 水平布局</a></li><li><a href="global.html#makePort">makePort</a></li><li><a href="global.html#node%25E8%258A%2582%25E7%2582%25B9%25E5%25AE%259A%25E4%25B9%2589">node 节点定义</a></li><li><a href="global.html#removeGray">removeGray</a></li><li><a href="global.html#setGray">setGray</a></li><li><a href="global.html#shapeParamsBinding">shapeParamsBinding</a></li><li><a href="global.html#spotPanelspot%25E5%25B8%2583%25E5%25B1%2580">spotPanel spot布局</a></li><li><a href="global.html#verPanel%25E5%259E%2582%25E7%259B%25B4%25E5%25B8%2583%25E5%25B1%2580">verPanel 垂直布局</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Nov 05 2019 16:15:35 GMT+0800 (GMT+08:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

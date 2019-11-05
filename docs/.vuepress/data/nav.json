@@ -25,6 +25,10 @@
     ]
   },
   {
+    "text": "更新日志",
+    "link": "/update"
+  },
+  {
     "text": "API文档",
     "link": "/api"
   },
