@@ -142,79 +142,103 @@ export let getDefaultProps = ($, go) => {
     animation: null,
     _nodeOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
 
     _outerPanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _innerPanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _figurePanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _figureHolderOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _stateShapeOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _clipShapeOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _clipPanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _pictureOptions: {
-      props: {}
+      props: {},
+      binding: []
     },
     _shapeOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _iconOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _labelOuterPanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _labelInnerPanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _labelShapeOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _labelTextOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
+    },
+    _labelArrayOptions: {
+      props: {},
+      parts: [],
+      binding: []
     },
     _tagOuterPanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _tagShapeOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _tagInnerPanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _tagTextOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     }
   };
 };
@@ -302,6 +326,10 @@ export function handleNodeDefault($, go, options = {}) {
           _options.props[name].parts === undefined
             ? defaultProps[name].parts
             : _options.props[name].parts;
+        _options.props[name].binding =
+          _options.props[name].binding === undefined
+            ? defaultProps[name].binding
+            : _options.props[name].binding;
       } else {
         _options.props[name] =
           _options.props[name] === undefined

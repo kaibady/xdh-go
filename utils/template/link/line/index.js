@@ -20,6 +20,9 @@ export function lineHolder($, go, _options) {
       ..._options.props._linkHolderOptions.props
     },
     parts: [..._options.props._linkHolderOptions.parts],
-    binding: linkHolderBinding($, go, _options)
+    binding: [
+      ...linkHolderBinding($, go, _options),
+      ..._options.props._linkHolderOptions.binding
+    ]
   });
 }

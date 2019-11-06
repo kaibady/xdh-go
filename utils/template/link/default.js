@@ -91,39 +91,53 @@ export let getDefaultProps = ($, go) => {
     },
     _linkOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     }, // 自定义连线参数
     _lineOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     }, // 自定义连线参数
     _toArrowOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _fromArrowOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _labelTextOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
+    },
+    _labelArrayOptions: {
+      props: {},
+      parts: [],
+      binding: []
     },
     _outerPanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _innerPanelOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _labelShapeOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     },
     _linkHolderOptions: {
       props: {},
-      parts: []
+      parts: [],
+      binding: []
     }
   };
 };
@@ -226,6 +240,10 @@ export function handleLinkDefault($, go, options = {}) {
           _options.props[name].parts === undefined
             ? defaultProps[name].parts
             : _options.props[name].parts;
+        _options.props[name].binding =
+          _options.props[name].binding === undefined
+            ? defaultProps[name].binding
+            : _options.props[name].binding;
       } else {
         _options.props[name] =
           _options.props[name] === undefined

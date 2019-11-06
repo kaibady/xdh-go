@@ -119,7 +119,7 @@ export default function($, go, options) {
       }),
       ..._options.props._nodeOptions.props
     },
-    binding: nodeBinding($, go, _options),
+    binding: [...nodeBinding($, go, _options), ...(_options.binding || [])],
     parts: [
       panel($, go, {
         type: 'auto',
@@ -142,15 +142,19 @@ export default function($, go, options) {
               label($, go, _options),
               ..._options.props._innerPanelOptions.parts
             ],
-            binding: innerPanelBinding($, go, _options)
+            binding: [
+              ...innerPanelBinding($, go, _options),
+              ..._options.props._innerPanelOptions.binding
+            ]
           }),
 
           ...extendUp,
           ..._options.props._outerPanelOptions.parts
-        ]
+        ],
+        binding: [..._options.props._outerPanelOptions.binding]
       }),
       ..._options.props._nodeOptions.parts
     ],
-    events: _options.events
+    events: _options.events || {}
   });
 }

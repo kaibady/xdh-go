@@ -61,7 +61,7 @@ export default function($, go, options) {
       lineHolder($, go, _options),
       ...extendUp
     ],
-    binding: linkBinding($, go, _options),
+    binding: [...linkBinding($, go, _options), ..._options.binding],
     events: _options.events
   });
 }

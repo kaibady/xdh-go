@@ -19,7 +19,10 @@ export default function label($, go, _options) {
           figure: 'Rectangle',
           ..._options.props._labelShapeOptions.props
         },
-        binding: labelShapeBinding($, go, _options)
+        binding: [
+          ...labelShapeBinding($, go, _options),
+          ..._options.props._labelShapeOptions.binding
+        ]
       }),
       panel($, go, {
         type: 'ver',
@@ -32,7 +35,10 @@ export default function label($, go, _options) {
             props: {
               ..._options.props._labelTextOptions.props
             },
-            binding: labelBinding($, go, _options)
+            binding: [
+              ...labelBinding($, go, _options),
+              ..._options.props._labelTextOptions.binding
+            ]
           }),
           // 多行文本
           panel($, go, {
@@ -45,15 +51,23 @@ export default function label($, go, _options) {
                     binding: labelArrayBinding($, go, _options)
                   })
                 ]
-              })
+              }),
+              ..._options.props._labelArrayOptions.props
             },
-            binding: labelArrayPanelBinding($, go, _options)
+            binding: [
+              ...labelArrayPanelBinding($, go, _options),
+              ..._options.props._labelArrayOptions.binding
+            ]
           }),
           ..._options.props._labelInnerPanelOptions.parts
-        ]
+        ],
+        binding: [..._options.props._labelInnerPanelOptions.binding]
       }),
       ..._options.props._labelInnerPanelOptions.parts
     ],
-    binding: labelPanelBinding($, go, _options)
+    binding: [
+      ...labelPanelBinding($, go, _options),
+      ..._options.props._labelOuterPanelOptions.binding
+    ]
   });
 }

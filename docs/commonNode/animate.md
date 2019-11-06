@@ -113,7 +113,7 @@
           setsPortSpots: false,
           layerSpacing: 150,
           direction: 90,
-          isOngoing: true
+          isOngoing: false
         });
       },
       nodeTemplate($, go) {
@@ -487,7 +487,7 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
           setsPortSpots: false,
           layerSpacing: 150,
           direction: 90,
-          isOngoing: true
+          isOngoing: false
         });
       },
       nodeTemplate($, go) {
