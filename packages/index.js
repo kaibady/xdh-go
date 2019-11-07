@@ -13,9 +13,16 @@ import Select from './select';
 import Search from './search';
 // 节点定义方法
 import * as utilFuns from '../utils/node-parts/index';
-import * as func from '../utils/animation/tween';
+import tween, { animateFun } from '../utils/animation';
 import link from '../utils/template/link/index';
 import node from '../utils/template/node/index';
+import group from '../utils/template/group/index';
+// group
+import {
+  getGroupLayout,
+  getGroupDragging,
+  setGroupLayout
+} from '../utils/group';
 const components = [
   Go,
   Html,
@@ -54,7 +61,9 @@ export const XdhGoSearch = Search;
 export const utils = utilFuns;
 export const nodeTmpl = node;
 export const linkTmpl = link;
-export const animation = { func: func, tween: func.default };
+export const groupTmpl = group;
+export const animation = { func: animateFun, tween: tween };
+export const groupFun = { getGroupLayout, getGroupDragging, setGroupLayout };
 export default {
   version: '1.0.0',
   install,
@@ -73,5 +82,7 @@ export default {
   utils,
   nodeTmpl,
   linkTmpl,
-  animation
+  groupTmpl,
+  animation,
+  groupFun
 };

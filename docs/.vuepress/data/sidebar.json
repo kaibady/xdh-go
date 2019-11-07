@@ -49,6 +49,13 @@
       "children": ["base", "lines", "arrows", "label", "gray", "extension"]
     }
   ],
+  "/group/": [
+    {
+      "title": "分组",
+      "collapsable": false,
+      "children": ["base"]
+    }
+  ],
   "/applys/": [
     {
       "title": "综合应用",

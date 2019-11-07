@@ -3,7 +3,7 @@ import { handleNodeDefault } from './default';
 import figure from './figure/index';
 import label from './label/index';
 import container from './container/index';
-import handleAnimation from '../../animation/tween';
+import handleAnimation from '../../animation';
 
 import {
   innerPanelBinding,

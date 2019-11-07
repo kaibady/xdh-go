@@ -777,7 +777,7 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
       :config="config"
       :layout="layout"
       ref="diagram"
-      height="500px"
+      height="300px"
       @on-ready="diagramReady"
     ></xdh-go>
   </div>

@@ -21,6 +21,10 @@
       {
         "text": "通用连线",
         "link": "/commonLink/base"
+      },
+      {
+        "text": "分组",
+        "link": "/group/base"
       }
     ]
   },
