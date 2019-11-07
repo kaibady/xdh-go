@@ -18,7 +18,8 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
 | groupName.margin | 分组标题外边距 | Array         | -                                | [0, 0, 0, 0]             |
 
 ## 无交集分组
-无交集分组只有简单的父子结构，同一个节点只能属于一个分组。groupTmpl的groupType参数为'normal'或不传时，会返回一个go.Group对象，因此需要应用到XdhGo的group-template参数中
+
+无交集分组只有简单的父子结构，同一个节点只能属于一个分组。groupTmpl 的 groupType 参数为'normal'或不传时，会返回一个 go.Group 对象，因此需要应用到 XdhGo 的 group-template 参数中
 :::demo
 
 ```html
@@ -94,7 +95,6 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 10,
-          'toolManager.mouseWheelBehavior': go.ToolManager.WheelZoom,
           'animationManager.duration': 200
         };
       },
@@ -136,34 +136,42 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
 :::
 
 ## 有交集分组
-有交集的分组同一个节点可能属于多个分组，实现方式会有所不同。groupTmpl的groupType参数为'mixed'时，会返回一个go.Node对象，因此需要使用对应的nodeTemplateMap定义模板。同时节点中的分组信息需要使用数组形式。引入的getGroupLayout和getGroupDragging分别用于生成布局对象和拖拽对象。而setGroupLayout方法用于初始化节点和分组的信息，提供给布局对象使用。
+
+有交集的分组同一个节点可能属于多个分组，实现方式会有所不同。groupTmpl 的 groupType 参数为'mixed'时，会返回一个 go.Node 对象，因此需要使用对应的 nodeTemplateMap 定义模板。同时节点中的分组信息需要使用数组形式,参数为 groups。提供的 getGroupLayout 和 getGroupDragging 方法分别用于生成布局对象和拖拽对象。而 setGroupLayout 方法用于初始化节点和分组的信息，提供给布局对象使用。
 
 参数如下
-### getGroupLayout
-| 参数             | 说明           | 类型          | 可选值                           | 默认值                   |
-| ---------------- | -------------- | ------------- | -------------------------------- | ------------------------ |
-| $        | go.GraphObject.make方法  | Function        | - | -                 |
-| go       | go对象  | Object       | - | -  |
-| options       | 配置参数  | Object       | - | -  |
-| options.categoryName      | 模板对应的category名称  | String       | - | 'Group'  |
-### getGroupDragging
-| 参数             | 说明           | 类型          | 可选值                           | 默认值                   |
-| ---------------- | -------------- | ------------- | -------------------------------- | ------------------------ |
-| $        | go.GraphObject.make方法  | Function        | - | -                 |
-| go       | go对象  | Object       | - | -  |
-| options       | 配置参数  | Object       | - | -  |
-| options.categoryName      | 模板对应的category名称  | String       | - | 'Group'  |
-### setGroupLayout
-| 参数             | 说明           | 类型          | 可选值                           | 默认值                   |
-| ---------------- | -------------- | ------------- | -------------------------------- | ------------------------ |
-| $        | go.GraphObject.make方法  | Function        | - | -                 |
-| go       | go对象  | Object       | - | -  |
-| options       | 配置参数  | Object       | - | -  |
-| options.categoryName      | 模板对应的category名称  | String       | - | 'Group'  |
-| options.type      | 首次渲染使用的布局  | String       | 5种内置布局名称 | 'ForceDirectedLayout'  |
-| options.layoutOptions      | 布局对应的参数  | Object       | - | {}  |
-| options.groupLayout      | 在go-register参数的方法中绑定的自定义布局类  | Function       | - | -  |
 
+### getGroupLayout
+
+获得分组布局类
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| ---------------- | -------------- | ------------- | -------------------------------- | ------------------------ |
+| go | go 对象 | Object | - | - |
+| options | 配置参数 | Object | - | - |
+| options.categoryName | 模板对应的 category 名称 | String | - | 'Group' |
+
+### getGroupDragging
+
+获得拖拽类
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| ---------------- | -------------- | ------------- | -------------------------------- | ------------------------ |
+| go | go 对象 | Object | - | - |
+| options | 配置参数 | Object | - | - |
+| options.categoryName | 模板对应的 category 名称 | String | - | 'Group' |
+
+### setGroupLayout
+
+初始化分组结点信息
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| ---------------- | -------------- | ------------- | -------------------------------- | ------------------------ |
+| \$ | go.GraphObject.make 方法 | Function | - | - |
+| go | go 对象 | Object | - | - |
+| diagram | diagram 对象 | Object | - | - |
+| options | 配置参数 | Object | - | - |
+| options.categoryName | 模板对应的 category 名称 | String | - | 'Group' |
+| options.type | 首次渲染使用的布局 | String | 5 种内置布局名称 | 'ForceDirectedLayout' |
+| options.layoutOptions | 布局对应的参数 | Object | - | {} |
+| options.groupLayout | 在 go-register 参数的方法中绑定的自定义布局类 | Function | - | - |
 
 :::demo
 
@@ -210,8 +218,37 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
         model: 'GraphLinksModel',
         nodes: [
           {
+            key: 1,
+            label: '子节点1',
+            groups: [11]
+          },
+          {
+            key: 2,
+            label: '子节点2',
+            groups: [11, 12]
+          },
+          {
+            key: 3,
+            label: '子节点3',
+            groups: [12]
+          },
+          {
+            key: 4,
+            label: '子节点4',
+            groups: [13]
+          },
+          {
+            key: 5,
+            label: '子节点5',
+            groups: [13]
+          },
+          {
+            key: 6,
+            label: '子节点6',
+            groups: [14, 15]
+          },
+          {
             key: 11,
-            color: 'green',
             maxSize: [600, 600],
             category: 'Group',
             groupName: {
@@ -225,31 +262,40 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
             groupName: {
               text: 'group2',
               stroke: 'green'
-            },
-            color: 'green'
+            }
           },
           {
-            key: 1,
-            label: '子节点1',
-            groups: [11, 12]
+            key: 13,
+            category: 'Group',
+            groupName: {
+              text: 'group3',
+              stroke: 'green'
+            }
           },
           {
-            key: 2,
-            label: '子节点2',
-            groups: [12]
+            key: 14,
+            category: 'Group',
+            groupName: {
+              text: 'group4',
+              stroke: 'green'
+            }
           },
           {
-            key: 3,
-            label: '子节点3',
-            groups: [11]
-          },
-          {
-            key: 4,
-            label: '子节点4',
-            groups: [12]
+            key: 15,
+            category: 'Group',
+            groupName: {
+              text: 'group5',
+              stroke: 'green'
+            }
           }
         ],
-        links: [{ from: 1, to: 2 }, { from: 2, to: 3 }, { from: 2, to: 4 }]
+        links: [
+          { from: 1, to: 2 },
+          { from: 2, to: 3 },
+          { from: 2, to: 4 },
+          { from: 4, to: 5 },
+          { from: 4, to: 6 }
+        ]
       };
     },
     methods: {
@@ -261,7 +307,6 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 10,
-          'toolManager.mouseWheelBehavior': go.ToolManager.WheelZoom,
           'animationManager.duration': 200,
           draggingTool: $(go.GroupDraggingTool)
         };
@@ -299,7 +344,7 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
       },
       onLoadData(diagram, $, go) {
         setGroupLayout($, go, diagram, {
-          type: 'ForceDirectedLayout',
+          type: 'LayeredDigraphLayout',
           categoryName: 'Group',
           layoutOptions: {},
           groupLayout: go.GroupLayout

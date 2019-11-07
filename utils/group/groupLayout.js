@@ -14,7 +14,30 @@ export function getGroupLayout(go, options) {
       if (p instanceof go.Node && p.category === _options.categoryName)
         supers.add(p);
     });
-
+    // 看有没有元素相同的两个分组
+    let superMemberKeys = {},
+      sameMemberKeys = {};
+    supers.each(sup => {
+      let supArr = sup.data._members.map(r => {
+        return r.key;
+      });
+      supArr.sort((a, b) => {
+        return a < b ? -1 : 1;
+      });
+      superMemberKeys[sup.data.key] = supArr.join(',');
+    });
+    function hasSameMembers(sup) {
+      let val = superMemberKeys[sup.data.key];
+      let sameMembers = [];
+      for (let supname in superMemberKeys) {
+        if (val === superMemberKeys[supname]) {
+          sameMembers.push(supname);
+        }
+      }
+      if (sameMembers.length !== 0 && !sameMemberKeys[val]) {
+        sameMemberKeys[val] = sameMembers;
+      }
+    }
     function membersOf(sup, diag) {
       var set = new go.Set();
       var arr = sup.data._members;
@@ -27,6 +50,9 @@ export function getGroupLayout(go, options) {
 
     function isReady(sup, supers, diag) {
       var arr = sup.data._members;
+      if (!arr) {
+        return true;
+      }
       for (var i = 0; i < arr.length; i++) {
         var d = arr[i];
         if (d.category !== _options.categoryName) continue;
@@ -40,7 +66,8 @@ export function getGroupLayout(go, options) {
     // need to perform their own transactions
     this.diagram.startTransaction('Custom Layout');
     // let nameBounds;
-    let nameBottom = 0;
+    // 记录只有一个元素的
+    // let oneMemberSuper = {}
     while (supers.count > 0) {
       var ready = null;
       var it = supers.iterator;
@@ -55,18 +82,24 @@ export function getGroupLayout(go, options) {
       ready.location = b.position;
       var body = ready.findObject('BODY');
       if (body) body.desiredSize = b.size;
-      // 处理标题位置问题
-      var name = ready.findObject('GroupName');
-      let nameBounds = name.naturalBounds;
-      if (name.naturalBounds.bottom <= nameBottom) {
-        let top = nameBottom;
-        nameBottom = nameBottom + nameBounds.bottom - nameBounds.top;
-        body.margin = new go.Margin(top, 0, 0, 0);
-      } else {
-        nameBottom = nameBounds.bottom;
-      }
+      hasSameMembers(ready);
     }
-
+    for (let val in sameMemberKeys) {
+      let superArr = sameMemberKeys[val];
+      let top = 0;
+      superArr.forEach((r, idx) => {
+        let superData = this.diagram.model.nodeDataArray.find(
+          d => d.key.toString() === r
+        );
+        let node = this.diagram.findNodeForKey(superData.key);
+        let groupName = node.findObject('GroupName');
+        let body = node.findObject('BODY');
+        let height =
+          groupName.measuredBounds.bottom - groupName.measuredBounds.top;
+        body.margin = new go.Margin(top + 35, 25, 0, 10);
+        top = top + height;
+      });
+    }
     this.diagram.commitTransaction('Custom Layout');
   };
   return CustomLayout;
@@ -158,6 +191,11 @@ export function setGroupLayout($, go, diagram, options = {}) {
             }
           }
         }
+      }
+    }
+    for (let j = 0; j < arr.length; j++) {
+      if (arr[j].category === options.categoryName && !arr[j]._members) {
+        arr[j]._members = [];
       }
     }
     let groupLayout = options.groupLayout;
