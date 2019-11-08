@@ -25,6 +25,10 @@
       {
         "text": "分组",
         "link": "/group/base"
+      },
+      {
+        "text": "部件",
+        "link": "/parts/tag"
       }
     ]
   },

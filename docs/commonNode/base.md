@@ -188,6 +188,7 @@ layout 参数类型来自 go.PanelLayout 类型，包括:
 | containerStrokeColor | 节点的外框边框色                              | Object       | -                                                         | gray 状态为#ccc,其余状态为'#061178' |
 | linkPort                  | 连线指向节点的哪个位置                         | String       | 'tNode'/'tFigure'/'tLabel'                                                         | 'tFigure'                               |
 | loc                  | 节点位置,双向数据绑定                         | String       | -                                                         | '0 0'                               |
+| zOrder                  | 节点层叠顺序                         | Number       | -                                                         | 0                               |
 
 ### 图形相关参数
 

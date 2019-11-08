@@ -1,22 +1,15 @@
 import { panel, group, node, shape, textBlock } from '../../node-parts';
 import { groupShapeBinding, groupNameBinding } from './bindings';
 import { handleGroupDefault } from './default';
+import { registerFigure } from '../../customShape/figure';
 function getNormalGroup($, go, _options) {
   return group($, go, {
-    type: 'Position',
+    type: 'Vertical',
     props: {
       selectionObjectName: 'PANEL',
       ungroupable: true
     },
     parts: [
-      textBlock($, go, {
-        props: {
-          font: 'bold 18px sans-serif',
-          isMultiline: true,
-          editable: true
-        },
-        binding: groupNameBinding($, go, _options)
-      }),
       panel($, go, {
         type: 'Auto',
         props: {
@@ -34,13 +27,27 @@ function getNormalGroup($, go, _options) {
             },
             binding: groupShapeBinding($, go, _options)
           }),
-          $(go.Placeholder, {
-            margin: new go.Margin(35, 25, 0, 10),
-            background: 'transparent'
+          $(
+            go.Panel,
+            {
+              alignment: new go.Spot(0.5, 0, 0, 5)
+            },
+            $('SubGraphExpanderButton', {
+              'ButtonBorder.figure': 'Rectangle'
+            })
+          ),
+          textBlock($, go, {
+            props: {
+              font: 'bold 18px "Microsoft Yahei"',
+              isMultiline: true,
+              editable: true,
+              alignment: new go.Spot(0.5, 0, 0, 15)
+            },
+            binding: groupNameBinding($, go, _options)
           }),
-          $('SubGraphExpanderButton', {
-            alignment: new go.Spot(0, 0, 10, 10),
-            'ButtonBorder.figure': 'Rectangle'
+          $(go.Placeholder, {
+            margin: new go.Margin(25, 25, 25, 25),
+            background: 'transparent'
           })
         ]
       })
@@ -49,22 +56,13 @@ function getNormalGroup($, go, _options) {
 }
 function getMixedGroup($, go, _options) {
   return node($, go, {
-    type: 'Position',
+    type: 'Vertical',
     props: {
       locationObjectName: 'BODY',
       selectionAdorned: false,
       zOrder: 1
     },
     parts: [
-      textBlock($, go, {
-        props: {
-          font: 'bold 18px sans-serif',
-          isMultiline: true,
-          editable: true,
-          name: 'GroupName'
-        },
-        binding: groupNameBinding($, go, _options)
-      }),
       panel($, go, {
         type: 'Auto',
         props: {
@@ -74,6 +72,16 @@ function getMixedGroup($, go, _options) {
           shape($, go, {
             props: {},
             binding: groupShapeBinding($, go, _options)
+          }),
+          textBlock($, go, {
+            props: {
+              font: 'bold 18px sans-serif',
+              isMultiline: true,
+              editable: true,
+              alignment: new go.Spot(0.5, 0),
+              name: 'GroupName'
+            },
+            binding: groupNameBinding($, go, _options)
           }),
           shape($, go, {
             props: {
@@ -90,7 +98,7 @@ function getMixedGroup($, go, _options) {
 export default function($, go, options) {
   let _options = handleGroupDefault($, go, options);
   _options.props.groupType = _options.props.groupType || 'normal';
-  console.log(_options.props);
+  registerFigure(go, 'CustomCircle');
   if (_options.props.groupType === 'mixed') {
     return getMixedGroup($, go, _options);
   } else {

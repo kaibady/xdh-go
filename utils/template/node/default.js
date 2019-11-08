@@ -140,6 +140,7 @@ export let getDefaultProps = ($, go) => {
       text: ''
     },
     animation: null,
+    zOrder: 0,
     _nodeOptions: {
       props: {},
       parts: [],

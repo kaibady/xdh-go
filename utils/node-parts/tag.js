@@ -15,8 +15,12 @@ export default function($, go, options = {}) {
       textKey: 'text',
       font: '14px "Microsoft Yahei"',
       textArrayKey: 'label',
-      padding: 10,
-      visible: true
+      padding: 5,
+      visible: true,
+      text: '',
+      placement: 'top-right',
+      props: {},
+      events: {}
     },
     options
   );
@@ -38,6 +42,7 @@ export default function($, go, options = {}) {
       }),
       textBlock($, go, {
         props: {
+          text: _options.text,
           margin: _options.padding,
           stroke: _options.color,
           font: _options.font
@@ -47,10 +52,16 @@ export default function($, go, options = {}) {
           visible: {
             key: '',
             handler(d) {
+              let text;
               if (
                 d[_options.textKey] &&
                 typeof d[_options.textKey] === 'string'
               ) {
+                text = d[_options.textKey];
+              } else {
+                text = _options.text;
+              }
+              if (text) {
                 return true;
               } else {
                 return false;
@@ -82,7 +93,13 @@ export default function($, go, options = {}) {
           visible: {
             key: '',
             handler(d) {
+              let textArr;
               if (d[_options.textKey] && d[_options.textKey] instanceof Array) {
+                textArr = d[_options.textKey];
+              } else if (_options.text && _options.text instanceof Array) {
+                textArr = _options.text;
+              }
+              if (textArr) {
                 return true;
               } else {
                 return false;
@@ -98,14 +115,40 @@ export default function($, go, options = {}) {
         handler(d) {
           if (
             (d[_options.textKey] && typeof d[_options.textKey] === 'string') ||
-            (d[_options.textKey] && d[_options.textKey] instanceof Array)
+            (d[_options.textKey] && d[_options.textKey] instanceof Array) ||
+            _options.text
           ) {
             return true;
           } else {
             return false;
           }
         }
+      },
+      alignment: {
+        key: '',
+        handler() {
+          let placement = _options.placement;
+          let x = 0.5,
+            y = 0.5;
+          if (typeof placement === 'string') {
+            if (placement.includes('top')) {
+              y = 0;
+            } else if (placement.includes('bottom')) {
+              y = 1;
+            }
+            if (placement.includes('left')) {
+              x = 0;
+            } else if (placement.includes('right')) {
+              x = 1;
+            }
+          } else if (placement instanceof Array) {
+            x = placement[0];
+            y = placement[1];
+          }
+          return new go.Spot(x, y);
+        }
       }
-    })
+    }),
+    events: _options.events
   });
 }

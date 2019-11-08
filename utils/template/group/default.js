@@ -1,6 +1,6 @@
 export let getDefaultProps = ($, go) => {
   return {
-    figure: 'Rectangle',
+    figure: 'CustomCircle',
     background: 'rgba(248,91,99,0.1)',
     stroke: 'rgba(248,91,99,0.8)',
     strokeWidth: 1,
@@ -8,7 +8,7 @@ export let getDefaultProps = ($, go) => {
     groupName: {
       text: '',
       font: '14px "Microsoft Yahei"',
-      margin: [10, 10, 10, 40]
+      margin: [10, 10, 10, 10]
     }
   };
 };

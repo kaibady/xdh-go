@@ -29,13 +29,14 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
       :nodes="nodes"
       :links="links"
       :type="model"
+      :go-register="goRegister"
       :link-template="linkTemplate"
       :group-template="groupTemplate"
       :node-template-map="nodeTemplateMap"
       :config="config"
       :layout="layout"
       ref="diagram"
-      height="500px"
+      height="650px"
     ></xdh-go>
   </div>
 </template>
@@ -51,7 +52,6 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
         nodes: [
           {
             key: 11,
-            maxSize: [300, 300],
             groupName: {
               text: 'group1',
               stroke: 'red'
@@ -91,6 +91,7 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
       };
     },
     methods: {
+      goRegister($, go) {},
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center,
@@ -99,7 +100,12 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
         };
       },
       layout($, go) {
-        return $(go.ForceDirectedLayout, {});
+        return $(go.ForceDirectedLayout, {
+          defaultSpringLength: 10,
+          defaultSpringStiffness: 0.5,
+          defaultElectricalCharge: 0,
+          randomNumberGenerator: null
+        });
       },
       groupTemplate($, go) {
         return groupTmpl($, go, {
@@ -138,6 +144,8 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
 ## 有交集分组
 
 有交集的分组同一个节点可能属于多个分组，实现方式会有所不同。groupTmpl 的 groupType 参数为'mixed'时，会返回一个 go.Node 对象，因此需要使用对应的 nodeTemplateMap 定义模板。同时节点中的分组信息需要使用数组形式,参数为 groups。提供的 getGroupLayout 和 getGroupDragging 方法分别用于生成布局对象和拖拽对象。而 setGroupLayout 方法用于初始化节点和分组的信息，提供给布局对象使用。
+
+有交集分组不支持节点折叠
 
 参数如下
 
@@ -189,7 +197,7 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
       :config="config"
       :layout="layout"
       ref="diagram"
-      height="800px"
+      height="850px"
       @on-load-data="onLoadData"
       @on-ready="diagramReady"
     ></xdh-go>
@@ -218,38 +226,7 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
         model: 'GraphLinksModel',
         nodes: [
           {
-            key: 1,
-            label: '子节点1',
-            groups: [11]
-          },
-          {
-            key: 2,
-            label: '子节点2',
-            groups: [11, 12]
-          },
-          {
-            key: 3,
-            label: '子节点3',
-            groups: [12]
-          },
-          {
-            key: 4,
-            label: '子节点4',
-            groups: [13]
-          },
-          {
-            key: 5,
-            label: '子节点5',
-            groups: [13]
-          },
-          {
-            key: 6,
-            label: '子节点6',
-            groups: [14, 15]
-          },
-          {
             key: 11,
-            maxSize: [600, 600],
             category: 'Group',
             groupName: {
               text: 'group1',
@@ -287,6 +264,36 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
               text: 'group5',
               stroke: 'green'
             }
+          },
+          {
+            key: 1,
+            label: '子节点1',
+            groups: [11]
+          },
+          {
+            key: 2,
+            label: '子节点2',
+            groups: [11, 12]
+          },
+          {
+            key: 3,
+            label: '子节点3',
+            groups: [12]
+          },
+          {
+            key: 4,
+            label: '子节点4',
+            groups: [13]
+          },
+          {
+            key: 5,
+            label: '子节点5',
+            groups: [13]
+          },
+          {
+            key: 6,
+            label: '子节点6',
+            groups: [14, 15]
           }
         ],
         links: [
@@ -320,7 +327,8 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
           'Group',
           groupTmpl($, go, {
             props: {
-              groupType: 'mixed'
+              groupType: 'mixed',
+              figure: 'RoundedRectangle'
             }
           })
         );
@@ -344,9 +352,13 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
       },
       onLoadData(diagram, $, go) {
         setGroupLayout($, go, diagram, {
-          type: 'LayeredDigraphLayout',
+          type: 'ForceDirectedLayout',
           categoryName: 'Group',
-          layoutOptions: {},
+          layoutOptions: {
+            defaultSpringLength: 50,
+            defaultSpringStiffness: 0.1,
+            randomNumberGenerator: null
+          },
           groupLayout: go.GroupLayout
         });
       },

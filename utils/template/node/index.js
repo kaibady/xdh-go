@@ -111,6 +111,7 @@ export default function($, go, options) {
   return node($, go, {
     props: {
       name: 'tNode',
+      locationObjectName: 'tLocPoint',
       shadowVisible: true,
       toolTip: tooltip($, go, {
         shape: { binding: tooltipShape($, go, _options) },
@@ -127,9 +128,9 @@ export default function($, go, options) {
           ..._options.props._outerPanelOptions.props
         },
         parts: [
-          ...extendDown,
           // 节点外框
           container($, go, _options),
+          ...extendDown,
           panel($, go, {
             type: 'ver',
             props: {

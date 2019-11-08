@@ -183,6 +183,10 @@ export function nodeBinding($, go, _options) {
     scale: {
       key: '',
       handler: getHandler($, go, _options, ['scale'])
+    },
+    zOrder: {
+      key: '',
+      handler: getHandler($, go, _options, ['zOrder'])
     }
   });
 }

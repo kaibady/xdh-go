@@ -96,6 +96,16 @@ export default function figure($, go, _options) {
       }),
       // 附加标签
       tag($, go, _options),
+      // 用于节点定位
+      shape($, go, {
+        props: {
+          name: 'tLocPoint',
+          width: 1,
+          height: 1,
+          fill: 'transparent',
+          stroke: null
+        }
+      }),
       ..._options.props._figurePanelOptions.parts
     ],
     binding: [

@@ -22,7 +22,7 @@
     {
       "title": "模板方法",
       "collapsable": false,
-      "children": ["pack", "common", "parts", "binding"]
+      "children": ["pack", "common", "binding"]
     }
   ],
   "/commonNode/": [
@@ -54,6 +54,13 @@
       "title": "分组",
       "collapsable": false,
       "children": ["base"]
+    }
+  ],
+  "/parts/": [
+    {
+      "title": "部件",
+      "collapsable": false,
+      "children": ["tag", "mark"]
     }
   ],
   "/applys/": [
