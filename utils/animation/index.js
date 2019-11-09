@@ -187,10 +187,18 @@ function getPropObj(go, state, propType) {
       )},${state[3]})`;
   }
 }
-export default function handleAnimation(e, n, event, _options, go) {
+export default function handleAnimation(
+  e,
+  n,
+  event,
+  _options,
+  go,
+  afterFinish
+) {
   let node = n.part;
   if (node) {
-    let animation = node.data.animation || _options.props.animation;
+    let animation =
+      node.data.animation || ((_options || {}).props || {}).animation;
     if (!animation || !(animation instanceof Array)) {
       return;
     }
@@ -201,14 +209,14 @@ export default function handleAnimation(e, n, event, _options, go) {
       diagram = node.diagram;
       oldskips = diagram.skipsUndoManager;
       diagram.skipsUndoManager = true;
-      animationPool = {};
+      // animationPool = {};
       relateObjectState = {};
       animationQueue = {};
       oldIsOngoing = node.diagram.layout.isOnging;
     } else {
       return;
     }
-    animation.forEach(con => {
+    animation.forEach((con, index) => {
       if (con.trigger === event) {
         let obj = node.findObject(con.objectName || 'tNode');
         obj.isAnimated = false;
@@ -226,6 +234,7 @@ export default function handleAnimation(e, n, event, _options, go) {
           name: con.name || '',
           repeatCount: con.repeatCount || 1,
           relateObjectId: obj.__gohashid, // 相关节点的__gohashid
+          animateIndex: index,
           stepCb(state) {
             let _state = getPropObj(go, state, propType);
             obj[con.prop] = _state;
@@ -233,6 +242,9 @@ export default function handleAnimation(e, n, event, _options, go) {
           finishCb() {
             obj.isAnimated = true;
             node.diagram.layout.isOngoing = oldIsOngoing;
+            if (afterFinish && typeof afterFinish === 'function') {
+              afterFinish();
+            }
           }
         });
       }
@@ -246,6 +258,7 @@ export function tween(options = {}) {
       keyFrame: [0, 1],
       easingFunc: ['easeInQuad'],
       duration: 300,
+      animateIndex: 0,
       relateObjectId: '',
       stepCallback: () => {},
       finishCallback: () => {}
@@ -359,14 +372,16 @@ export function tween(options = {}) {
                   currentAnimate.animation();
                 }
               }
+            } else {
+              _options.finishCb();
             }
           } else {
             _options.finishCb();
           }
+          delete animationPool[animationId];
           if (_options.relateObjectId) {
             delete relateObjectState[_options.relateObjectId];
           }
-          delete animationPool[animationId];
         }
       });
     }
@@ -387,6 +402,7 @@ export function tween(options = {}) {
       }
     }
   }
+
   return animationId;
 }
 function pushAnimationQueue(_options, animation) {

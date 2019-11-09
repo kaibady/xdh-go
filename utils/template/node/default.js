@@ -6,7 +6,7 @@ export let getDefaultProps = ($, go) => {
     shape: 'Rectangle',
     stateShape: 'Circle',
     scale: 1,
-    nodeMargin: 10,
+    nodeMargin: [10, 10, 10, 10],
     figureMargin: 10,
     clipShape: 'Circle',
     image: undefined,

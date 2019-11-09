@@ -499,6 +499,8 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                   name: 'myShape',
                   figure: 'RoundedRectangle',
                   stroke: '#ccc',
+                  width: 150,
+                  height: 150,
                   fill: 'rgba(255,133,192,1)'
                 },
                 binding: binding($, go, {
@@ -813,9 +815,9 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 name: 'animate1',
                 objectName: 'myShape',
                 duration: 800,
-                prop: 'margin',
-                propType: 'margin',
-                keyFrame: [[0, 0, 0, 0], [10, 10, 10, 10]],
+                prop: 'width',
+                propType: 'number',
+                keyFrame: [150, 120],
                 easingFunc: ['easeInOutCubic']
               },
               {
@@ -865,6 +867,8 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                   name: 'myShape',
                   figure: 'RoundedRectangle',
                   stroke: '#ccc',
+                  width: 150,
+                  height: 150,
                   fill: 'rgba(133, 165, 255, 0.5)'
                 },
                 binding: binding($, go, {
@@ -887,9 +891,9 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 name: 'animate1',
                 objectName: 'myShape',
                 duration: 800,
-                prop: 'margin',
-                propType: 'margin',
-                keyFrame: [[0, 0, 0, 0], [10, 10, 10, 10]],
+                prop: 'width',
+                propType: 'number',
+                keyFrame: [150, 120],
                 easingFunc: ['easeInOutCubic']
               },
               {
@@ -928,6 +932,118 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
         });
       },
       diagramReady(diagram, $, go) {}
+    }
+  };
+</script>
+```
+
+:::
+
+## 自定义事件
+
+通过 AnimationEvents 类对象，可以自定义事件，通过 emit 手动触发事件。由此可以实现动画循环效果。
+
+:::demo
+
+```html
+<template>
+  <div>
+    <el-button type="primary" @click="triggerCustom()">自定义事件</el-button>
+    <el-button type="primary" @click="start()">开始循环</el-button>
+    <el-button type="primary" @click="end()">停止循环</el-button>
+    <xdh-go
+      :nodes="nodes"
+      :type="model"
+      :node-template="nodeTemplate"
+      :config="config"
+      :layout="layout"
+      ref="diagram"
+      height="300px"
+      @on-ready="diagramReady"
+      @on-load-data="onLoadData"
+    ></xdh-go>
+  </div>
+</template>
+<script>
+  import { XdhGo, nodeTmpl, utils, animation } from 'xdh-go';
+  let { tag, shape, binding } = utils;
+  let { AnimationEvents } = animation;
+  let animationEvents;
+  export default {
+    components: {
+      XdhGo
+    },
+    data() {
+      return {
+        model: 'GraphLinksModel',
+        animateContinue: false,
+        nodes: [
+          {
+            key: 1,
+            label: {
+              text: '\uE721',
+              font: '18px "iconfont"'
+            },
+            showShape: true,
+            layout: 'Spot',
+            animation: [
+              {
+                trigger: 'rotate',
+                name: 'animate1',
+                objectName: 'tLabel',
+                duration: 800,
+                prop: 'angle',
+                propType: 'number',
+                keyFrame: [0, 360],
+                easingFunc: ['easeInOutCubic']
+              }
+            ]
+          }
+        ]
+      };
+    },
+    methods: {
+      start() {
+        this.animateContinue = true;
+        this.runRotate();
+      },
+      end() {
+        this.animateContinue = false;
+      },
+      runRotate() {
+        animationEvents.emit('rotate', 'all', () => {
+          if (this.animateContinue) {
+            this.runRotate();
+          }
+        });
+      },
+      config($, go) {
+        return {
+          initialContentAlignment: go.Spot.Center,
+          'toolManager.hoverDelay': 10
+        };
+      },
+      layout($, go) {
+        return $(go.GridLayout, {
+          wrappingColumn: 3
+        });
+      },
+      nodeTemplate($, go) {
+        return nodeTmpl($, go, {
+          props: {
+            shape: 'Circle',
+            size: 80
+          }
+        });
+      },
+      diagramReady(diagram, $, go) {},
+      onLoadData(diagram, $, go) {
+        animationEvents = new AnimationEvents(diagram, go);
+        diagram.animationEvents = animationEvents;
+      },
+      triggerCustom() {
+        animationEvents.emit('rotate', 'all');
+      }
     }
   };
 </script>

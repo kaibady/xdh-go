@@ -14,6 +14,7 @@ import Search from './search';
 // 节点定义方法
 import * as utilFuns from '../utils/node-parts/index';
 import tween, { animateFun } from '../utils/animation';
+import AnimationEvents from '../utils/animation/animateManager';
 import link from '../utils/template/link/index';
 import node from '../utils/template/node/index';
 import group from '../utils/template/group/index';
@@ -62,7 +63,11 @@ export const utils = utilFuns;
 export const nodeTmpl = node;
 export const linkTmpl = link;
 export const groupTmpl = group;
-export const animation = { func: animateFun, tween: tween };
+export const animation = {
+  func: animateFun,
+  tween: tween,
+  AnimationEvents: AnimationEvents
+};
 export const groupFun = { getGroupLayout, getGroupDragging, setGroupLayout };
 export default {
   version: '1.0.0',

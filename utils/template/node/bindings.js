@@ -143,7 +143,7 @@ export function innerPanelBinding($, go, _options) {
         } else if (d.nodeMargin instanceof Array) {
           return new go.Margin(...d.nodeMargin);
         } else {
-          return _options.props.nodeMargin;
+          return new go.Margin(..._options.props.nodeMargin);
         }
       }
     }
