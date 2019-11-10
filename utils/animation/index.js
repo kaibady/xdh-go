@@ -200,6 +200,9 @@ export default function handleAnimation(
     let animation =
       node.data.animation || ((_options || {}).props || {}).animation;
     if (!animation || !(animation instanceof Array)) {
+      if (afterFinish && typeof afterFinish === 'function') {
+        afterFinish(false);
+      }
       return;
     }
     let oldIsOngoing, diagram, oldskips;
@@ -243,7 +246,7 @@ export default function handleAnimation(
             obj.isAnimated = true;
             node.diagram.layout.isOngoing = oldIsOngoing;
             if (afterFinish && typeof afterFinish === 'function') {
-              afterFinish();
+              afterFinish(true);
             }
           }
         });

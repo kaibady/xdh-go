@@ -10,6 +10,8 @@ class AnimateManager {
   }
   emit(event, node, afterFinish) {
     if (node === 'all') {
+      let nodeCount = this.diagram.nodes.count;
+      let finishCount = 0;
       this.diagram.nodes.each(N => {
         let animation = [];
         if (N.data && N.data.animation) {
@@ -27,7 +29,15 @@ class AnimateManager {
             }
           },
           this.go,
-          afterFinish
+          () => {
+            finishCount++;
+            if (
+              finishCount === nodeCount &&
+              typeof afterFinish === 'function'
+            ) {
+              afterFinish();
+            }
+          }
         );
       });
     } else if (node) {

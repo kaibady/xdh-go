@@ -942,6 +942,8 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
 ## 自定义事件
 
 通过 AnimationEvents 类对象，可以自定义事件，通过 emit 手动触发事件。由此可以实现动画循环效果。
+on 方法用于注册所有节点的默认动画，当节点中没有动画配置时，使用该动画配置。
+emit 方法第二个参数传 node 节点对象时，触发单个节点动画，如果传'all'字符串，触发所有节点相关动画。
 
 :::demo
 
@@ -949,6 +951,7 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
 <template>
   <div>
     <el-button type="primary" @click="triggerCustom()">自定义事件</el-button>
+    <el-button type="primary" @click="triggerNode()">单个节点触发</el-button>
     <el-button type="primary" @click="start()">开始循环</el-button>
     <el-button type="primary" @click="end()">停止循环</el-button>
     <xdh-go
@@ -982,27 +985,42 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
             key: 1,
             label: {
               text: '\uE721',
-              font: '18px "iconfont"'
+              font: '22px "iconfont"'
             },
             showShape: true,
             layout: 'Spot',
             animation: [
               {
                 trigger: 'rotate',
-                name: 'animate1',
                 objectName: 'tLabel',
                 duration: 800,
                 prop: 'angle',
                 propType: 'number',
-                keyFrame: [0, 360],
+                keyFrame: [360, 0],
                 easingFunc: ['easeInOutCubic']
               }
             ]
+          },
+          {
+            key: 2,
+            label: {
+              text: '\uE6dd',
+              font: '22px "iconfont"'
+            },
+            showShape: true,
+            layout: 'Spot'
           }
         ]
       };
     },
     methods: {
+      triggerNode() {
+        let node = this.$refs.diagram.findNode(r => r.key === 1, true);
+        animationEvents.emit('rotate', node);
+      },
+      triggerCustom() {
+        animationEvents.emit('rotate', 'all');
+      },
       start() {
         this.animateContinue = true;
         this.runRotate();
@@ -1040,9 +1058,17 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
       onLoadData(diagram, $, go) {
         animationEvents = new AnimationEvents(diagram, go);
         diagram.animationEvents = animationEvents;
-      },
-      triggerCustom() {
-        animationEvents.emit('rotate', 'all');
+        animationEvents.on('rotate', [
+          {
+            trigger: 'rotate',
+            objectName: 'tLabel',
+            duration: 800,
+            prop: 'angle',
+            propType: 'number',
+            keyFrame: [0, 360],
+            easingFunc: ['easeInOutCubic']
+          }
+        ]);
       }
     }
   };
