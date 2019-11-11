@@ -45,7 +45,6 @@ export default function($, go, options = {}) {
     _options.inactiveText
   );
   _options.events = Object.assign({ click: () => {} }, _options.events);
-  console.log(_options);
   return panel($, go, {
     type: 'Auto',
     parts: [
@@ -134,7 +133,7 @@ export default function($, go, options = {}) {
           _options.stateCompute &&
           typeof _options.stateCompute === 'function'
         ) {
-          oldState = _options.stateCompute(n);
+          oldState = _options.stateCompute(n.part);
           _options.events.click(oldState, n);
         } else {
           oldState = n.part.data[_options.stateKey];

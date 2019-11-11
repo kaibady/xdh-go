@@ -37,11 +37,16 @@
     "link": "/update"
   },
   {
-    "text": "API文档",
-    "link": "/api"
-  },
-  {
-    "text": "gojs文档",
-    "link": "/gojs.html?url=gojs/index.html"
+    "text": "文档",
+    "items": [
+      {
+        "text": "API文档",
+        "link": "/api"
+      },
+      {
+        "text": "gojs文档",
+        "link": "/gojs.html?url=gojs/index.html"
+      }
+    ]
   }
 ]

@@ -179,8 +179,8 @@
         return linkTmpl($, go, {
           props: {
             arrows: 'to',
-            fromPortId: 'tShape',
-            toPortId: 'tShape'
+            fromPortId: 'tFigure',
+            toPortId: 'tFigure'
           }
         });
       },
@@ -241,11 +241,13 @@
           },
           {
             key: 2,
-            label: 'node1'
+            label: 'node1',
+            switcher: 'switcher2'
           },
           {
             key: 3,
-            label: 'node2'
+            label: 'node2',
+            switcher: 'switcher2'
           },
           {
             key: 4,
@@ -254,11 +256,18 @@
           },
           {
             key: 5,
-            label: 'node3'
+            label: 'node3',
+            switcher: 'switcher2'
           },
           {
             key: 6,
-            label: 'node4'
+            label: 'node4',
+            switcher: 'switcher2'
+          },
+          {
+            key: 7,
+            label: 'node5',
+            switcher: 'switcher2'
           }
         ],
         links: [
@@ -267,7 +276,8 @@
           { from: 1, to: 2 },
           { from: 1, to: 3 },
           { from: 4, to: 5 },
-          { from: 4, to: 6 }
+          { from: 4, to: 6 },
+          { from: 7, to: 2 }
         ]
       };
     },
@@ -331,14 +341,14 @@
                       text: '\uE6eb'
                     },
                     stateCompute(n) {
-                      return n.part.isTreeExpanded;
+                      return n.isTreeExpanded;
                     },
                     binding: getBinding($, go, 'switcher1'),
                     events: events
                   }),
                   switcher($, go, {
                     stateCompute(n) {
-                      return n.part.isTreeExpanded;
+                      return n.isTreeExpanded;
                     },
                     binding: getBinding($, go, 'switcher2'),
                     events: events
@@ -354,8 +364,8 @@
         return linkTmpl($, go, {
           props: {
             arrows: 'to',
-            fromPortId: 'tShape',
-            toPortId: 'tShape'
+            fromPortId: 'tFigure',
+            toPortId: 'tFigure'
           }
         });
       },
