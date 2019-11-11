@@ -62,6 +62,7 @@ export default function figure($, go, _options) {
       // 增加一个不可见的环，放置外圈尺寸在改变时影响外部尺寸，导致布局变动
       shape($, go, {
         props: {
+          name: 'tShape',
           fill: 'red',
           stroke: 'transparent',
           ..._options.props._figureHolderOptions.props
