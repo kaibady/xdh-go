@@ -7,7 +7,9 @@ import picture from './picture';
 import textBlock from './textBlock';
 import tooltip from './tooltip';
 import shape from './shape';
+
 import tag from './tag';
+import switcher from './switcher';
 import mark from './mark';
 import binding from './binding';
 import link from './link';
@@ -31,6 +33,7 @@ export {
   // parts
   tooltip,
   tag,
+  switcher,
   mark,
   makePort,
   // 公共方法
