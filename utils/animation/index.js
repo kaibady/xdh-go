@@ -199,7 +199,11 @@ export default function handleAnimation(
   if (node) {
     let animation =
       node.data.animation || ((_options || {}).props || {}).animation;
-    if (!animation || !(animation instanceof Array)) {
+    if (
+      !animation ||
+      !(animation instanceof Array) ||
+      (animation && animation.length === 0)
+    ) {
       if (afterFinish && typeof afterFinish === 'function') {
         afterFinish(false);
       }
