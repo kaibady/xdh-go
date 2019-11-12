@@ -16,14 +16,14 @@ class DataManager {
   }
   getNode(node, isObject = false, isExample = false) {
     let key, nodeObj;
-    if (typeof node === 'string' || typeof node === 'number') {
+    if (typeof node === "string" || typeof node === "number") {
       key = node;
     } else if (node instanceof this.go.Node) {
       key = node.key;
-    } else if (typeof node === 'object' && node.key !== undefined) {
+    } else if (typeof node === "object" && node.key !== undefined) {
       key = node.key;
     }
-    if (typeof node === 'object' && isExample) {
+    if (typeof node === "object" && isExample) {
       let nodeObjs = this.diagram.findNodesByExample(node);
       let nodeArr = [];
       nodeObjs.each(N => {
@@ -47,14 +47,14 @@ class DataManager {
   }
   getLink(link, isObject, isByExample = false) {
     let key, linkObj;
-    if (typeof link === 'string' || typeof link === 'number') {
+    if (typeof link === "string" || typeof link === "number") {
       key = link;
     } else if (link instanceof this.go.Node) {
       key = link.key;
-    } else if (typeof link === 'object' && link.key !== undefined) {
+    } else if (typeof link === "object" && link.key !== undefined) {
       key = link.key;
     }
-    if (typeof link === 'object' && isByExample) {
+    if (typeof link === "object" && isByExample) {
       let linkObjs = this.diagram.findLinksByExample(link);
       let linkArr = [];
       linkObjs.each(L => {
@@ -78,7 +78,7 @@ class DataManager {
   }
   setNodeConverter(name, fn, nodeMergeFun = data => data) {
     this.nodeConverter[name] = fn;
-    this.nodeMergeFun = nodeMergeFun;
+    this.nodeMergeFun[name] = nodeMergeFun;
   }
   setLinkConverter(name, fn, linkMergeFun = data => data) {
     this.linkConverter[name] = fn;
@@ -90,14 +90,15 @@ class DataManager {
         // 节点去重
         distinct: true,
         // 节点重复时的混合模式 replace/remain/merge
-        duplicate: 'replace',
-        mergeFun: ''
+        duplicate: "replace",
+        mergeFun: ""
       },
       options
     );
     let nodeData = this.nodeConverter[name](data, _options);
+    nodeData._originData = data;
     if (nodeData.key === undefined) {
-      throw new Error('节点数据必须定义key');
+      throw new Error("节点数据必须定义key");
     }
     let exist = this.nodeExist[nodeData.key] ? true : false;
     if (!exist) {
@@ -108,14 +109,14 @@ class DataManager {
         this.diagram.model.addNodeData(nodeData);
       } else {
         // 节点重复的处理方法
-        if (_options.duplicate === 'replace') {
+        if (_options.duplicate === "replace") {
           let _data = this.diagram.model.findNodeDataForKey(nodeData.key);
           for (let i in nodeData) {
-            if (i !== 'key') {
-              this.diagram.model.set(_data, i, nodeData[i])
+            if (i !== "key") {
+              this.diagram.model.set(_data, i, nodeData[i]);
             }
           }
-        } else if (_options.duplicate === 'merge') {
+        } else if (_options.duplicate === "merge") {
           let mergeFun;
           if (_options.mergeFun) {
             mergeFun = this.nodeMergeFun[_options.mergeFun];
@@ -123,12 +124,15 @@ class DataManager {
             mergeFun = this.nodeMergeFun[name];
           }
           if (!mergeFun) {
-            throw new Error('mergeFun数据合并方法未定义');
+            throw new Error("mergeFun数据合并方法未定义");
           }
           let _nodeData = mergeFun(this.nodeExist[nodeData.key], nodeData);
-          let existData = this.nodeExist[nodeData.key];
-          Object.assign(existData, _nodeData);
-          this.diagram.updateAllRelationshipsFromData();
+          let _data = this.diagram.model.findNodeDataForKey(_nodeData.key);
+          for (let i in _nodeData) {
+            if (i !== "key") {
+                this.diagram.model.set(_data, i, _nodeData[i]);
+            }
+          }
         }
       }
     }
@@ -139,12 +143,13 @@ class DataManager {
         // 连线去重
         distinct: true,
         // 连线数据重复时的混合模式 replace/remain/merge
-        duplicate: 'replace',
-        mergeFun: ''
+        duplicate: "replace",
+        mergeFun: ""
       },
       options
     );
     let linkData = this.linkConverter[name](data, _options);
+    linkData._originData = data;
     let exist = this.linkExist[linkData.key] ? true : false;
     if (!exist) {
       this.diagram.model.addLinkData(linkData);
@@ -153,9 +158,9 @@ class DataManager {
         this.diagram.model.addLinkData(linkData);
       } else {
         // 节点重复的处理方法
-        if (_options.duplicate === 'replace') {
+        if (_options.duplicate === "replace") {
           this.diagram.model.addNodeData(linkData);
-        } else if (_options.duplicate === 'merge') {
+        } else if (_options.duplicate === "merge") {
           let mergeFun;
           if (_options.mergeFun) {
             mergeFun = this.linkMergeFun[_options.mergeFun];
@@ -163,7 +168,7 @@ class DataManager {
             mergeFun = this.linkMergeFun[name];
           }
           if (!mergeFun) {
-            throw new Error('mergeFun数据合并方法未定义');
+            throw new Error("mergeFun数据合并方法未定义");
           }
           let _linkData = mergeFun(this.linkExist[linkData.key], linkData);
           let existData = this.linkExist[linkData.key];
@@ -240,9 +245,10 @@ class DataManager {
     }
   }
 
-  resetManager() {
+  clear() {
     this.nodeExist = {};
     this.linkExist = {};
+    this.diagram.clear();
   }
 }
 
