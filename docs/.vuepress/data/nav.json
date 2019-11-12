@@ -33,8 +33,8 @@
     ]
   },
   {
-    "text": "更新日志",
-    "link": "/update"
+    "text": "数据管理",
+    "link": "/dataManager/dataManager"
   },
   {
     "text": "文档",
@@ -48,5 +48,9 @@
         "link": "/gojs.html?url=gojs/index.html"
       }
     ]
+  },
+  {
+    "text": "更新日志",
+    "link": "/update"
   }
 ]

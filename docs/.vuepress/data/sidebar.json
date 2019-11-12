@@ -63,6 +63,13 @@
       "children": ["tag", "mark", "switcher"]
     }
   ],
+  "/dataManager/": [
+    {
+      "title": "数据管理",
+      "collapsable": false,
+      "children": ["dataManager", "remove", "update"]
+    }
+  ],
   "/applys/": [
     {
       "title": "综合应用",

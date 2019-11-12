@@ -20,6 +20,7 @@ export let getDefaultProps = ($, go) => {
     // corner: 0,
     // routing: go.Link.Normal,
     // smoothness: 0.5,
+    orient: 'none',
     dashes: false,
     opacity: 1,
     lineWidth: {

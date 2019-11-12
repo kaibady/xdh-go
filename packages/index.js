@@ -18,6 +18,9 @@ import AnimationEvents from '../utils/animation/animateManager';
 import link from '../utils/template/link/index';
 import node from '../utils/template/node/index';
 import group from '../utils/template/group/index';
+// 数据管理
+import DataManager from '../utils/dataManager/dataManager';
+
 // group
 import {
   getGroupLayout,
@@ -69,6 +72,7 @@ export const animation = {
   AnimationEvents: AnimationEvents
 };
 export const groupFun = { getGroupLayout, getGroupDragging, setGroupLayout };
+export const dataUtils = { DataManager };
 export default {
   version: '1.0.0',
   install,
@@ -84,10 +88,12 @@ export default {
   View,
   Select,
   Search,
+  // 方法类
   utils,
   nodeTmpl,
   linkTmpl,
   groupTmpl,
   animation,
-  groupFun
+  groupFun,
+  dataUtils
 };

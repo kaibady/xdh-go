@@ -179,6 +179,12 @@ export function labelShapeBinding($, go, _options) {
   });
 }
 export function labelPanelBinding($, go, _options) {
+  let orientMap = {
+    none: go.Link.None,
+    along: go.Link.OrientAlong,
+    upright: go.Link.OrientUpright,
+    upright45: go.Link.OrientUpright45
+  };
   return binding($, go, {
     visible: {
       key: '',
@@ -274,6 +280,22 @@ export function labelPanelBinding($, go, _options) {
             segment = midSegment;
         }
         return segment;
+      }
+    },
+    segmentOrientation: {
+      key: '',
+      handler(d) {
+        let orient = '';
+        if (d.orient) {
+          orient = d.orient;
+        } else {
+          orient = _options.props.orient;
+        }
+        if (go.Link[orient]) {
+          return go.Link[orient];
+        } else if (['none', 'along', 'upright', 'upright45'].includes(orient)) {
+          return orientMap[orient];
+        }
       }
     }
   });
