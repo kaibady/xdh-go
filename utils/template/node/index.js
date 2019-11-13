@@ -111,6 +111,7 @@ export default function($, go, options) {
   return node($, go, {
     props: {
       name: 'tNode',
+      portId: 'tNode',
       locationObjectName: 'tLocPoint',
       shadowVisible: true,
       toolTip: tooltip($, go, {

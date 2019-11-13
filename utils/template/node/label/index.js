@@ -11,6 +11,7 @@ export default function label($, go, _options) {
     type: 'auto',
     props: {
       name: 'tLabel',
+      portId: 'tLabel',
       ..._options.props._labelOuterPanelOptions.props
     },
     parts: [

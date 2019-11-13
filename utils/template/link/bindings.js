@@ -116,7 +116,7 @@ export function linkBinding($, go, _options) {
         } else if(d.type && d.type === 'route') {
           return 20;
         } else {
-          return 20;
+          return NaN;
         }
       }
     },
@@ -126,7 +126,7 @@ export function linkBinding($, go, _options) {
        if(d.type && d.type === 'route') {
           return 10;
         } else {
-          return 0;
+          return 10;
         }
       }
     },

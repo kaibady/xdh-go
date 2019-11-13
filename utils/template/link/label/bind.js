@@ -73,16 +73,14 @@ export function labelArrayPanelBinding($, go, _options) {
         } else if (d.label && d.label.text && d.label.text instanceof Array) {
           return d.label.text;
         } else {
-          return _options.props.label.text;
+          return [];
         }
       }
     },
     visible: {
       key: '',
       handler(d) {
-        if (d.label && d.label instanceof Array) {
-          return true;
-        } else if (d.label && d.label.text instanceof Array) {
+        if (d.label && (d.label instanceof Array || d.label.text instanceof Array)) {
           return true;
         } else {
           return false;
@@ -94,7 +92,7 @@ export function labelArrayPanelBinding($, go, _options) {
 function textTwoWay(d, obj) {
   if (typeof obj.label === 'string') {
     obj.label = d;
-  } else if (typeof obj.label === 'object') {
+  } else if (typeof obj.label === 'object' && typeof obj.label.text === 'string') {
     obj.label.text = d;
   }
 }
@@ -112,7 +110,9 @@ export function labelBinding($, go, _options) {
           return '';
         } else if (typeof d.label === 'string') {
           return d.label;
-        } else if (typeof d.label === 'object') {
+        } else if ( typeof d.label === 'object' &&
+        d.label.text !== undefined &&
+        d.label.text !== '') {
           return d.label.text;
         }
       }
@@ -146,14 +146,12 @@ export function labelBinding($, go, _options) {
       key: '',
       handler(d) {
         if (
-          d.label === undefined ||
-          (typeof d.label === 'object' && !d.label.text) ||
-          (typeof d.label === 'object' && d.label.show === false) ||
-          (typeof d.label === 'object' && typeof d.label.text !== 'string')
+          (typeof d.label === 'object' && typeof d.label.text === 'string') ||
+          typeof d.label === 'string'
         ) {
-          return false;
+          return true
         } else {
-          return true;
+          return false
         }
       }
     }
@@ -190,15 +188,15 @@ export function labelPanelBinding($, go, _options) {
       key: '',
       handler(d) {
         if (
-          (d.label !== undefined &&
+          (d.label && 
             (d.label instanceof Array ||
               typeof d.label === 'string' ||
               (typeof d.label === 'object' && d.label.show !== false))) ||
-          (d.label === undefined && _options.label.show !== false)
+          (d.label && _options.label.show !== false)
         ) {
-          return true;
+          return true
         } else {
-          return false;
+          return false
         }
       }
     },

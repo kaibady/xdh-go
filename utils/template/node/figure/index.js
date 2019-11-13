@@ -15,6 +15,7 @@ export default function figure($, go, _options) {
     type: 'spot',
     props: {
       name: 'tFigure',
+      portId: 'tFigure',
       ..._options.props._figurePanelOptions.props
     },
     parts: [
@@ -22,6 +23,7 @@ export default function figure($, go, _options) {
       shape($, go, {
         props: {
           name: 'tState',
+          portId: 'tState',
           figure: 'Circle',
           background: 'transparent',
           portId: 'StateShape',
@@ -46,6 +48,7 @@ export default function figure($, go, _options) {
         panel: {
           props: {
             name: 'tPicture',
+            portId: 'tPicture',
             ..._options.props._clipPanelOptions.props
           },
           binding: [
@@ -65,6 +68,7 @@ export default function figure($, go, _options) {
       shape($, go, {
         props: {
           name: 'tHolder',
+          portId: 'tHolder',
           fill: 'red',
           stroke: 'transparent',
           ..._options.props._figureHolderOptions.props
@@ -79,6 +83,7 @@ export default function figure($, go, _options) {
       shape($, go, {
         props: {
           name: 'tShape',
+          portId: 'tShape',
           fill: '#000',
           ..._options.props._shapeOptions.props
         },
@@ -91,6 +96,7 @@ export default function figure($, go, _options) {
       iconfont($, go, {
         props: {
           name: 'tIcon',
+          portId: 'tIcon',
           ..._options.props._iconOptions.props
         },
         binding: [
@@ -105,6 +111,7 @@ export default function figure($, go, _options) {
       shape($, go, {
         props: {
           name: 'tLocPoint',
+          portId: 'tLocPoint',
           width: 1,
           height: 1,
           fill: 'transparent',

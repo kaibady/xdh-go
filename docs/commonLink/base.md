@@ -151,6 +151,7 @@ links=  [
 | toShortLength   | 连线末端端与箭头的距离 | Number        | -                                                | 0                                                     |
 | lineWidth       | 连线及箭头的线条宽度   | Number/Object | -                                                | normal 状态及 gray 状态为 1,其余为 2                  |
 | lineColor       | 连线及箭头的线条颜色   | Number/Object | -                                                | normal 状态为'#000',gray 状态为'#ccc',其余为'#66b1ff' |
+| orient      | label文字旋转角度   | String | 'none'/'along'/'upright'/'upright45'                                                | 'none' |
 
 ## 箭头
 
