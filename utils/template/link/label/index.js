@@ -10,6 +10,7 @@ export function label($, go, _options) {
   return panel($, go, {
     type: 'auto',
     props: {
+      name: 'sLabel',
       segmentOrientation: go.Link.OrientUpright,
       ..._options.props._outerPanelOptions.props
     },

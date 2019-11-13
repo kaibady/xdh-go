@@ -1,16 +1,20 @@
-import { shape } from '../../../node-parts';
-import { lineBinding, linkHolderBinding } from './bind';
+import { shape } from '../../../node-parts'
+import { lineBinding, linkHolderBinding } from './bind'
 export function line($, go, _options) {
   return shape($, go, {
-    props: { ..._options.props._lineOptions.props },
+    props: {
+      name: 'sLine',
+      ..._options.props._lineOptions.props
+    },
     parts: [..._options.props._lineOptions.parts],
     binding: lineBinding($, go, _options)
-  });
+  })
 }
 
 export function lineHolder($, go, _options) {
   return shape($, go, {
     props: {
+      name: 'sLineHolder',
       height: 'auto',
       width: 'auto',
       stroke: 'rgba(0,0,0,0)',
@@ -24,5 +28,5 @@ export function lineHolder($, go, _options) {
       ...linkHolderBinding($, go, _options),
       ..._options.props._linkHolderOptions.binding
     ]
-  });
+  })
 }

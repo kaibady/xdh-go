@@ -46,7 +46,7 @@
     {
       "title": "通用连线",
       "collapsable": false,
-      "children": ["base", "lines", "arrows", "label", "gray", "extension"]
+      "children": ["base", "lines", "arrows", "label", "gray", "animate", "extension"]
     }
   ],
   "/group/": [

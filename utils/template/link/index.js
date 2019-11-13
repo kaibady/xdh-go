@@ -46,6 +46,7 @@ export default function($, go, options) {
   }
   return link($, go, {
     props: {
+      name: 'sLinkNode',
       zOrder: -1,
       ..._options.props._linkOptions.props
     },
