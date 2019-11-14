@@ -223,9 +223,10 @@ export default function handleAnimation(
     } else {
       return;
     }
+    let defaultObject = node instanceof go.Node ? 'tNode': 'sLabel';
     animation.forEach((con, index) => {
       if (con.trigger === event) {
-        let obj = node.findObject(con.objectName || 'tNode');
+        let obj = node.findObject(con.objectName || defaultObject);
         obj.isAnimated = false;
         let propType = con.propType || propMapReverse[con.prop];
         let keyFrame = handleKeyFrame(con.keyType, obj, con, propType);
