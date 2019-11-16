@@ -19,6 +19,7 @@ export function lineHolder($, go, _options) {
       width: 'auto',
       stroke: 'rgba(0,0,0,0)',
       strokeWidth: 30,
+      strokeDashArray: null,
       segmentOffset: new go.Point(0, 0),
       segmentOrientation: go.Link.Normal,
       ..._options.props._linkHolderOptions.props

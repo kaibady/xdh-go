@@ -170,6 +170,7 @@ function handleKeyFrame(keyType, obj, config, propType) {
 function getPropObj(go, state, propType) {
   switch (propType) {
     case 'number':
+    case 'array':
       return state;
     case 'spot':
       return new go.Spot(...state);
