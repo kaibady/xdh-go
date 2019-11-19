@@ -272,15 +272,15 @@ props 默认参数为
         nodes: [
           {
             category: 'a',
-            source: '/img/node/circleimage/1.png'
+            source: '/xdh-go/img/node/circleimage/1.png'
           },
           {
             category: 'b',
-            source: '/img/node/image/2.png'
+            source: '/xdh-go/img/node/image/2.png'
           },
           {
             category: 'c',
-            source: '/img/node/circleimage/3.png'
+            source: '/xdh-go/img/node/circleimage/3.png'
           }
         ]
       };

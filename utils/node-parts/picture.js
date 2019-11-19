@@ -75,7 +75,7 @@ export default function($, go, options) {
       ..._options.panel.props
     },
     imageClip,
-    $(go.Picture, _options.props, ..._options.parts, ..._options.binding),
+    $(go.Picture, _options.props, ..._options.binding),
     ..._options.panel.binding
   );
 }

@@ -4,6 +4,7 @@ import makePort from './makePort';
 import node from './node';
 import group from './group';
 import picture from './picture';
+import imageSet from './imageSet';
 import textBlock from './textBlock';
 import tooltip from './tooltip';
 import shape from './shape';
@@ -30,6 +31,7 @@ export {
   link,
   textBlock,
   picture,
+  imageSet,
   // parts
   tooltip,
   tag,

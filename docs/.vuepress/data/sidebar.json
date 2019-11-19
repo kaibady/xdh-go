@@ -94,7 +94,7 @@
     {
       "title": "部件",
       "collapsable": false,
-      "children": ["tag", "mark", "switcher"]
+      "children": ["tag", "mark", "switcher", "imageSet"]
     }
   ],
   "/dataManager/": [

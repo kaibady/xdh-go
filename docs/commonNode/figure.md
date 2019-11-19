@@ -2,7 +2,7 @@
 
 | 参数        | 参数说明       | 类型          | 可选值                                               | 默认值                                               |
 | ----------- | -------------- | ------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| shape       | 图形类型       | String        | 'image'/'clipImage'/'icon'/(go.Shape 内置图形类型)   | 'Rectangle'                                          |
+| shape       | 图形类型       | String/null        | 'image'/'clipImage'/'icon'/(go.Shape 内置图形类型), 设置为null则不显示图形   | 'Rectangle'                                          |
 | figureMargin         | 图形的外边距 | Number/Array | -                                                         | 20                                  |
 | stateShape  | 状态框形状     | String        | go.Shape 内置图形类型                                | 'Circle'                                             |
 | size        | 图形的尺寸     | Number/Array  | Number 类型时，宽高一致；如果是数组类型，则为[宽,高] | [50,50]                                              |
@@ -445,6 +445,15 @@ shape 参数为'icon'时有效
                 geometryString: 'F M120 0 L80 80 0 50z'
               }
             }
+          },
+          {
+            shape: null,
+            label: {
+              text: [{text:'没有图形'}, {text: '只有label'}],
+              margin: 10
+            },
+            labelStroke: '#0050b3',
+            labelBackground: '#91d5ff'
           }
         ]
       };
