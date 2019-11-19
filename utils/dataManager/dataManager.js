@@ -47,7 +47,6 @@ class DataManager {
   }
   getLink(link, isObject, isByExample = false) {
     let linkObj
-    console.log(link)
     if (typeof link === 'string' || typeof link === 'number') {
       let data = this.diagram.model.linkDataArray.find(k => k.key === link)
       if (data) {

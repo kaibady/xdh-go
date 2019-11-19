@@ -15,7 +15,7 @@ function handleParts(_options) {
     extendUp = [..._options.parts];
   } else if (_options.parts && _options.parts.up) {
     extendUp = [..._options.parts.up];
-    extendDown = [..._options.parts.down];
+    extendDown = [..._options.parts.down || []];
   }
   return {
     extendUp,
@@ -70,14 +70,14 @@ function handleEvents(_options, $, go) {
   if (_options.events.doubleClick) {
     let originFun = _options.events.doubleClick;
     let overideFun = function(e, n) {
-      console.log('dbclick', n);
+      // console.log('dbclick', n);
       handleAnimation(e, n, 'dbclick', _options, go);
       originFun(e, n);
     };
     _options.events.doubleClick = overideFun;
   } else {
     let overideFun = function(e, n) {
-      console.log('dbclick', n);
+      // console.log('dbclick', n);
       handleAnimation(e, n, 'dbclick', _options, go);
     };
     _options.events.doubleClick = overideFun;
@@ -85,7 +85,7 @@ function handleEvents(_options, $, go) {
 }
 export default function($, go, options) {
   let _options = handleLinkDefault($, go, options);
-  console.log('link', _options);
+  // console.log('link', _options);
   let { extendUp, extendDown } = handleParts(_options)
   // 处理事件
   handleEvents(_options, $, go);
@@ -106,7 +106,8 @@ export default function($, go, options) {
       label($, go, _options),
       // // 连线占位
       lineHolder($, go, _options),
-      ...extendUp
+      ...extendUp,
+      ..._options.props._linkOptions.parts
     ],
     binding: [...linkBinding($, go, _options), ..._options.binding],
     events: _options.events

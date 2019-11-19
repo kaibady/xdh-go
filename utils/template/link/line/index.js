@@ -4,9 +4,9 @@ export function line($, go, _options) {
   return shape($, go, {
     props: {
       name: 'sLine',
+      strokeDashArray: [4, 4, 4, 4],
       ..._options.props._lineOptions.props
     },
-    parts: [..._options.props._lineOptions.parts],
     binding: lineBinding($, go, _options)
   })
 }

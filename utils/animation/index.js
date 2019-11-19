@@ -1,23 +1,23 @@
 // 动画每秒60帧
-const UPDATE_TIME = 1000 / 60;
+const UPDATE_TIME = 1000 / 60
 
-const pow = Math.pow;
-const sqrt = Math.sqrt;
-const sin = Math.sin;
-const cos = Math.cos;
-const PI = Math.PI;
-const c1 = 1.70158;
-const c2 = c1 * 1.525;
-const c3 = c1 + 1;
-const c4 = (2 * PI) / 3;
-const c5 = (2 * PI) / 4.5;
+const pow = Math.pow
+const sqrt = Math.sqrt
+const sin = Math.sin
+const cos = Math.cos
+const PI = Math.PI
+const c1 = 1.70158
+const c2 = c1 * 1.525
+const c3 = c1 + 1
+const c4 = (2 * PI) / 3
+const c5 = (2 * PI) / 4.5
 
 // 动画执行函数
 const rAF =
   window.requestAnimationFrame ||
   function(cb) {
-    setTimeout(cb, UPDATE_TIME);
-  };
+    setTimeout(cb, UPDATE_TIME)
+  }
 
 /**
  * 缓动动画函数
@@ -36,9 +36,9 @@ const rAF =
  *      // to do something
  *  })
  */
-let animationPool = {};
-let relateObjectState = {};
-let animationQueue = {};
+let animationPool = {}
+let relateObjectState = {}
+let animationQueue = {}
 const propMap = {
   spot: [
     'alignment',
@@ -77,24 +77,27 @@ const propMap = {
     'shadowOffset'
   ],
   rgba: ['areaBackground', 'background', 'fill', 'stroke', 'shadowColor']
-};
+}
 const propMapReverse = (function() {
-  let map = {};
+  let map = {}
   for (let name in propMap) {
     propMap[name].forEach(r => {
-      map[r] = name;
-    });
+      map[r] = name
+    })
   }
-  return map;
-})();
+  return map
+})()
 function handleKeyFrame(keyType, obj, config, propType) {
-  let keyFrame;
-  let param = obj[config.prop];
+  let keyFrame
+  let param
+  if (obj && config.prop) {
+    param = obj[config.prop]
+  }
   if (keyType === 'relative') {
     switch (propType) {
       case 'number':
-        keyFrame = [param + config.keyFrame[0], param + config.keyFrame[1]];
-        break;
+        keyFrame = [param + config.keyFrame[0], param + config.keyFrame[1]]
+        break
       case 'spot':
         keyFrame = [
           [
@@ -109,14 +112,14 @@ function handleKeyFrame(keyType, obj, config, propType) {
             param.offsetX + config.keyFrame[1][2] || 0,
             param.offsetY + config.keyFrame[1][3] || 0
           ]
-        ];
-        break;
+        ]
+        break
       case 'point':
         keyFrame = [
           [param.x + config.keyFrame[0][0], param.y + config.keyFrame[0][1]],
           [param.x + config.keyFrame[1][0], param.y + config.keyFrame[1][1]]
-        ];
-        break;
+        ]
+        break
       case 'size':
         keyFrame = [
           [
@@ -127,8 +130,8 @@ function handleKeyFrame(keyType, obj, config, propType) {
             param.width + config.keyFrame[1][0],
             param.height + config.keyFrame[1][1]
           ]
-        ];
-        break;
+        ]
+        break
       case 'margin':
         keyFrame = [
           [
@@ -143,8 +146,8 @@ function handleKeyFrame(keyType, obj, config, propType) {
             param.bottom + config.keyFrame[1][2],
             param.left + config.keyFrame[1][3]
           ]
-        ];
-        break;
+        ]
+        break
       case 'rect':
         keyFrame = [
           [
@@ -159,33 +162,33 @@ function handleKeyFrame(keyType, obj, config, propType) {
             param.width + config.keyFrame[1][2],
             param.height + config.keyFrame[1][3]
           ]
-        ];
-        break;
+        ]
+        break
     }
   } else {
-    keyFrame = config.keyFrame;
+    keyFrame = config.keyFrame
   }
-  return keyFrame;
+  return keyFrame
 }
 function getPropObj(go, state, propType) {
   switch (propType) {
     case 'number':
     case 'array':
-      return state;
+      return state
     case 'spot':
-      return new go.Spot(...state);
+      return new go.Spot(...state)
     case 'point':
-      return new go.Point(...state);
+      return new go.Point(...state)
     case 'size':
-      return new go.Size(...state);
+      return new go.Size(...state)
     case 'margin':
-      return new go.Margin(...state);
+      return new go.Margin(...state)
     case 'rect':
-      return new go.Rect(...state);
+      return new go.Rect(...state)
     case 'rgba':
       return `rgba(${Math.floor(state[0])},${Math.floor(state[1])},${Math.floor(
         state[2]
-      )},${state[3]})`;
+      )},${state[3]})`
   }
 }
 export default function handleAnimation(
@@ -196,42 +199,44 @@ export default function handleAnimation(
   go,
   afterFinish
 ) {
-  let node = n.part;
+  let node = n.part
   if (node) {
     let animation =
-      node.data.animation || ((_options || {}).props || {}).animation;
+      node.data.animation || ((_options || {}).props || {}).animation
     if (
       !animation ||
       !(animation instanceof Array) ||
       (animation && animation.length === 0)
     ) {
       if (afterFinish && typeof afterFinish === 'function') {
-        afterFinish(false);
+        afterFinish(false)
       }
-      return;
+      return
     }
-    let oldIsOngoing, diagram, oldskips;
-    let existEvent = animation.some(r => r.trigger === event);
+    let oldIsOngoing, diagram, oldskips
+    let existEvent = animation.some(r => r.trigger === event)
     // 如果与当前事件无关，则返回
     if (existEvent) {
-      diagram = node.diagram;
-      oldskips = diagram.skipsUndoManager;
-      diagram.skipsUndoManager = true;
+      diagram = node.diagram
+      oldskips = diagram.skipsUndoManager
+      diagram.skipsUndoManager = true
       // animationPool = {};
-      relateObjectState = {};
-      animationQueue = {};
-      oldIsOngoing = node.diagram.layout.isOnging;
+      relateObjectState = {}
+      animationQueue = {}
+      oldIsOngoing = node.diagram.layout.isOnging
     } else {
-      return;
+      return
     }
-    let defaultObject = node instanceof go.Node ? 'tNode': 'sLabel';
+    let defaultObject = node instanceof go.Node ? 'tNode' : 'sLabel'
     animation.forEach((con, index) => {
       if (con.trigger === event) {
-        let obj = node.findObject(con.objectName || defaultObject);
-        obj.isAnimated = false;
-        let propType = con.propType || propMapReverse[con.prop];
-        let keyFrame = handleKeyFrame(con.keyType, obj, con, propType);
-        node.diagram.layout.isOngoing = false;
+        let obj = node.findObject(con.objectName || defaultObject)
+        if (obj) {
+          obj.isAnimated = false
+        }
+        let propType = con.propType || propMapReverse[con.prop] || 'number'
+        let keyFrame = handleKeyFrame(con.keyType, obj, con, propType)
+        node.diagram.layout.isOngoing = false
         tween({
           keyFrame: keyFrame,
           easingFunc: con.easingFunc || ['easeInQuad'],
@@ -241,24 +246,41 @@ export default function handleAnimation(
           direction: con.direction || 'normal',
           prevName: con.prevName || '',
           name: con.name || '',
+          diagram: diagram,
+          obj: obj,
+          node: node,
+          go: go,
           repeatCount: con.repeatCount || 1,
-          relateObjectId: obj.__gohashid, // 相关节点的__gohashid
+          relateObjectId: (obj || {}).__gohashid, // 相关节点的__gohashid
           animateIndex: index,
           stepCb(state) {
-            let _state = getPropObj(go, state, propType);
-            obj[con.prop] = _state;
+            let _state
+            if (con.stateParser && typeof con.stateParser === 'function') {
+              _state = con.stateParser(state, propType, obj, node, diagram, go)
+            } else {
+              _state = getPropObj(go, state, propType)
+            }
+            if (con.stepCallback && typeof con.stepCallback === 'function') {
+              con.stepCallback(_state, propType, obj, node, diagram, go)
+            } else {
+              obj[con.prop] = _state
+            }
           },
+          beforeStart: con.beforeStart,
+          animationFinish: con.animationFinish,
           finishCb() {
-            obj.isAnimated = true;
-            node.diagram.layout.isOngoing = oldIsOngoing;
+            if (obj) {
+              obj.isAnimated = true
+            }
+            node.diagram.layout.isOngoing = oldIsOngoing
             if (afterFinish && typeof afterFinish === 'function') {
-              afterFinish(true);
+              afterFinish(true)
             }
           }
-        });
+        })
       }
-      diagram.skipsUndoManager = oldskips;
-    });
+      diagram.skipsUndoManager = oldskips
+    })
   }
 }
 export function tween(options = {}) {
@@ -268,63 +290,69 @@ export function tween(options = {}) {
       easingFunc: ['easeInQuad'],
       duration: 300,
       animateIndex: 0,
+      animationFinish: null,
       relateObjectId: '',
+      diagram: null,
+      go: null,
+      obj: null,
+      node: null,
+      beforeStart: null,
       stepCallback: () => {},
       finishCallback: () => {}
     },
     options
-  );
+  )
   // console.log(_options);
-  let startValue = _options.keyFrame[0];
-  let endValue = _options.keyFrame[1];
+  let startValue = _options.keyFrame[0]
+  let endValue = _options.keyFrame[1]
   if (
     _options.relateObjectId &&
     relateObjectState[_options.relateObjectId] !== undefined &&
     relateObjectState[_options.relateObjectId].trigger !== _options.trigger
   ) {
-    startValue = relateObjectState[_options.relateObjectId].state;
-    clearAnimation(relateObjectState[_options.relateObjectId].animationId);
+    startValue = relateObjectState[_options.relateObjectId].state
+    clearAnimation(relateObjectState[_options.relateObjectId].animationId)
   }
   // 改变的值大小
-  let changeValue;
-  let repeatCount = 0;
+  let changeValue
+  let repeatCount = 0
   // 值的类型为数字和数组分开处理
   if (startValue instanceof Array) {
-    changeValue = [];
+    changeValue = []
     startValue.forEach((v, idx) => {
-      changeValue.push(endValue[idx] - v);
-    });
+      changeValue.push(endValue[idx] - v)
+    })
   } else {
-    changeValue = endValue - startValue;
+    changeValue = endValue - startValue
   }
   // 指定时间内更新的次数
-  const updateCount = options.duration / UPDATE_TIME;
+  const updateCount = options.duration / UPDATE_TIME
   // 每次更新的值距离
-  const perUpdateDistance = 1 / updateCount;
-  let position = 0;
+  const perUpdateDistance = 1 / updateCount
+  let position = 0
   let animationId = `${new Date().getTime()}${Math.floor(
     Math.random() * 100000
-  )}`;
+  )}`
   animationPool[animationId] = function() {
-    let state;
+    let state
     if (changeValue instanceof Array) {
-      state = [];
+      state = []
       startValue.forEach((v, idx) => {
         if (typeof _options.easingFunc[idx] === 'function') {
-          state.push(v + changeValue[idx] * _options.easingFunc[idx](position));
+          state.push(v + changeValue[idx] * _options.easingFunc[idx](position))
         } else {
           state.push(
             v +
               changeValue[idx] *
                 animateFun[_options.easingFunc[idx] || 'easeInQuad'](position)
-          );
+          )
         }
-      });
+      })
     } else {
       let easingFunc = _options.easingFunc
-        ? animateFun[_options.easingFunc[0]]
-        : 'easeInQuad';
-      state = startValue + changeValue * easingFunc(position);
+        ? animateFun[_options.easingFunc[0]] || _options.easingFunc[0]
+        : 'easeInQuad'
+      state = startValue + changeValue * easingFunc(position)
     }
     if (_options.relateObjectId) {
       relateObjectState[_options.relateObjectId] = {
@@ -333,86 +361,129 @@ export function tween(options = {}) {
         animationId,
         prevName: _options.prevName, // 上一动画名称
         name: _options.name // 动画名称
-      };
+      }
     }
-    _options.stepCb(state);
-    position += perUpdateDistance;
+    _options.stepCb(state)
+    position += perUpdateDistance
     if (position < 1 && animationPool[animationId]) {
-      rAF(animationPool[animationId]);
+      rAF(animationPool[animationId])
     } else {
       rAF(() => {
-        _options.stepCb(endValue);
-        repeatCount++;
+        _options.stepCb(endValue)
+        repeatCount++
+        let nextAnimate = true
+        if (
+          _options.animationFinish &&
+          typeof _options.animationFinish === 'function'
+        ) {
+          nextAnimate = _options.animationFinish(
+            _options.obj,
+            _options.node,
+            _options.diagram,
+            _options.go
+          )
+        }
+        if (nextAnimate === false) {
+          return
+        }
         if (_options.repeatCount > repeatCount) {
-          position = 0;
+          position = 0
           let startTemp =
               startValue instanceof Array ? [...startValue] : startValue,
-            endTemp = endValue instanceof Array ? [...endValue] : endValue;
-          startValue = _options.direction === 'alternate' ? endTemp : startTemp;
-          endValue = _options.direction === 'alternate' ? startTemp : endTemp;
+            endTemp = endValue instanceof Array ? [...endValue] : endValue
+          startValue = _options.direction === 'alternate' ? endTemp : startTemp
+          endValue = _options.direction === 'alternate' ? startTemp : endTemp
           if (startValue instanceof Array) {
-            let _change = [];
+            let _change = []
             startValue.forEach((v, idx) => {
-              _change.push(endValue[idx] - startValue[idx]);
-            });
-            changeValue = _change;
+              _change.push(endValue[idx] - startValue[idx])
+            })
+            changeValue = _change
           } else {
-            changeValue = endValue - startValue;
+            changeValue = endValue - startValue
           }
           if (animationPool[animationId]) {
-            animationPool[animationId]();
+            animationPool[animationId]()
           }
         } else {
           if (_options.name) {
             // 如果有动画名称，看看有没有后续动画继续执行
             if (animationQueue[_options.trigger]) {
               if (animationQueue[_options.trigger].length === 0) {
-                delete animationQueue[_options.trigger];
+                delete animationQueue[_options.trigger]
               } else {
-                let currentAnimate = animationQueue[_options.trigger].shift();
+                let currentAnimate = animationQueue[_options.trigger].shift()
+                let goOn = true
+                if (
+                  currentAnimate.beforeStart &&
+                  typeof currentAnimate.beforeStart === 'function'
+                ) {
+                  console.log(_options)
+                  goOn = currentAnimate.beforeStart(
+                    _options.obj,
+                    _options.node,
+                    _options.diagram,
+                    _options.go
+                  )
+                }
+                if (goOn === false) {
+                  return
+                }
                 if (
                   currentAnimate.delay &&
                   currentAnimate.trigger === _options.trigger
                 ) {
                   setTimeout(() => {
-                    currentAnimate.animation();
-                  }, currentAnimate.delay);
+                    currentAnimate.animation()
+                  }, currentAnimate.delay)
                 } else {
-                  currentAnimate.animation();
+                  currentAnimate.animation()
                 }
               }
             } else {
-              _options.finishCb();
+              _options.finishCb()
             }
           } else {
-            _options.finishCb();
+            _options.finishCb()
           }
-          delete animationPool[animationId];
+          delete animationPool[animationId]
           if (_options.relateObjectId) {
-            delete relateObjectState[_options.relateObjectId];
+            delete relateObjectState[_options.relateObjectId]
           }
         }
-      });
+      })
     }
-  };
+  }
   // 动画延时执行
   if (_options.prevName) {
-    pushAnimationQueue(_options, animationPool[animationId]);
+    pushAnimationQueue(_options, animationPool[animationId])
   } else {
+    let goOn = true
+    if (_options.beforeStart && typeof _options.beforeStart === 'function') {
+      goOn = _options.beforeStart(
+        _options.obj,
+        _options.node,
+        _options.diagram,
+        _options.go
+      )
+    }
+    if (goOn === false) {
+      return
+    }
     if (_options.delay) {
       setTimeout(() => {
         if (animationPool[animationId]) {
-          animationPool[animationId]();
+          animationPool[animationId]()
         }
-      }, _options.delay);
+      }, _options.delay)
     } else {
       if (animationPool[animationId]) {
-        animationPool[animationId]();
+        animationPool[animationId]()
       }
     }
   }
 
-  return animationId;
+  return animationId
 }
 function pushAnimationQueue(_options, animation) {
   // 如果没有这个队列，建立队列
@@ -421,27 +492,28 @@ function pushAnimationQueue(_options, animation) {
     prevName: _options.prevName,
     trigger: _options.trigger,
     delay: _options.delay || 0,
+    beforeStart: _options.beforeStart,
     animation
-  };
+  }
   if (!animationQueue[_options.trigger]) {
-    animationQueue[_options.trigger] = [];
-    animationQueue[_options.trigger].push(animateObj);
+    animationQueue[_options.trigger] = []
+    animationQueue[_options.trigger].push(animateObj)
   } else {
     // 如果已经有了，插入到相关动画位置
     let animate = animationQueue[_options.trigger].find(a => {
-      return a.name === _options.prevName;
-    });
-    let index = animationQueue[_options.trigger].indexOf(animate);
+      return a.name === _options.prevName
+    })
+    let index = animationQueue[_options.trigger].indexOf(animate)
 
     if (index >= 0) {
-      animationQueue[_options.trigger].splice(index, 0, animateObj);
+      animationQueue[_options.trigger].splice(index, 0, animateObj)
     } else {
-      animationQueue[_options.trigger].push(animateObj);
+      animationQueue[_options.trigger].push(animateObj)
     }
   }
 }
 export function clearAnimation(animationId) {
-  delete animationPool[animationId];
+  delete animationPool[animationId]
 }
 
 /**
@@ -450,7 +522,7 @@ export function clearAnimation(animationId) {
  * @returns {number}
  */
 export function ease(x) {
-  return x;
+  return x
 }
 
 /**
@@ -459,7 +531,7 @@ export function ease(x) {
  * @returns {number}
  */
 export function easeInQuad(x) {
-  return x * x;
+  return x * x
 }
 
 /**
@@ -468,7 +540,7 @@ export function easeInQuad(x) {
  * @returns {number}
  */
 export function easeOutQuad(x) {
-  return 1 - (1 - x) * (1 - x);
+  return 1 - (1 - x) * (1 - x)
 }
 
 /**
@@ -477,7 +549,7 @@ export function easeOutQuad(x) {
  * @returns {number}
  */
 export function easeInOutQuad(x) {
-  return x < 0.5 ? 2 * x * x : 1 - pow(-2 * x + 2, 2) / 2;
+  return x < 0.5 ? 2 * x * x : 1 - pow(-2 * x + 2, 2) / 2
 }
 
 /**
@@ -486,7 +558,7 @@ export function easeInOutQuad(x) {
  * @returns {number}
  */
 export function easeInCubic(x) {
-  return x * x * x;
+  return x * x * x
 }
 
 /**
@@ -495,7 +567,7 @@ export function easeInCubic(x) {
  * @returns {number}
  */
 export function easeOutCubic(x) {
-  return 1 - pow(1 - x, 3);
+  return 1 - pow(1 - x, 3)
 }
 
 /**
@@ -504,7 +576,7 @@ export function easeOutCubic(x) {
  * @returns {number}
  */
 export function easeInOutCubic(x) {
-  return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2;
+  return x < 0.5 ? 4 * x * x * x : 1 - pow(-2 * x + 2, 3) / 2
 }
 
 /**
@@ -513,7 +585,7 @@ export function easeInOutCubic(x) {
  * @returns {number}
  */
 export function easeInQuart(x) {
-  return x * x * x * x;
+  return x * x * x * x
 }
 
 /**
@@ -522,7 +594,7 @@ export function easeInQuart(x) {
  * @returns {number}
  */
 export function easeOutQuart(x) {
-  return 1 - pow(1 - x, 4);
+  return 1 - pow(1 - x, 4)
 }
 
 /**
@@ -531,7 +603,7 @@ export function easeOutQuart(x) {
  * @returns {number}
  */
 export function easeInOutQuart(x) {
-  return x < 0.5 ? 8 * x * x * x * x : 1 - pow(-2 * x + 2, 4) / 2;
+  return x < 0.5 ? 8 * x * x * x * x : 1 - pow(-2 * x + 2, 4) / 2
 }
 
 /**
@@ -540,7 +612,7 @@ export function easeInOutQuart(x) {
  * @returns {number}
  */
 export function easeInQuint(x) {
-  return x * x * x * x * x;
+  return x * x * x * x * x
 }
 
 /**
@@ -549,7 +621,7 @@ export function easeInQuint(x) {
  * @returns {number}
  */
 export function easeOutQuint(x) {
-  return 1 - pow(1 - x, 5);
+  return 1 - pow(1 - x, 5)
 }
 
 /**
@@ -558,7 +630,7 @@ export function easeOutQuint(x) {
  * @returns {number}
  */
 export function easeInOutQuint(x) {
-  return x < 0.5 ? 16 * x * x * x * x * x : 1 - pow(-2 * x + 2, 5) / 2;
+  return x < 0.5 ? 16 * x * x * x * x * x : 1 - pow(-2 * x + 2, 5) / 2
 }
 
 /**
@@ -567,7 +639,7 @@ export function easeInOutQuint(x) {
  * @returns {number}
  */
 export function easeInSine(x) {
-  return 1 - cos((x * PI) / 2);
+  return 1 - cos((x * PI) / 2)
 }
 
 /**
@@ -576,7 +648,7 @@ export function easeInSine(x) {
  * @returns {number}
  */
 export function easeOutSine(x) {
-  return sin((x * PI) / 2);
+  return sin((x * PI) / 2)
 }
 
 /**
@@ -585,7 +657,7 @@ export function easeOutSine(x) {
  * @returns {number}
  */
 export function easeInOutSine(x) {
-  return -(cos(PI * x) - 1) / 2;
+  return -(cos(PI * x) - 1) / 2
 }
 
 /**
@@ -594,7 +666,7 @@ export function easeInOutSine(x) {
  * @returns {number}
  */
 export function easeInExpo(x) {
-  return x === 0 ? 0 : pow(2, 10 * x - 10);
+  return x === 0 ? 0 : pow(2, 10 * x - 10)
 }
 
 /**
@@ -603,7 +675,7 @@ export function easeInExpo(x) {
  * @returns {number}
  */
 export function easeOutExpo(x) {
-  return x === 1 ? 1 : 1 - pow(2, -10 * x);
+  return x === 1 ? 1 : 1 - pow(2, -10 * x)
 }
 
 export function easeInOutExpo(x) {
@@ -613,7 +685,7 @@ export function easeInOutExpo(x) {
     ? 1
     : x < 0.5
     ? pow(2, 20 * x - 10) / 2
-    : (2 - pow(2, -20 * x + 10)) / 2;
+    : (2 - pow(2, -20 * x + 10)) / 2
 }
 
 /**
@@ -622,7 +694,7 @@ export function easeInOutExpo(x) {
  * @returns {number}
  */
 export function easeInCirc(x) {
-  return 1 - sqrt(1 - pow(x, 2));
+  return 1 - sqrt(1 - pow(x, 2))
 }
 
 /**
@@ -631,13 +703,13 @@ export function easeInCirc(x) {
  * @returns {number}
  */
 export function easeOutCirc(x) {
-  return sqrt(1 - pow(x - 1, 2));
+  return sqrt(1 - pow(x - 1, 2))
 }
 
 export function easeInOutCirc(x) {
   return x < 0.5
     ? (1 - sqrt(1 - pow(2 * x, 2))) / 2
-    : (sqrt(1 - pow(-2 * x + 2, 2)) + 1) / 2;
+    : (sqrt(1 - pow(-2 * x + 2, 2)) + 1) / 2
 }
 
 /**
@@ -650,7 +722,7 @@ export function easeInElastic(x) {
     ? 0
     : x === 1
     ? 1
-    : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4);
+    : -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c4)
 }
 
 /**
@@ -663,7 +735,7 @@ export function easeOutElastic(x) {
     ? 0
     : x === 1
     ? 1
-    : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1;
+    : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1
 }
 
 export function easeInOutElastic(x) {
@@ -673,7 +745,7 @@ export function easeInOutElastic(x) {
     ? 1
     : x < 0.5
     ? -(pow(2, 20 * x - 10) * sin((20 * x - 11.125) * c5)) / 2
-    : (pow(2, -20 * x + 10) * sin((20 * x - 11.125) * c5)) / 2 + 1;
+    : (pow(2, -20 * x + 10) * sin((20 * x - 11.125) * c5)) / 2 + 1
 }
 
 /**
@@ -682,7 +754,7 @@ export function easeInOutElastic(x) {
  * @returns {number}
  */
 export function easeInBack(x) {
-  return c3 * x * x * x - c1 * x * x;
+  return c3 * x * x * x - c1 * x * x
 }
 
 /**
@@ -691,7 +763,7 @@ export function easeInBack(x) {
  * @returns {number}
  */
 export function easeOutBack(x) {
-  return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2);
+  return 1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2)
 }
 
 /**
@@ -702,7 +774,7 @@ export function easeOutBack(x) {
 export function easeInOutBack(x) {
   return x < 0.5
     ? (pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
-    : (pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
+    : (pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2
 }
 
 /**
@@ -711,7 +783,7 @@ export function easeInOutBack(x) {
  * @returns {number}
  */
 export function easeInBounce(x) {
-  return 1 - easeOutBounce(1 - x);
+  return 1 - easeOutBounce(1 - x)
 }
 
 /**
@@ -720,16 +792,16 @@ export function easeInBounce(x) {
  * @returns {number}
  */
 export function easeOutBounce(x) {
-  let n1 = 7.5625;
-  let d1 = 2.75;
+  let n1 = 7.5625
+  let d1 = 2.75
   if (x < 1 / d1) {
-    return n1 * x * x;
+    return n1 * x * x
   } else if (x < 2 / d1) {
-    return n1 * (x -= 1.5 / d1) * x + 0.75;
+    return n1 * (x -= 1.5 / d1) * x + 0.75
   } else if (x < 2.5 / d1) {
-    return n1 * (x -= 2.25 / d1) * x + 0.9375;
+    return n1 * (x -= 2.25 / d1) * x + 0.9375
   } else {
-    return n1 * (x -= 2.625 / d1) * x + 0.984375;
+    return n1 * (x -= 2.625 / d1) * x + 0.984375
   }
 }
 
@@ -741,7 +813,7 @@ export function easeOutBounce(x) {
 export function easeInOutBounce(x) {
   return x < 0.5
     ? (1 - easeOutBounce(1 - 2 * x)) / 2
-    : (1 + easeOutBounce(2 * x - 1)) / 2;
+    : (1 + easeOutBounce(2 * x - 1)) / 2
 }
 
 export const animateFun = {
@@ -776,4 +848,4 @@ export const animateFun = {
   easeInBounce,
   easeOutBounce,
   easeInOutBounce
-};
+}

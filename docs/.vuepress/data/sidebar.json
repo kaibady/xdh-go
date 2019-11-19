@@ -37,7 +37,20 @@
         "tag",
         "tooltip",
         "gray",
-        "animate",
+        {
+          "title": "动效",
+          "collapsable": true,
+          "children": [
+            "animate/base",
+            "animate/trigger",
+            "animate/object",
+            "animate/prop",
+            "animate/setting",
+            "animate/queue",
+            "animate/custom",
+            "animate/other"
+          ]
+        },
         "extension"
       ]
     }
@@ -46,7 +59,28 @@
     {
       "title": "通用连线",
       "collapsable": false,
-      "children": ["base", "lines", "arrows", "label", "gray", "animate", "extension"]
+      "children": [
+        "base",
+        "lines",
+        "arrows",
+        "label",
+        "gray",
+        {
+          "title": "动效",
+          "collapsable": true,
+          "children": [
+            "animate/base",
+            "animate/trigger",
+            "animate/object",
+            "animate/prop",
+            "animate/setting",
+            "animate/queue",
+            "animate/custom",
+            "animate/other"
+          ]
+        },
+        "extension"
+      ]
     }
   ],
   "/group/": [

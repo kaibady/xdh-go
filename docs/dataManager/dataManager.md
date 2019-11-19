@@ -49,6 +49,22 @@ addLink 方法
 | options.distinct | 连线是否去重 | Boolean | -| true |
 | options.duplicate | 连线重复的处理方式 | String | 'replace'(使用新数据)/'remain'(使用旧数据)/'merge'(合并，需用到预定义的 nodeMergeFun 方法))| 默认'replace'|
 
+getNode 方法
+
+获取节点
+| 参数名 | 说明 | 类型 |可选值|默认值 |
+| ----------------- | ------ |------ | ------ | --------------------------------- |
+| node | 节点数据 | String/Object/go.Node 对象 |-| - |
+| isObject | 是否获取节点对象,如果为否，获得的是数据 | Boolean |-| - |
+| isByExample | 是否使用 getNodesByExample 方法，将会搜索满足条件的节点，返回数组 | Boolean |-| false |
+
+getLink 方法
+| 参数名 | 说明 | 类型 |可选值|默认值 |
+| ----------------- | ------ |------ | ------ | --------------------------------- |
+| link | 连线数据 | String/Object/go.Node 对象 |-| - |
+| isObject | 是否获取连线对象,如果为否，获得的是数据 | Boolean |-| - |
+| isByExample | 是否使用 getLinksByExample 方法，将会搜索满足条件的节点 | Boolean |-| false |
+
 ## 节点添加示例
 
 试点击下列按钮查看效果。点击后可点重置恢复数据。
