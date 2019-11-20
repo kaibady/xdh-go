@@ -25,7 +25,9 @@ type 对应于布局类型，可参考 gojs 文档，但该函数还给出了简
   grad: 'Graduated'
 }
 ```
+
 ### 基本用法
+
 该例使用了水平布局，垂直布局和 spot 布局
 
 :::demo
@@ -45,8 +47,8 @@ type 对应于布局类型，可参考 gojs 文档，但该函数还给出了简
   </div>
 </template>
 <script>
-  import { XdhGo, utils } from 'xdh-go';
-  let { panel, node, textBlock } = utils;
+  import { XdhGo, utils } from 'xdh-go'
+  let { panel, node, textBlock } = utils
   function block($, go, text, height, color, spotAlign) {
     let props = {
       text: text,
@@ -55,14 +57,14 @@ type 对应于布局类型，可参考 gojs 文档，但该函数还给出了简
       height: height,
       textAlign: 'center',
       verticalAlignment: go.Spot.Center
-    };
+    }
     if (spotAlign) {
-      props.alignment = spotAlign;
-      props.alignmentFocus = new go.Spot(0, 1);
+      props.alignment = spotAlign
+      props.alignmentFocus = new go.Spot(0, 1)
     }
     return textBlock($, go, {
       props: props
-    });
+    })
   }
   export default {
     components: {
@@ -72,16 +74,16 @@ type 对应于布局类型，可参考 gojs 文档，但该函数还给出了简
       return {
         model: 'GraphLinksModel',
         nodes: [{ key: '1', name: '节点1' }]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, {})
       },
       nodeTemplate($, go) {
         return node($, go, {
@@ -102,10 +104,10 @@ type 对应于布局类型，可参考 gojs 文档，但该函数还给出了简
             }),
             block($, go, 'message', 30, 'yellow', new go.Spot(1, 0))
           ]
-        });
+        })
       }
     }
-  };
+  }
 </script>
 ```
 
@@ -151,8 +153,8 @@ props 默认参数为
   </div>
 </template>
 <script>
-  import { XdhGo, utils } from 'xdh-go';
-  let { node, iconfont, panel } = utils;
+  import { XdhGo, utils } from 'xdh-go'
+  let { node, iconfont, panel } = utils
   export default {
     components: {
       XdhGo
@@ -161,16 +163,16 @@ props 默认参数为
       return {
         model: 'GraphLinksModel',
         nodes: []
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, {})
       },
       diagramReady(diagram, $, go) {
         diagram.add(
@@ -188,10 +190,10 @@ props 默认参数为
               })
             ]
           })
-        );
+        )
       }
     }
-  };
+  }
 </script>
 ```
 
@@ -256,10 +258,12 @@ props 默认参数为
 </template>
 <script>
   import { XdhGo, utils } from 'xdh-go';
-  let { node, picture, panel, binding } = utils;
+  let { node, picture, binding } = utils;
   function pictureBinding($, go) {
     return binding($, go, {
-      source: 'source'
+      source: {
+        key: 'image'
+      }
     });
   }
   export default {
@@ -271,16 +275,20 @@ props 默认参数为
         model: 'GraphLinksModel',
         nodes: [
           {
-            category: 'a',
-            source: '/xdh-go/img/node/circleimage/1.png'
-          },
+               category: 'a',
+            key: 1,
+            image: '/xdh-go/img/node/circleimage/1.png'
+          }
+          ,
           {
             category: 'b',
-            source: '/xdh-go/img/node/image/2.png'
+            key: 2,
+            image: '/xdh-go/img/node/image/2.png'
           },
           {
             category: 'c',
-            source: '/xdh-go/img/node/circleimage/3.png'
+            key: 3,
+            image: '/xdh-go/img/node/circleimage/3.png'
           }
         ]
       };
@@ -301,6 +309,23 @@ props 默认参数为
           node($, go, {
             parts: [
               picture($, go, {
+                panel: {
+                  props: {
+                    name: 'common'
+                  }
+                },
+                clip: {
+                  props: {
+                    figure: 'Circle',
+                    width: 60,
+                    height: 60
+                  }
+                },
+                props: {
+                  source: '/xdh-go/img/circle1.png',
+                  width:60,
+                  height:60
+                },
                 binding: pictureBinding($, go)
               })
             ]
@@ -387,8 +412,8 @@ props 默认参数为
   </div>
 </template>
 <script>
-  import { XdhGo, utils } from 'xdh-go';
-  let { node, shape, panel } = utils;
+  import { XdhGo, utils } from 'xdh-go'
+  let { node, shape, panel } = utils
   export default {
     components: {
       XdhGo
@@ -397,16 +422,16 @@ props 默认参数为
       return {
         model: 'GraphLinksModel',
         nodes: []
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, {})
       },
       diagramReady(diagram, $, go) {
         diagram.add(
@@ -432,10 +457,10 @@ props 默认参数为
               })
             ]
           })
-        );
+        )
       }
     }
-  };
+  }
 </script>
 ```
 
@@ -478,8 +503,8 @@ props 默认参数为
   </div>
 </template>
 <script>
-  import { XdhGo, utils } from 'xdh-go';
-  let { node, textBlock } = utils;
+  import { XdhGo, utils } from 'xdh-go'
+  let { node, textBlock } = utils
   export default {
     components: {
       XdhGo
@@ -488,16 +513,16 @@ props 默认参数为
       return {
         model: 'GraphLinksModel',
         nodes: []
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, {})
       },
       diagramReady(diagram, $, go) {
         diagram.add(
@@ -515,10 +540,10 @@ props 默认参数为
               })
             ]
           })
-        );
+        )
       }
     }
-  };
+  }
 </script>
 ```
 
@@ -574,8 +599,8 @@ adorment 对应 go.Adornment 对象参数,shape 对应 go.Shape 对象参数
   </div>
 </template>
 <script>
-  import { XdhGo, utils } from 'xdh-go';
-  let { node, tooltip, shape } = utils;
+  import { XdhGo, utils } from 'xdh-go'
+  let { node, tooltip, shape } = utils
   export default {
     components: {
       XdhGo
@@ -584,17 +609,17 @@ adorment 对应 go.Adornment 对象参数,shape 对应 go.Shape 对象参数
       return {
         model: 'GraphLinksModel',
         nodes: []
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 50
-        };
+        }
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, {})
       },
       diagramReady(diagram, $, go) {
         diagram.add(
@@ -617,10 +642,10 @@ adorment 对应 go.Adornment 对象参数,shape 对应 go.Shape 对象参数
             },
             parts: [shape($, go)]
           })
-        );
+        )
       }
     }
-  };
+  }
 </script>
 ```
 
@@ -661,8 +686,8 @@ props 默认参数
   </div>
 </template>
 <script>
-  import { XdhGo, utils } from 'xdh-go';
-  let { node, shape } = utils;
+  import { XdhGo, utils } from 'xdh-go'
+  let { node, shape } = utils
   export default {
     components: {
       XdhGo
@@ -671,17 +696,17 @@ props 默认参数
       return {
         model: 'GraphLinksModel',
         nodes: []
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 50
-        };
+        }
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, {})
       },
       diagramReady(diagram, $, go) {
         diagram.add(
@@ -689,10 +714,10 @@ props 默认参数
             type: 'auto',
             parts: [shape($, go)]
           })
-        );
+        )
       }
     }
-  };
+  }
 </script>
 ```
 
@@ -733,8 +758,8 @@ props 默认参数
   </div>
 </template>
 <script>
-  import { XdhGo, utils } from 'xdh-go';
-  let { node, link, shape, textBlock, binding } = utils;
+  import { XdhGo, utils } from 'xdh-go'
+  let { node, link, shape, textBlock, binding } = utils
   export default {
     components: {
       XdhGo
@@ -751,17 +776,17 @@ props 默认参数
           { from: 'a', to: 'b' },
           { from: 'b', to: 'c', category: 'dash' }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 50
-        };
+        }
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, {})
       },
       nodeTemplate($, go) {
         return node($, go, {
@@ -784,11 +809,11 @@ props 默认参数
               binding: binding($, go, { text: 'text' })
             })
           ]
-        });
+        })
       },
       linkTemplateMap($, go) {
-        let map = new go.Map();
-        map.add('', link($, go));
+        let map = new go.Map()
+        map.add('', link($, go))
         map.add(
           'dash',
           link($, go, {
@@ -809,11 +834,11 @@ props 默认参数
               })
             ]
           })
-        );
-        return map;
+        )
+        return map
       }
     }
-  };
+  }
 </script>
 ```
 
@@ -868,81 +893,81 @@ props 默认参数
   </div>
 </template>
 <script>
-  import { XdhGo, XdhTool, utils } from 'xdh-go';
-  let { node, link, shape, panel, textBlock, binding, makePort } = utils;
+  import { XdhGo, XdhTool, utils } from 'xdh-go'
+  let { node, link, shape, panel, textBlock, binding, makePort } = utils
   // from gojs sample extensions folder
   function getReshapingTool($, go) {
     function SnapLinkReshapingTool() {
-      go.LinkReshapingTool.call(this);
-      this._gridCellSize = new go.Size(NaN, NaN);
-      this._gridOrigin = new go.Point(NaN, NaN);
-      this._isGridSnapEnabled = true;
+      go.LinkReshapingTool.call(this)
+      this._gridCellSize = new go.Size(NaN, NaN)
+      this._gridOrigin = new go.Point(NaN, NaN)
+      this._isGridSnapEnabled = true
     }
-    go.Diagram.inherit(SnapLinkReshapingTool, go.LinkReshapingTool);
+    go.Diagram.inherit(SnapLinkReshapingTool, go.LinkReshapingTool)
     Object.defineProperty(SnapLinkReshapingTool.prototype, 'gridCellSize', {
       get: function() {
-        return this._gridCellSize;
+        return this._gridCellSize
       },
       set: function(val) {
         if (!(val instanceof go.Size))
           throw new Error(
             'new value for SnapLinkReshapingTool.gridCellSize must be a Size, not: ' +
               val
-          );
-        this._gridCellSize = val.copy();
+          )
+        this._gridCellSize = val.copy()
       }
-    });
+    })
     Object.defineProperty(SnapLinkReshapingTool.prototype, 'gridOrigin', {
       get: function() {
-        return this._gridOrigin;
+        return this._gridOrigin
       },
       set: function(val) {
         if (!(val instanceof go.Point))
           throw new Error(
             'new value for SnapLinkReshapingTool.gridOrigin must be a Point, not: ' +
               val
-          );
-        this._gridOrigin = val.copy();
+          )
+        this._gridOrigin = val.copy()
       }
-    });
+    })
     Object.defineProperty(
       SnapLinkReshapingTool.prototype,
       'isGridSnapEnabled',
       {
         get: function() {
-          return this._isGridSnapEnabled;
+          return this._isGridSnapEnabled
         },
         set: function(val) {
           if (typeof val !== 'boolean')
             throw new Error(
               'new value for SnapLinkReshapingTool.isGridSnapEnabled must be a boolean, not: ' +
                 val
-            );
-          this._isGridSnapEnabled = val;
+            )
+          this._isGridSnapEnabled = val
         }
       }
-    );
+    )
     SnapLinkReshapingTool.prototype.computeReshape = function(p) {
-      var pt = p;
+      var pt = p
       if (this.isGridSnapEnabled) {
-        var cell = this.gridCellSize;
-        var orig = this.gridOrigin;
+        var cell = this.gridCellSize
+        var orig = this.gridOrigin
         if (!cell.isReal() || cell.width === 0 || cell.height === 0)
-          cell = this.diagram.grid.gridCellSize;
-        if (!orig.isReal()) orig = this.diagram.grid.gridOrigin;
-        pt = p.copy().snapToGrid(orig.x, orig.y, cell.width, cell.height);
+          cell = this.diagram.grid.gridCellSize
+        if (!orig.isReal()) orig = this.diagram.grid.gridOrigin
+        pt = p.copy().snapToGrid(orig.x, orig.y, cell.width, cell.height)
       }
-      return go.LinkReshapingTool.prototype.computeReshape.call(this, pt);
-    };
-    return SnapLinkReshapingTool;
+      return go.LinkReshapingTool.prototype.computeReshape.call(this, pt)
+    }
+    return SnapLinkReshapingTool
   }
   function showSmallPorts(node, show) {
     node.ports.each(function(port) {
       if (port.portId !== '') {
-        port.fill = show ? 'rgba(0,0,0,.3)' : null;
-        port.stroke = show ? 'rgba(255,255,255, 0.6)' : null;
+        port.fill = show ? 'rgba(0,0,0,.3)' : null
+        port.stroke = show ? 'rgba(255,255,255, 0.6)' : null
       }
-    });
+    })
   }
   export default {
     components: {
@@ -958,11 +983,11 @@ props 默认参数
           { key: 'c', text: 'C' }
         ],
         links: []
-      };
+      }
     },
     methods: {
       config($, go) {
-        go.SnapLinkReshapingTool = getReshapingTool($, go);
+        go.SnapLinkReshapingTool = getReshapingTool($, go)
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 100,
@@ -976,14 +1001,14 @@ props 默认参数
           ),
           'draggingTool.isGridSnapEnabled': true,
           LinkReshaped: function(e) {
-            e.subject.routing = go.Link.Orthogonal;
+            e.subject.routing = go.Link.Orthogonal
           },
           'animationManager.isEnabled': false,
           'undoManager.isEnabled': true
-        };
+        }
       },
       layout($, go) {
-        return $(go.ForceDirectedLayout, {});
+        return $(go.ForceDirectedLayout, {})
       },
       diagramReady(diagram, $, go) {},
       nodeTemplate($, go) {
@@ -995,10 +1020,10 @@ props 默认参数
           },
           events: {
             mouseEnter: function(e, node) {
-              showSmallPorts(node, true);
+              showSmallPorts(node, true)
             },
             mouseLeave: function(e, node) {
-              showSmallPorts(node, false);
+              showSmallPorts(node, false)
             }
           },
           parts: [
@@ -1037,10 +1062,10 @@ props 默认参数
               }
             })
           ]
-        });
+        })
       },
       linkTemplateMap($, go) {
-        let map = new go.Map();
+        let map = new go.Map()
         map.add(
           '',
           link($, go, {
@@ -1065,11 +1090,11 @@ props 默认参数
               })
             ]
           })
-        );
-        return map;
+        )
+        return map
       }
     }
-  };
+  }
 </script>
 ```
 

@@ -22,7 +22,7 @@ function getImage($, go, options, defaultImage) {
       }
     },
     panel: {
-      type: 'Spot',
+      type: go.PanelLayout[options.layout || 'Spot'],
       props: {
         name: options.name || defaultImage.name,
         isClipping: isClipping,
@@ -49,16 +49,19 @@ export default function($, go, options = {}) {
     },
     options
   )
-
+  console.log(_options)
   let images = []
   _options.images.forEach(item => {
     images.push(getImage($, go, item, defaultImage))
   })
   console.log(images)
+  //   return $(go.Picture, {
+  //     source: '/xdh-go/img/circle1.png',
+  //     width: 60,
+  //     height: 60
+  //   })
   return panel($, go, {
     type: _options.layout,
-    props: {},
-    parts: [getImage($, go, { src: '/xdh-go/img/circle1.png' }, defaultImage)],
-    binding: [..._options.binding]
+    parts: [...images]
   })
 }
