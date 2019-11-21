@@ -1,11 +1,32 @@
 import picture from './picture'
 import panel from './panel/panel'
-function getImage($, go, options, defaultImage) {
+function getImage($, go, options, defaultImage, layout) {
   let isClipping
   if (options.shape === null) {
     isClipping = false
   } else {
     isClipping = true
+  }
+  let padding
+  if (typeof options.padding === 'number') {
+    padding = options.padding
+  } else if (options.padding instanceof Array) {
+    padding = new go.Margin(...options.padding)
+  } else {
+    padding = defaultImage.padding
+  }
+  let panelProp = {
+    name: options.name || defaultImage.name,
+    isClipping: isClipping,
+    scale: options.scale || defaultImage.scale,
+    padding: padding
+  }
+  if (options.position !== undefined) {
+    if (layout === 'Spot') {
+      panelProp.alignment = new go.Spot(...options.position)
+    } else if (layout === 'Position') {
+      panelProp.position = new go.Point(...options.position)
+    }
   }
   return picture($, go, {
     props: {
@@ -23,11 +44,7 @@ function getImage($, go, options, defaultImage) {
     },
     panel: {
       type: go.PanelLayout[options.layout || 'Spot'],
-      props: {
-        name: options.name || defaultImage.name,
-        isClipping: isClipping,
-        scale: options.scale || defaultImage.scale
-      }
+      props: panelProp
     }
   })
 }
@@ -38,6 +55,7 @@ export default function($, go, options = {}) {
     scale: 1,
     width: 60,
     height: 60,
+    padding: 2,
     shape: 'Circle'
   }
   let _options = Object.assign(
@@ -49,19 +67,24 @@ export default function($, go, options = {}) {
     },
     options
   )
-  console.log(_options)
   let images = []
   _options.images.forEach(item => {
-    images.push(getImage($, go, item, defaultImage))
+    images.push(getImage($, go, item, defaultImage, _options.layout))
   })
-  console.log(images)
-  //   return $(go.Picture, {
-  //     source: '/xdh-go/img/circle1.png',
-  //     width: 60,
-  //     height: 60
-  //   })
   return panel($, go, {
     type: _options.layout,
-    parts: [...images]
+    width: 100,
+    height: 100,
+    parts: [
+      $(go.Shape, 'Circle', {
+        width: 2,
+        height: 2,
+        name: 'imageSetLoc',
+        fill: 'red',
+        stroke: null,
+        alignment: go.Spot.Center
+      }),
+      ...images
+    ]
   })
 }

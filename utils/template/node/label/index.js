@@ -1,11 +1,11 @@
-import { panel, textBlock, shape } from '../../../node-parts';
+import { panel, textBlock, shape } from '../../../node-parts'
 import {
   labelBinding,
   labelPanelBinding,
   labelShapeBinding,
   labelArrayBinding,
   labelArrayPanelBinding
-} from './bind';
+} from './bind'
 export default function label($, go, _options) {
   return panel($, go, {
     type: 'auto',
@@ -64,11 +64,11 @@ export default function label($, go, _options) {
         ],
         binding: [..._options.props._labelInnerPanelOptions.binding]
       }),
-      ..._options.props._labelInnerPanelOptions.parts
+      ..._options.props._labelOuterPanelOptions.parts
     ],
     binding: [
       ...labelPanelBinding($, go, _options),
       ..._options.props._labelOuterPanelOptions.binding
     ]
-  });
+  })
 }

@@ -16,18 +16,18 @@ export function labelArrayBinding($, go, _options) {
       key: '',
       handler(t, n) {
         let d = n.part.data
-        if (d.label && d.label.margin) {
-          if (typeof d.label.margin === 'number') {
-            return d.label.margin
-          } else if (d.label.margin instanceof Array) {
-            return new go.Margin(...d.label.margin)
-          } else {
-            return new go.Margin(..._options.props.label.margin)
-          }
-        } else if (typeof _options.props.label.margin === 'number') {
-          return _options.props.label.margin
-        } else {
-          return new go.Margin(..._options.props.label.margin)
+        let margin
+        if (t.margin !== undefined) {
+          margin = t.margin
+        } else if (d.label && d.label.margin !== undefined) {
+          margin = d.label.margin
+        } else if (_options.props.label.margin !== undefined) {
+          margin = _options.props.label.margin
+        }
+        if (typeof margin === 'number') {
+          return margin
+        } else if (margin instanceof Array) {
+          return new go.Margin(...margin)
         }
       }
     },
@@ -35,22 +35,30 @@ export function labelArrayBinding($, go, _options) {
       key: '',
       handler(t, n) {
         let d = n.part.data
-        if (d.label && d.label.editable) {
-          return d.label.editable
+        let editable
+        if (t.editable !== undefined) {
+          editable = t.editable
+        } else if (d.label && d.label.editable !== undefined) {
+          editable = d.label.editable
         } else {
-          return _options.props.label.editable
+          editable = _options.props.label.editable
         }
+        return editable
       }
     },
     font: {
       key: '',
       handler(t, n) {
         let d = n.part.data
-        if (d.label && d.label.font) {
-          return d.label.font
+        let font
+        if (t.font !== undefined) {
+          font = t.font
+        } else if (d.label && d.label.font !== undefined) {
+          font = d.label.font
         } else {
-          return _options.props.label.font
+          font = _options.props.label.font
         }
+        return font
       }
     },
     stroke: {
@@ -58,7 +66,7 @@ export function labelArrayBinding($, go, _options) {
       key: '',
       handler(t, o) {
         let n = o.part
-        return bindToState(n, _options, 'labelColor')
+        return bindToState(n, _options, 'labelColor', t)
       }
     }
   })
@@ -95,7 +103,10 @@ export function labelArrayPanelBinding($, go, _options) {
 function textTwoWay(d, obj) {
   if (typeof obj.label === 'string') {
     obj.label = d
-  } else if (typeof obj.label === 'object' && typeof obj.label.text === 'string') {
+  } else if (
+    typeof obj.label === 'object' &&
+    typeof obj.label.text === 'string'
+  ) {
     obj.label.text = d
   }
 }
@@ -191,7 +202,7 @@ export function labelPanelBinding($, go, _options) {
       key: '',
       handler(d) {
         if (
-          (d.label && 
+          (d.label &&
             (d.label instanceof Array ||
               typeof d.label === 'string' ||
               (typeof d.label === 'object' && d.label.show !== false))) ||

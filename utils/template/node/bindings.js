@@ -1,67 +1,59 @@
-import { binding } from '../../node-parts';
+import { binding } from '../../node-parts'
 /**
  *
  * @param {Object} n 节点对象
  * @param {*} _options
  * @param {*} bindProp 绑定的参数名
  */
-export function bindToState(n, _options, bindProp) {
-  let d = n.data;
-  let props = _options.props;
+export function bindToState(n, _options, bindProp, arrayItem) {
+  let d = n.data
+  let props = _options.props
+  // 定义值
+  let item
+  if (arrayItem !== undefined) {
+    item = arrayItem.data[bindProp]
+  } else if (d[bindProp] !== undefined) {
+    item = d[bindProp]
+  }
   if (d.isGray) {
-    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
-      return d[bindProp];
-    } else if (
-      typeof d[bindProp] === 'object' &&
-      d[bindProp].gray !== undefined
-    ) {
-      return d[bindProp].gray;
+    if (typeof item === 'string' || typeof item === 'number') {
+      return item
+    } else if (typeof item === 'object' && item.gray !== undefined) {
+      return item.gray
     } else {
-      return props[bindProp].gray;
+      return props[bindProp].gray
     }
   } else if (n.isSelected) {
-    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
-      return d[bindProp];
-    } else if (
-      typeof d[bindProp] === 'object' &&
-      d[bindProp].select !== undefined
-    ) {
-      return d[bindProp].select;
+    if (typeof item === 'string' || typeof item === 'number') {
+      return item
+    } else if (typeof item === 'object' && item.select !== undefined) {
+      return item.select
     } else {
-      return props[bindProp].select;
+      return props[bindProp].select
     }
   } else if (d.isHover) {
-    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
-      return d[bindProp];
-    } else if (
-      typeof d[bindProp] === 'object' &&
-      d[bindProp].hover !== undefined
-    ) {
-      return d[bindProp].hover;
+    if (typeof item === 'string' || typeof item === 'number') {
+      return item
+    } else if (typeof item === 'object' && item.hover !== undefined) {
+      return item.hover
     } else {
-      return props[bindProp].hover;
+      return props[bindProp].hover
     }
   } else if (n.isHighlighted) {
-    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
-      return d[bindProp];
-    } else if (
-      typeof d[bindProp] === 'object' &&
-      d[bindProp].highlight !== undefined
-    ) {
-      return d[bindProp].highlight;
+    if (typeof item === 'string' || typeof item === 'number') {
+      return item
+    } else if (typeof item === 'object' && item.highlight !== undefined) {
+      return item.highlight
     } else {
-      return props[bindProp].highlight;
+      return props[bindProp].highlight
     }
   } else {
-    if (typeof d[bindProp] === 'string' || typeof d[bindProp] === 'number') {
-      return d[bindProp];
-    } else if (
-      typeof d[bindProp] === 'object' &&
-      d[bindProp].normal !== undefined
-    ) {
-      return d[bindProp].normal;
+    if (typeof item === 'string' || typeof item === 'number') {
+      return item
+    } else if (typeof item === 'object' && item.normal !== undefined) {
+      return item.normal
     } else {
-      return props[bindProp].normal;
+      return props[bindProp].normal
     }
   }
 }
@@ -74,27 +66,27 @@ export function bindToState(n, _options, bindProp) {
  */
 export function getHandler($, go, _options, propArr) {
   let p1 = propArr[0],
-    p2 = propArr[1];
-  let fun;
+    p2 = propArr[1]
+  let fun
   if (p1 && p2) {
     fun = d => {
       if (d[p1] && d[p1][p2]) {
-        return d[p1][p2];
+        return d[p1][p2]
       } else {
-        return _options.props[p1][p2];
+        return _options.props[p1][p2]
       }
-    };
+    }
   } else if (p1) {
     fun = d => {
       if (d[p1]) {
-        return d[p1];
+        return d[p1]
       } else {
-        return _options.props[p1];
+        return _options.props[p1]
       }
-    };
+    }
   }
 
-  return fun;
+  return fun
 }
 /**
  *
@@ -103,7 +95,7 @@ export function getHandler($, go, _options, propArr) {
  * @param {Array} bindParamArr 图形参数
  */
 export function shapeParamsBinding(_options, bindProp, bindParamArr) {
-  let obj = {};
+  let obj = {}
   bindParamArr.forEach(paramName => {
     obj[paramName] = {
       key: '',
@@ -113,14 +105,14 @@ export function shapeParamsBinding(_options, bindProp, bindParamArr) {
           d.shapeParams[bindProp] &&
           d.shapeParams[bindProp][paramName] !== undefined
         ) {
-          return d.shapeParams[bindProp][paramName];
+          return d.shapeParams[bindProp][paramName]
         } else {
-          return _options.props.shapeParams[bindProp][paramName];
+          return _options.props.shapeParams[bindProp][paramName]
         }
       }
-    };
-  });
-  return obj;
+    }
+  })
+  return obj
 }
 
 export function innerPanelBinding($, go, _options) {
@@ -129,9 +121,9 @@ export function innerPanelBinding($, go, _options) {
       key: '',
       handler(d) {
         if (d.layout) {
-          return go.Panel[d.layout];
+          return go.Panel[d.layout]
         } else {
-          return go.Panel[_options.props.layout];
+          return go.Panel[_options.props.layout]
         }
       }
     },
@@ -139,15 +131,15 @@ export function innerPanelBinding($, go, _options) {
       key: '',
       handler(d) {
         if (typeof d.nodeMargin === 'number') {
-          return d.figureMargin;
+          return d.figureMargin
         } else if (d.nodeMargin instanceof Array) {
-          return new go.Margin(...d.nodeMargin);
+          return new go.Margin(...d.nodeMargin)
         } else {
-          return new go.Margin(..._options.props.nodeMargin);
+          return new go.Margin(..._options.props.nodeMargin)
         }
       }
     }
-  });
+  })
 }
 
 export function nodeBinding($, go, _options) {
@@ -159,9 +151,9 @@ export function nodeBinding($, go, _options) {
           (d.linkPort !== undefined && d.linkPort === 'tNode') ||
           (d.linkPort === undefined && _options.props.linkPort === 'tNode')
         ) {
-          return '';
+          return ''
         } else {
-          return 'tNode';
+          return 'tNode'
         }
       }
     },
@@ -169,9 +161,9 @@ export function nodeBinding($, go, _options) {
       key: '',
       handler(d) {
         if (d.opacity) {
-          return d.opacity;
+          return d.opacity
         } else {
-          return _options.props.opacity;
+          return _options.props.opacity
         }
       }
     },
@@ -188,7 +180,7 @@ export function nodeBinding($, go, _options) {
       key: '',
       handler: getHandler($, go, _options, ['zOrder'])
     }
-  });
+  })
 }
 export function tooltipShape($, go, _options) {
   return binding($, go, {
@@ -204,7 +196,7 @@ export function tooltipShape($, go, _options) {
       key: '',
       handler: getHandler($, go, _options, ['tooltip', 'strokeWidth'])
     }
-  });
+  })
 }
 export function tooltipAdornment($, go, _options) {
   return binding($, go, {
@@ -212,17 +204,17 @@ export function tooltipAdornment($, go, _options) {
       key: '',
       handler(d) {
         if (d.tooltip && typeof d.tooltip === 'string') {
-          return true;
+          return true
         } else if (d.tooltip && d.tooltip.text) {
-          return true;
+          return true
         } else if (_options.props.tooltip && _options.props.tooltip.text) {
-          return true;
+          return true
         } else {
-          return false;
+          return false
         }
       }
     }
-  });
+  })
 }
 export function tooltipBinding($, go, _options) {
   return binding($, go, {
@@ -230,13 +222,13 @@ export function tooltipBinding($, go, _options) {
       key: '',
       handler(d) {
         if (d.tooltip && typeof d.tooltip === 'string') {
-          return d.tooltip;
+          return d.tooltip
         } else if (d.tooltip && d.tooltip.text) {
-          return d.tooltip.text;
+          return d.tooltip.text
         } else if (_options.props.tooltip && _options.props.tooltip.text) {
-          return _options.props.tooltip.text;
+          return _options.props.tooltip.text
         } else {
-          return '';
+          return ''
         }
       }
     },
@@ -248,5 +240,5 @@ export function tooltipBinding($, go, _options) {
       key: '',
       handler: getHandler($, go, _options, ['tooltip', 'font'])
     }
-  });
+  })
 }
