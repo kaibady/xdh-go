@@ -19,7 +19,6 @@ AnimationEvents 类
 | off | 注销节点事件 | event(事件名称), target(注销对象)。target 为'all'时，注销所有节点事件，为 key 或 data 或 node 的数组时，注销相应节点 |
 | emit | 触发事件 | event(事件名称), target(注册对象), afterFinish(执行完毕后的回调方法，参数 true 为正常执行，false 为没有执行)。target 为'all'时，触发所有节点动画，为 key 或 data 或 node 数组时，触发相应节点动画 |
 
-
 :::demo
 
 ```html
@@ -46,11 +45,12 @@ AnimationEvents 类
       >
     </div>
     <div style="text-align:center;margin-top:10px;">
-          <el-button type="primary" size="mini" @click="registerRotate()"
+      <el-button type="primary" size="mini" @click="registerRotate()"
         >注册rotate事件</el-button
       >
       <el-button type="primary" size="mini" @click="unregisterRotate()"
-        >注销rotate事件</el-button>
+        >注销rotate事件</el-button
+      >
     </div>
     <xdh-go
       :nodes="nodes"
@@ -66,10 +66,10 @@ AnimationEvents 类
   </div>
 </template>
 <script>
-  import { XdhGo, nodeTmpl, utils, animation } from 'xdh-go';
-  let { tag, shape, binding } = utils;
-  let { AnimationEvents } = animation;
-  let animationEvents;
+  import { XdhGo, nodeTmpl, utils, animation } from 'xdh-go'
+  let { tag, shape, binding } = utils
+  let { AnimationEvents } = animation
+  let animationEvents
   export default {
     components: {
       XdhGo
@@ -82,7 +82,9 @@ AnimationEvents 类
           {
             key: 1,
             label: '节点预定义slide事件',
-            loadTag: '\uE701',
+            loadTag: {
+              text: '\uE701'
+            },
             animation: [
               {
                 trigger: 'slide',
@@ -92,7 +94,10 @@ AnimationEvents 类
                 propType: 'spot',
                 repeatCount: 2,
                 direction: 'alternate',
-                keyFrame: [[0.5, 0.5], [1, 0.5]],
+                keyFrame: [
+                  [0.5, 0.5],
+                  [1, 0.5]
+                ],
                 easingFunc: ['easeInOutCubic']
               }
             ]
@@ -100,20 +105,26 @@ AnimationEvents 类
           {
             key: 2,
             label: '使用all注册默认',
-            loadTag: '\uE721'
+            loadTag: {
+              text: '\uE721'
+            }
           },
           {
             key: 3,
             label: '注册特定节点',
-            loadTag: '\uE6dd'
+            loadTag: {
+              text: '\uE6dd'
+            }
           },
           {
             key: 4,
             label: '注册特定节点',
-            loadTag: '\uE693'
+            loadTag: {
+              text: '\uE693'
+            }
           }
         ]
-      };
+      }
     },
     methods: {
       registerRotate() {
@@ -130,45 +141,45 @@ AnimationEvents 类
         ])
       },
       unregisterRotate() {
-          animationEvents.off('rotate', 'all')
+        animationEvents.off('rotate', 'all')
       },
       triggerRotate() {
-        let node = this.$refs.diagram.findNode(r => r.key === 2, true);
-        animationEvents.emit('rotate', node);
+        let node = this.$refs.diagram.findNode(r => r.key === 2, true)
+        animationEvents.emit('rotate', node)
       },
       triggerAllRotate() {
-        animationEvents.emit('rotate', 'all');
+        animationEvents.emit('rotate', 'all')
       },
       triggerAllRotateReverse() {
-        animationEvents.emit('rotateReverse', 'all');
+        animationEvents.emit('rotateReverse', 'all')
       },
       triggerSlide() {
-        animationEvents.emit('slide', 'all');
+        animationEvents.emit('slide', 'all')
       },
       startRotate() {
-        this.animateContinue = true;
-        this.runRotate();
+        this.animateContinue = true
+        this.runRotate()
       },
       endRotate() {
-        this.animateContinue = false;
+        this.animateContinue = false
       },
       runRotate() {
         animationEvents.emit('rotate', 'all', () => {
           if (this.animateContinue) {
-            this.runRotate();
+            this.runRotate()
           }
-        });
+        })
       },
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 10
-        };
+        }
       },
       layout($, go) {
         return $(go.GridLayout, {
           wrappingColumn: 3
-        });
+        })
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {
@@ -179,23 +190,23 @@ AnimationEvents 类
               parts: [
                 tag($, go, {
                   name: 'loadTag',
-                  fill: 'transparent',
+                  background: 'transparent',
                   font: '22px "iconfont"',
                   placement: 'center',
                   stroke: 'transparent',
                   color: '#000',
                   strokeWidth: 0,
-                  textKey: 'loadTag'
+                  dataKey: 'loadTag'
                 })
               ]
             }
           }
-        });
+        })
       },
       diagramReady(diagram, $, go) {},
       onLoadData(diagram, $, go) {
-        animationEvents = new AnimationEvents(diagram, go);
-        diagram.animationEvents = animationEvents;
+        animationEvents = new AnimationEvents(diagram, go)
+        diagram.animationEvents = animationEvents
         // 添加所有节点默认事件
         this.registerRotate()
         // 添加特定节点事件
@@ -213,10 +224,10 @@ AnimationEvents 类
               easingFunc: ['easeInOutCubic']
             }
           ]
-        );
+        )
       }
     }
-  };
+  }
 </script>
 ```
 

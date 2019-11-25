@@ -19,8 +19,8 @@ objectName 指通用节点的内部对象定义的内，其中 tNode 指整个�
   </div>
 </template>
 <script>
-  import { XdhGo, nodeTmpl, utils } from 'xdh-go';
-  let { tag } = utils;
+  import { XdhGo, nodeTmpl, utils } from 'xdh-go'
+  let { tag } = utils
   export default {
     components: {
       XdhGo
@@ -124,7 +124,9 @@ objectName 指通用节点的内部对象定义的内，其中 tNode 指整个�
           {
             key: 5,
             label: '自定义对象',
-            mytag: '自定义对象',
+            myTag: {
+              text: '自定义对象'
+            },
             animation: [
               {
                 trigger: 'mouseEnter',
@@ -145,13 +147,13 @@ objectName 指通用节点的内部对象定义的内，其中 tNode 指整个�
             ]
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
         return $(go.LayeredDigraphLayout, {
@@ -159,7 +161,7 @@ objectName 指通用节点的内部对象定义的内，其中 tNode 指整个�
           layerSpacing: 150,
           direction: 90,
           isOngoing: true
-        });
+        })
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {
@@ -174,20 +176,20 @@ objectName 指通用节点的内部对象定义的内，其中 tNode 指整个�
                   },
                   name: 'myTag',
                   figure: 'RoundedRectangle',
-                  fill: '#eb2f96',
+                  background: '#eb2f96',
                   stroke: '#780650',
                   color: '#000',
                   strokeWidth: 2,
-                  textKey: 'mytag'
+                  dataKey: 'myTag'
                 })
               ]
             }
           }
-        });
+        })
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
