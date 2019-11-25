@@ -4,22 +4,22 @@
 parts(部件)部分提供了一些常见的组成节点的部件,直接使用可以快速构建节点
 :::
 
-方法参数：
+可作为数据绑定参数：
 |参数|说明|类型|可选值|默认值|
 |----|----|----|----|----|
 |name|标签名称|String|-|''|
 |placement|标签位于容器的位置|String|'top-right'/'top'/'top-left'/'left'/'center'/'right'/'bottom-left'/'bottom'/'bottom-right'|'top-right', 父容器须为'Spot'布局|
 |figure|文本框形状|String|-|'RoundedRectangle'|
-|fill|文本框背景色|String|-|'#eb2f96'|
+|background|文本框背景色|String|-|'#eb2f96'|
 |stroke|文本框边框颜色|String/null|-|'#780650'|
 |strokeWidth|文本框边框宽度|Number|-|1|
 |strokeDashArray|文本框边框虚线|Array/null|如[8,4,8,4]|null|
 |color|文本颜色|String|-|'#000'|
-|padding|文本内边距|Number|-|5|
+|margin|文本边距|Number|-|5|
 |font|文本字体|String|-|'14px "Microsoft Yahei"'|
-|text|文字默认值|String|-|'',如果数据中的文本为空，则取该默认值|
-|textKey|数据绑定文本字段名|String|-|'text'|
-|textArrayKey|数据绑定数组文本字段名|String|-|'label'|
+|text|文字默认值|String/Array|如果类型为 String，则为单行文本；如果为 Array，则为多行文本，格式为[{text: 'text1',color: 'red', background: 'transparent', font: '14px "Microsoft Yahei"', margin: [0, 10, 0, 10]}],每行文字可单独控制样式|''|
+|show|是否可见|Boolean|-|true|
+|dataKey|数据绑定时的字段名|String|-|'tagData'|
 |props|最外层的 go.Panel 参数|Object|-|{}|
 |events|go.GraphObject 点击事件|Object|-|{}|
 
@@ -48,8 +48,8 @@ figure 可选值：
   </div>
 </template>
 <script>
-  import { XdhGo, utils, nodeTmpl } from 'xdh-go';
-  let { tag, node } = utils;
+  import { XdhGo, utils, nodeTmpl } from 'xdh-go'
+  let { tag, node } = utils
   export default {
     components: {
       XdhGo
@@ -60,46 +60,62 @@ figure 可选值：
         nodes: [
           {
             category: 'rect',
-            text: [{ label: '多行文本1' }, { label: '多行文本2' }]
+            tagData: {
+              text: [
+                { text: '多行文本1' },
+                {
+                  text: '多行文本2',
+                  margin: 10,
+                  font: '18px "Microsoft Yahei"',
+                  color: '#237804',
+                  background: '#feffe6'
+                }
+              ]
+            }
           },
           {
             category: 'rect',
-            text: '单行文本'
+            tagData: {
+              text: '单行文本',
+              strokeDashArray: [8, 4, 8, 4],
+              background: 'green',
+              color: '#fff'
+            }
           },
           {
             category: 'circle',
-            text: '\uE65F'
+            tagData: {
+              text: '\uE65F'
+            }
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.GridLayout, {});
+        return $(go.GridLayout, {})
       },
       nodeTemplateMap($, go) {
-        let map = new go.Map();
+        let map = new go.Map()
         map.add(
           'rect',
           node($, go, {
             parts: [
               tag($, go, {
                 figure: 'RoundedRectangle',
-                fill: '#eb2f96',
+                background: '#eb2f96',
                 stroke: '#780650',
                 color: '#000',
-                strokeWidth: 2,
-                textKey: 'text',
-                textArrayKey: 'label'
+                strokeWidth: 2
               })
             ]
           })
-        );
+        )
 
         map.add(
           'circle',
@@ -107,23 +123,21 @@ figure 可选值：
             parts: [
               tag($, go, {
                 figure: 'Circle',
-                fill: '#69c0ff',
+                background: '#69c0ff',
                 font: '18px "iconfont"',
                 stroke: null,
                 color: '#fff',
                 strokeWidth: 2,
-                padding: 0,
-                textKey: 'text',
-                textArrayKey: 'label'
+                margin: 0
               })
             ]
           })
-        );
-        return map;
+        )
+        return map
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
@@ -149,42 +163,40 @@ figure 可选值：
   </div>
 </template>
 <script>
-  import { XdhGo, utils, nodeTmpl } from 'xdh-go';
-  let { tag, node } = utils;
+  import { XdhGo, utils, nodeTmpl } from 'xdh-go'
+  let { tag, node } = utils
   function addTags($, go, tagArr) {
-    let arr = [];
+    let arr = []
     tagArr.forEach(r => {
       arr.push(
         tag($, go, {
           name: r.name,
           text: r.icon,
           figure: 'Circle',
-          fill: '#69c0ff',
+          background: '#69c0ff',
           placement: [0.5, 0.3],
           font: '16px "iconfont"',
           stroke: null,
           color: '#fff',
           strokeWidth: 2,
-          padding: 0,
-          textKey: 'text',
-          textArrayKey: 'label',
+          margin: 0,
           props: {
             opacity: 0
           },
           events: {
             click(e, n) {
-              alert('点击了' + n.name);
+              alert('点击了' + n.name)
             }
           }
         })
-      );
-    });
-    return arr;
+      )
+    })
+    return arr
   }
   function addAnimate(animateArr) {
-    let arr = [];
+    let arr = []
     for (let i = 0; i < animateArr.length; i++) {
-      let r = animateArr[i];
+      let r = animateArr[i]
       arr.push(
         {
           trigger: 'mouseEnter',
@@ -220,7 +232,7 @@ figure 可选值：
           easingFunc: ['easeInOutQuart', 'easeInQuint'],
           objectName: r.name
         }
-      );
+      )
     }
     arr.push({
       trigger: 'mouseEnter',
@@ -230,8 +242,8 @@ figure 可选值：
       keyProp: 'number',
       easingFunc: ['easeInOutQuart'],
       objectName: 'tFigure'
-    });
-    return arr;
+    })
+    return arr
   }
   export default {
     components: {
@@ -243,7 +255,10 @@ figure 可选值：
         nodes: [
           {
             category: 'node',
-            text: '99+',
+            tagData: {
+              text: '99+',
+              placement: 'top-left'
+            },
             label: 'with commonNode'
           },
           {
@@ -251,19 +266,19 @@ figure 可选值：
             label: 'with animate'
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.GridLayout, {});
+        return $(go.GridLayout, {})
       },
       nodeTemplateMap($, go) {
-        let map = new go.Map();
+        let map = new go.Map()
 
         map.add(
           'node',
@@ -273,21 +288,19 @@ figure 可选值：
                 parts: [
                   tag($, go, {
                     figure: 'Circle',
-                    fill: 'red',
+                    background: 'red',
                     font: '14px "Microsoft Yahei"',
                     placement: 'top-right',
-                    stroke: null,
+                    stroke: 'yellow',
                     color: '#fff',
                     strokeWidth: 2,
-                    padding: 0,
-                    textKey: 'text',
-                    textArrayKey: 'label'
+                    margin: 0
                   })
                 ]
               }
             }
           })
-        );
+        )
         map.add(
           'animate',
           nodeTmpl($, go, {
@@ -317,12 +330,12 @@ figure 可选值：
               }
             }
           })
-        );
-        return map;
+        )
+        return map
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 

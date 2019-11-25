@@ -19,8 +19,8 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
   </div>
 </template>
 <script>
-  import { XdhGo, nodeTmpl, utils } from 'xdh-go';
-  let { tag, shape, binding } = utils;
+  import { XdhGo, nodeTmpl, utils } from 'xdh-go'
+  let { tag, shape, binding } = utils
   export default {
     components: {
       XdhGo
@@ -32,7 +32,9 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
           {
             key: 1,
             label: 'alignment:spot类型属性',
-            mytag: 'spot',
+            mytag: {
+              text: 'spot'
+            },
             animation: [
               {
                 trigger: 'mouseEnter',
@@ -40,7 +42,10 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 duration: 300,
                 prop: 'alignment',
                 propType: 'spot',
-                keyFrame: [[0.3, 0], [0.7, 0]],
+                keyFrame: [
+                  [0.3, 0],
+                  [0.7, 0]
+                ],
                 easingFunc: ['easeInOutCubic', 'easeInElastic']
               },
               {
@@ -49,7 +54,10 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 duration: 300,
                 prop: 'alignment',
                 propType: 'spot',
-                keyFrame: [[0.7, 0], [0.3, 0]],
+                keyFrame: [
+                  [0.7, 0],
+                  [0.3, 0]
+                ],
                 easingFunc: ['easeInOutCubic', 'easeInElastic']
               }
             ]
@@ -86,7 +94,10 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 objectName: 'tLabel',
                 duration: 300,
                 prop: 'position',
-                keyFrame: [[0, 100], [0, -10]],
+                keyFrame: [
+                  [0, 100],
+                  [0, -10]
+                ],
                 easingFunc: ['easeInOutCubic', 'easeInOutQuad']
               },
               {
@@ -94,7 +105,10 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 objectName: 'tLabel',
                 duration: 300,
                 prop: 'position',
-                keyFrame: [[0, -10], [0, 100]],
+                keyFrame: [
+                  [0, -10],
+                  [0, 100]
+                ],
                 easingFunc: ['easeInOutCubic', 'easeInOutQuad']
               }
             ]
@@ -108,7 +122,10 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 objectName: 'tFigure',
                 duration: 200,
                 prop: 'padding',
-                keyFrame: [[0, 0, 0, 0], [0, 0, 20, 0]],
+                keyFrame: [
+                  [0, 0, 0, 0],
+                  [0, 0, 20, 0]
+                ],
                 easingFunc: ['easeInOutCubic']
               },
               {
@@ -116,7 +133,10 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 objectName: 'tFigure',
                 duration: 200,
                 prop: 'padding',
-                keyFrame: [[0, 0, 20, 0], [0, 0, 0, 0]],
+                keyFrame: [
+                  [0, 0, 20, 0],
+                  [0, 0, 0, 0]
+                ],
                 easingFunc: ['easeInOutCubic']
               }
             ]
@@ -131,7 +151,10 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 objectName: 'myShape',
                 duration: 800,
                 prop: 'fill',
-                keyFrame: [[255, 133, 192, 1], [133, 165, 255, 0.5]],
+                keyFrame: [
+                  [255, 133, 192, 1],
+                  [133, 165, 255, 0.5]
+                ],
                 easingFunc: ['easeInOutCubic']
               },
               {
@@ -139,19 +162,22 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                 objectName: 'myShape',
                 duration: 800,
                 prop: 'fill',
-                keyFrame: [[133, 165, 255, 0.5], [255, 133, 192, 1]],
+                keyFrame: [
+                  [133, 165, 255, 0.5],
+                  [255, 133, 192, 1]
+                ],
                 easingFunc: ['easeInOutCubic']
               }
             ]
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
         return $(go.LayeredDigraphLayout, {
@@ -159,7 +185,7 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
           layerSpacing: 150,
           direction: 90,
           isOngoing: false
-        });
+        })
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {
@@ -178,7 +204,7 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                   visible: {
                     key: '',
                     handler(d) {
-                      return d.showShape;
+                      return d.showShape
                     }
                   }
                 })
@@ -196,11 +222,11 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                   },
                   name: 'myTag',
                   figure: 'RoundedRectangle',
-                  fill: '#eb2f96',
+                  background: '#eb2f96',
                   stroke: '#780650',
                   color: '#000',
                   strokeWidth: 2,
-                  textKey: 'mytag'
+                  dataKey: 'mytag'
                 })
               ]
             },
@@ -210,11 +236,11 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
               }
             }
           }
-        });
+        })
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
