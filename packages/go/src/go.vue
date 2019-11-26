@@ -138,7 +138,8 @@ export default {
   data() {
     return {
       diagram: null,
-      htmlInfo: {}
+      htmlInfo: {},
+      timeout: null
     }
   },
   computed: {
@@ -151,10 +152,20 @@ export default {
   },
   watch: {
     nodes(val) {
-      this.loadData(val, this.links)
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+      this.timeout = setTimeout(() => {
+        this.loadData(val, this.links)
+      }, 50)
     },
     links(val) {
-      this.loadData(this.nodes, val)
+      if (this.timeout) {
+        clearTimeout(this.timeout)
+      }
+      this.timeout = setTimeout(() => {
+        this.loadData(this.nodes, val)
+      }, 50)
     }
   },
   methods: {
@@ -166,7 +177,6 @@ export default {
      */
     loadData(nodes = [], links = []) {
       if (!this.diagram) return
-
       const model = this.diagram.model
       model.nodeDataArray = nodes
 
@@ -619,7 +629,6 @@ export default {
       this.goRegister($, go)
     }
     this.go = go
-
     /**
      * 图表实例
      * @member diagram

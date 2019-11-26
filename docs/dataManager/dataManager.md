@@ -14,7 +14,6 @@ DataManager 类
 | diagram | go. Diagram 对象 | go. Diagram 对象 | - | - |
 | go | gojs 库 | Object | - | - |
 
-
 ## 添加数据相关方法
 
 setNodeConverter 方法
@@ -242,8 +241,7 @@ getLink 方法
         // 根据需要通过旧节点和新节点生成新数据返回
         let nodeData = JSON.parse(JSON.stringify(oldData))
         nodeData.label.text.push({
-          text:
-            newData._originData.title + ':' + newData._originData.level
+          text: newData._originData.title + ':' + newData._originData.level
         })
         return nodeData
       },
@@ -530,9 +528,12 @@ getLink 方法
         linkData.label.text.push({
           text: newData._originData.title + ':' + newData._originData.type
         })
-        let type = Math.min(parseInt(oldData._originData.type),parseInt(newData._originData.type))
+        let type = Math.min(
+          parseInt(oldData._originData.type),
+          parseInt(newData._originData.type)
+        )
         let lineColor
-         switch (type) {
+        switch (type) {
           case 1:
             lineColor = '#d48806'
             break

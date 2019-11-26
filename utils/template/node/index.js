@@ -1,9 +1,9 @@
-import { panel, node, tooltip } from '../../node-parts';
-import { handleNodeDefault } from './default';
-import figure from './figure/index';
-import label from './label/index';
-import container from './container/index';
-import handleAnimation from '../../animation';
+import { panel, node, tooltip } from '../../node-parts'
+import { handleNodeDefault } from './default'
+import figure from './figure/index'
+import label from './label/index'
+import container from './container/index'
+import handleAnimation from '../../animation'
 
 import {
   innerPanelBinding,
@@ -11,7 +11,7 @@ import {
   tooltipBinding,
   tooltipShape,
   tooltipAdornment
-} from './bindings';
+} from './bindings'
 /**
  * @function
  * @name handleParts
@@ -20,17 +20,17 @@ import {
  */
 function handleParts(_options) {
   let extendUp = [],
-    extendDown = [];
+    extendDown = []
   if (_options.parts && _options.parts instanceof Array) {
-    extendUp = [..._options.parts];
+    extendUp = [..._options.parts]
   } else if (_options.parts && (_options.parts.up || _options.parts.down)) {
-    extendUp = [...(_options.parts.up || [])];
-    extendDown = [...(_options.parts.down || [])];
+    extendUp = [...(_options.parts.up || [])]
+    extendDown = [...(_options.parts.down || [])]
   }
   return {
     extendUp,
     extendDown
-  };
+  }
 }
 
 /**
@@ -41,73 +41,81 @@ function handleParts(_options) {
  */
 function handleEvents(_options, $, go) {
   if (_options.events.mouseEnter) {
-    let hoverFun = _options.events.mouseEnter;
+    let hoverFun = _options.events.mouseEnter
     let overideFun = function(e, n) {
-      n.diagram.model.set(n.data, 'isHover', true);
-      handleAnimation(e, n, 'mouseEnter', _options, go);
-      hoverFun(e, n);
-    };
-    _options.events.mouseEnter = overideFun;
+      if (n.diagram && n.diagram.model) {
+        n.diagram.model.set(n.data, 'isHover', true)
+      }
+      handleAnimation(e, n, 'mouseEnter', _options, go)
+      hoverFun(e, n)
+    }
+    _options.events.mouseEnter = overideFun
   } else {
     let overideFun = function(e, n) {
       // console.log('mouseEnter', n);
-      n.diagram.model.set(n.data, 'isHover', true);
-      handleAnimation(e, n, 'mouseEnter', _options, go);
-    };
-    _options.events.mouseEnter = overideFun;
+      if (n.diagram && n.diagram.model) {
+        n.diagram.model.set(n.data, 'isHover', true)
+      }
+      handleAnimation(e, n, 'mouseEnter', _options, go)
+    }
+    _options.events.mouseEnter = overideFun
   }
   if (_options.events.mouseLeave) {
-    let hoverFun = _options.events.mouseLeave;
+    let hoverFun = _options.events.mouseLeave
     let overideFun = function(e, n) {
-      n.diagram.model.set(n.data, 'isHover', false);
-      handleAnimation(e, n, 'mouseLeave', _options, go);
-      hoverFun(e, n);
-    };
-    _options.events.mouseLeave = overideFun;
+      if (n.diagram && n.diagram.model) {
+        n.diagram.model.set(n.data, 'isHover', false)
+      }
+      handleAnimation(e, n, 'mouseLeave', _options, go)
+      hoverFun(e, n)
+    }
+    _options.events.mouseLeave = overideFun
   } else {
     let overideFun = function(e, n) {
       // console.log('mouseLeave', n);
-      n.diagram.model.set(n.data, 'isHover', false);
-      handleAnimation(e, n, 'mouseLeave', _options, go);
-    };
-    _options.events.mouseLeave = overideFun;
+      if (n.diagram && n.diagram.model) {
+        n.diagram.model.set(n.data, 'isHover', false)
+      }
+      handleAnimation(e, n, 'mouseLeave', _options, go)
+    }
+    _options.events.mouseLeave = overideFun
   }
   if (_options.events.click) {
-    let originFun = _options.events.click;
+    let originFun = _options.events.click
     let overideFun = function(e, n) {
-      handleAnimation(e, n, 'click', _options, go);
-      originFun(e, n);
-    };
-    _options.events.click = overideFun;
+      handleAnimation(e, n, 'click', _options, go)
+      originFun(e, n)
+    }
+    _options.events.click = overideFun
   } else {
     let overideFun = function(e, n) {
       // console.log('click', n);
-      handleAnimation(e, n, 'click', _options, go);
-    };
-    _options.events.click = overideFun;
+      handleAnimation(e, n, 'click', _options, go)
+    }
+    _options.events.click = overideFun
   }
   if (_options.events.doubleClick) {
-    let originFun = _options.events.doubleClick;
+    let originFun = _options.events.doubleClick
     let overideFun = function(e, n) {
-      handleAnimation(e, n, 'dbclick', _options, go);
-      originFun(e, n);
-    };
-    _options.events.doubleClick = overideFun;
+      handleAnimation(e, n, 'dbclick', _options, go)
+      originFun(e, n)
+    }
+    _options.events.doubleClick = overideFun
   } else {
     let overideFun = function(e, n) {
       // console.log('dbclick', n);
-      handleAnimation(e, n, 'dbclick', _options, go);
-    };
-    _options.events.doubleClick = overideFun;
+      handleAnimation(e, n, 'dbclick', _options, go)
+    }
+    _options.events.doubleClick = overideFun
   }
 }
 export default function($, go, options) {
-  let _options = handleNodeDefault($, go, options);
+  let _options = handleNodeDefault($, go, options)
   // console.log('node options', _options);
   // 处理parts, 用于扩展节点
-  let { extendUp, extendDown } = handleParts(_options);
+  let { extendUp, extendDown } = handleParts(_options)
   // 处理事件
-  handleEvents(_options, $, go);
+  handleEvents(_options, $, go)
   return node($, go, {
     props: {
       name: 'tNode',
@@ -158,5 +166,5 @@ export default function($, go, options) {
       ..._options.props._nodeOptions.parts
     ],
     events: _options.events || {}
-  });
+  })
 }

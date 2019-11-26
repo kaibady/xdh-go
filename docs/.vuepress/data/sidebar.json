@@ -104,6 +104,13 @@
       "children": ["dataManager", "remove", "update"]
     }
   ],
+  "/performance/": [
+    {
+      "title": "性能",
+      "collapsable": false,
+      "children": ["counts"]
+    }
+  ],
   "/applys/": [
     {
       "title": "综合应用",

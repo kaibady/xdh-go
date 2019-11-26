@@ -37,6 +37,10 @@
     "link": "/dataManager/dataManager"
   },
   {
+    "text": "性能",
+    "link": "/performance/counts"
+  },
+  {
     "text": "文档",
     "items": [
       {

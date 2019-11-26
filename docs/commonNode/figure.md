@@ -1,14 +1,14 @@
 # 图形类型
 
-| 参数        | 参数说明       | 类型          | 可选值                                               | 默认值                                               |
-| ----------- | -------------- | ------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| shape       | 图形类型       | String/null        | 'image'/'clipImage'/'icon'/(go.Shape 内置图形类型), 设置为null则不显示图形   | 'Rectangle'                                          |
-| figureMargin         | 图形的外边距 | Number/Array | -                                                         | 20                                  |
-| stateShape  | 状态框形状     | String        | go.Shape 内置图形类型                                | 'Circle'                                             |
-| size        | 图形的尺寸     | Number/Array  | Number 类型时，宽高一致；如果是数组类型，则为[宽,高] | [50,50]                                              |
-| background  | 图形背景色     | Object/String | -                                                    | gray 状态为'#ccc',其它为'#91d5ff'                    |
-| strokeColor | 状态框边框色   | Object/String | -                                                    | gray 状态为'#ccc',normal 为'#0050b3',其它为'#c41d7f' |
-| strokeWidth | 状态框边框宽度 | Number        | -                                                    | 五种状态，默认为 2                                   |
+| 参数         | 参数说明       | 类型          | 可选值                                                                       | 默认值                                               |
+| ------------ | -------------- | ------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------- |
+| shape        | 图形类型       | String/null   | 'image'/'clipImage'/'icon'/(go.Shape 内置图形类型), 设置为 null 则不显示图形 | 'Rectangle'                                          |
+| figureMargin | 图形的外边距   | Number/Array  | -                                                                            | 20                                                   |
+| stateShape   | 状态框形状     | String        | go.Shape 内置图形类型                                                        | 'Circle'                                             |
+| size         | 图形的尺寸     | Number/Array  | Number 类型时，宽高一致；如果是数组类型，则为[宽,高]                         | [50,50]                                              |
+| background   | 图形背景色     | Object/String | -                                                                            | gray 状态为'#ccc',其它为'#91d5ff'                    |
+| strokeColor  | 状态框边框色   | Object/String | -                                                                            | gray 状态为'#ccc',normal 为'#0050b3',其它为'#c41d7f' |
+| strokeWidth  | 状态框边框宽度 | Number        | -                                                                            | 五种状态，默认为 2                                   |
 
 ## icon
 
@@ -38,7 +38,7 @@ shape 参数为'icon'时有效
   </div>
 </template>
 <script>
-  import { XdhGo, nodeTmpl } from 'xdh-go';
+  import { XdhGo, nodeTmpl } from 'xdh-go'
   export default {
     components: {
       XdhGo
@@ -80,16 +80,16 @@ shape 参数为'icon'时有效
             }
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.GridLayout, {});
+        return $(go.GridLayout, {})
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {
@@ -107,11 +107,11 @@ shape 参数为'icon'时有效
               select: '#096dd9'
             }
           }
-        });
+        })
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
@@ -142,8 +142,8 @@ shape 参数为'icon'时有效
   </div>
 </template>
 <script>
-  import { XdhGo, nodeTmpl } from 'xdh-go';
-  let imgPath = '/xdh-go/';
+  import { XdhGo, nodeTmpl } from 'xdh-go'
+  let imgPath = '/xdh-go/'
   export default {
     components: {
       XdhGo
@@ -166,16 +166,16 @@ shape 参数为'icon'时有效
             image: imgPath + 'img/node/circleimage/a.png'
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.GridLayout, {});
+        return $(go.GridLayout, {})
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {
@@ -184,11 +184,11 @@ shape 参数为'icon'时有效
             size: 80,
             stateShape: 'Rectangle'
           }
-        });
+        })
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
@@ -220,8 +220,8 @@ shape 参数为'icon'时有效
   </div>
 </template>
 <script>
-  import { XdhGo, nodeTmpl } from 'xdh-go';
-  let imgPath = '/xdh-go/';
+  import { XdhGo, nodeTmpl } from 'xdh-go'
+  let imgPath = '/xdh-go/'
   export default {
     components: {
       XdhGo
@@ -259,16 +259,16 @@ shape 参数为'icon'时有效
             image: imgPath + 'img/node/circleimage/2.png'
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.GridLayout, {});
+        return $(go.GridLayout, {})
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {
@@ -276,11 +276,11 @@ shape 参数为'icon'时有效
             shape: 'clipImage',
             size: 80
           }
-        });
+        })
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
@@ -309,21 +309,21 @@ shape 参数为'icon'时有效
   </div>
 </template>
 <script>
-  import { XdhGo, nodeTmpl } from 'xdh-go';
+  import { XdhGo, nodeTmpl } from 'xdh-go'
   function definedShape1(go) {
     go.Shape.defineFigureGenerator('RoundedBottomRectangle', function(
       shape,
       w,
       h
     ) {
-      var p1 = 5;
+      var p1 = 5
       if (shape !== null) {
-        var param1 = shape.parameter1;
-        if (!isNaN(param1) && param1 >= 0) p1 = param1;
+        var param1 = shape.parameter1
+        if (!isNaN(param1) && param1 >= 0) p1 = param1
       }
-      p1 = Math.min(p1, w / 2);
-      p1 = Math.min(p1, h / 2);
-      var geo = new go.Geometry();
+      p1 = Math.min(p1, w / 2)
+      p1 = Math.min(p1, h / 2)
+      var geo = new go.Geometry()
       geo.add(
         new go.PathFigure(0, 0)
           .add(new go.PathSegment(go.PathSegment.Line, w, 0))
@@ -351,23 +351,23 @@ shape 参数为'icon'时有效
               p1
             ).close()
           )
-      );
-      geo.spot1 = new go.Spot(0, 0, 0.3 * p1, 0);
-      geo.spot2 = new go.Spot(1, 1, -0.3 * p1, -0.3 * p1);
-      return geo;
-    });
+      )
+      geo.spot1 = new go.Spot(0, 0, 0.3 * p1, 0)
+      geo.spot2 = new go.Spot(1, 1, -0.3 * p1, -0.3 * p1)
+      return geo
+    })
   }
   function definedShape2(go) {
     go.Shape.defineFigureGenerator('Pie', function(shape, w, h) {
-      var param1 = shape ? shape.parameter1 : NaN;
-      var param2 = shape ? shape.parameter2 : NaN;
-      if (isNaN(param1)) param1 = 0; // default values PARAMETER 1 is for Start Angle
-      if (isNaN(param2)) param2 = 315; // default values PARAMETER 2 is for Sweep Angle
+      var param1 = shape ? shape.parameter1 : NaN
+      var param2 = shape ? shape.parameter2 : NaN
+      if (isNaN(param1)) param1 = 0 // default values PARAMETER 1 is for Start Angle
+      if (isNaN(param2)) param2 = 315 // default values PARAMETER 2 is for Sweep Angle
 
-      var start = param1 % 360;
-      if (start < 0) start += 360;
-      var sweep = param2 % 360;
-      var rad = Math.min(w, h) / 2;
+      var start = param1 % 360
+      if (start < 0) start += 360
+      var sweep = param2 % 360
+      var rad = Math.min(w, h) / 2
 
       return new go.Geometry().add(
         new go.PathFigure(rad, rad) // start point
@@ -383,8 +383,8 @@ shape 参数为'icon'时有效
             ) // radius
               .close()
           )
-      );
-    });
+      )
+    })
   }
   export default {
     components: {
@@ -449,27 +449,27 @@ shape 参数为'icon'时有效
           {
             shape: null,
             label: {
-              text: [{text:'没有图形'}, {text: '只有label'}],
+              text: [{ text: '没有图形' }, { text: '只有label' }],
               margin: 10
             },
             labelStroke: '#0050b3',
             labelBackground: '#91d5ff'
           }
         ]
-      };
+      }
     },
     methods: {
       goRegister($, go) {
-        definedShape1(go);
-        definedShape2(go);
+        definedShape1(go)
+        definedShape2(go)
       },
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.GridLayout, {});
+        return $(go.GridLayout, {})
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {
@@ -478,11 +478,11 @@ shape 参数为'icon'时有效
             size: 80,
             stateShape: null
           }
-        });
+        })
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
@@ -508,7 +508,7 @@ shape 参数为'icon'时有效
   </div>
 </template>
 <script>
-  import { XdhGo, nodeTmpl } from 'xdh-go';
+  import { XdhGo, nodeTmpl } from 'xdh-go'
   export default {
     components: {
       XdhGo
@@ -553,16 +553,16 @@ shape 参数为'icon'时有效
             stateShape: 'Rectangle'
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.GridLayout, {});
+        return $(go.GridLayout, {})
       },
       nodeTemplate($, go) {
         return nodeTmpl($, go, {
@@ -580,11 +580,11 @@ shape 参数为'icon'时有效
               select: '#096dd9'
             }
           }
-        });
+        })
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
