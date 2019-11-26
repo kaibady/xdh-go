@@ -5,7 +5,7 @@ export function toArrow($, go, _options) {
     props: {
       stroke: 'transparent',
       fill: 'transparent',
-      alignment: new go.Spot(0 - 1, -1),
+
       ..._options.props._toArrowOptions.props
     },
     binding: arrowBinding($, go, 'to', _options)
@@ -16,7 +16,7 @@ export function toArrow($, go, _options) {
     {
       name: 'sToArrow',
       segmentIndex: -1,
-      segmentOffset: new go.Point(-10, 0),
+      alignmentFocus: new go.Spot(1, 0.5),
       segmentOrientation: go.Link.OrientAlong
     },
     _arrow,
@@ -29,17 +29,18 @@ export function fromArrow($, go, _options) {
     props: {
       stroke: 'transparent',
       fill: 'transparent',
+
       ..._options.props._fromArrowOptions.props
     },
     binding: arrowBinding($, go, 'from', _options)
   })
   return $(
-    go.Panel, 
+    go.Panel,
     'Position',
     {
       name: 'sFromArrow',
       segmentIndex: 0,
-      segmentOffset: new go.Point(10, 0),
+      alignmentFocus: new go.Spot(0, 0.5),
       segmentOrientation: go.Link.OrientAlong
     },
     _arrow,
