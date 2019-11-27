@@ -43,6 +43,7 @@ export default {
    * @property {function} [goRegister] 提供一个函数，用于在组件创建时将一些自定义类或者Shape注册到go中
    * @property {string} [width=100%] 图表宽度
    * @property {string} [height=100%] 图表高度
+   * @property {function} [loadDataFunc=null] 数据生成方法，如果不为空，则不执行内部默认loadData方法，在diagram生成之后，数据的nodeDataArray赋值前执行,回调参数 (diagram,$,go,nodes,links)  nodes和links为外部传入的参数
    * @property {function} [nodeTemplate] 节点模板回调函数，回调参数 $:创建图表工厂函数，go:GoJs命名空间对象。 需要返回go.GraphObject实例
    * @property {function} [linkTemplate] 连线模板回调函数，回调参数 $:创建图表工厂函数，go:GoJs命名空间对象 需要返回go.GraphObject实例
    * @property {function} [nodeTemplateMap] 节点模板Map，回调参数 $:创建图表工厂函数，go:GoJs命名空间对象 需要返回go.Map实例, nodeTemplate，nodeTemplateMap两个只能设置一个
