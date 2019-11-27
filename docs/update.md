@@ -1,3 +1,9 @@
+## v1.4.0 (2019.11.27)
+
+- 文档增加性能测试页
+- 新增虚拟力布局(VirtualizedForceDirectedLayout)
+- 新增虚拟树布局(VirtualizedTreeLayout)
+
 ## v1.3.0 (2019.11.25)
 
 - 新增 switcher 部件
