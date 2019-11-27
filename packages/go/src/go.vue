@@ -133,6 +133,10 @@ export default {
     palette: {
       type: Boolean,
       default: false
+    },
+    loadDataFunc: {
+      type: [Function, Object],
+      default: null
     }
   },
   data() {
@@ -598,7 +602,11 @@ export default {
     this.loadLayout(this.layout)
 
     // 载入模型数据
-    this.loadData(this.nodes, this.links)
+    if (this.loadDataFunc && typeof this.loadDataFunc === 'function') {
+      this.loadDataFunc(this.diagram, $, go, this.nodes, this.links)
+    } else {
+      this.loadData(this.nodes, this.links)
+    }
 
     // 绑定图表事件
     this.bindEvents(this.events)

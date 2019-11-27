@@ -1,32 +1,33 @@
-import '../theme/index.scss';
-import Go from './go';
-import Html from './html';
-import Tooltip from './tooltip';
-import CircleMenu from './circle-menu';
-import Overview from './overview';
-import Snapshot from './snapshot';
-import Draft from './draft';
-import Tool from './tool';
-import Layout from './layout';
-import View from './view';
-import Select from './select';
-import Search from './search';
+import '../theme/index.scss'
+import Go from './go'
+import Html from './html'
+import Tooltip from './tooltip'
+import CircleMenu from './circle-menu'
+import Overview from './overview'
+import Snapshot from './snapshot'
+import Draft from './draft'
+import Tool from './tool'
+import Layout from './layout'
+import View from './view'
+import Select from './select'
+import Search from './search'
 // 节点定义方法
-import * as utilFuns from '../utils/node-parts/index';
-import tween, { animateFun } from '../utils/animation';
-import AnimationEvents from '../utils/animation/animateManager';
-import link from '../utils/template/link/index';
-import node from '../utils/template/node/index';
-import group from '../utils/template/group/index';
+import * as utilFuns from '../utils/node-parts/index'
+import tween, { animateFun } from '../utils/animation'
+import AnimationEvents from '../utils/animation/animateManager'
+import link from '../utils/template/link/index'
+import node from '../utils/template/node/index'
+import group from '../utils/template/group/index'
+import layout from '../utils/layout'
 // 数据管理
-import DataManager from '../utils/dataManager/dataManager';
+import DataManager from '../utils/dataManager/dataManager'
 
 // group
 import {
   getGroupLayout,
   getGroupDragging,
   setGroupLayout
-} from '../utils/group';
+} from '../utils/group'
 const components = [
   Go,
   Html,
@@ -40,39 +41,42 @@ const components = [
   View,
   Select,
   Search
-];
+]
 const install = function(Vue) {
-  if (install.installed) return;
-  components.forEach(component => Vue.component(component.name, component));
-};
-
-if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue);
+  if (install.installed) return
+  components.forEach(component => Vue.component(component.name, component))
 }
 
-export const XdhGo = Go;
-export const XdhGoHtml = Html;
-export const XdhGoTooltip = Tooltip;
-export const XdhGoCircleMenu = CircleMenu;
-export const XdhGoOverview = Overview;
-export const XdhGoSnapshot = Snapshot;
-export const XdhGoDraft = Draft;
-export const XdhGoTool = Tool;
-export const XdhGoLayout = Layout;
-export const XdhGoView = View;
-export const XdhGoSelect = Select;
-export const XdhGoSearch = Search;
-export const utils = utilFuns;
-export const nodeTmpl = node;
-export const linkTmpl = link;
-export const groupTmpl = group;
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue)
+}
+
+export const XdhGo = Go
+export const XdhGoHtml = Html
+export const XdhGoTooltip = Tooltip
+export const XdhGoCircleMenu = CircleMenu
+export const XdhGoOverview = Overview
+export const XdhGoSnapshot = Snapshot
+export const XdhGoDraft = Draft
+export const XdhGoTool = Tool
+export const XdhGoLayout = Layout
+export const XdhGoView = View
+export const XdhGoSelect = Select
+export const XdhGoSearch = Search
+
+export const utils = utilFuns
+export const nodeTmpl = node
+export const linkTmpl = link
+export const groupTmpl = group
 export const animation = {
   func: animateFun,
   tween: tween,
   AnimationEvents: AnimationEvents
-};
-export const groupFun = { getGroupLayout, getGroupDragging, setGroupLayout };
-export const dataUtils = { DataManager };
+}
+export const groupFun = { getGroupLayout, getGroupDragging, setGroupLayout }
+export const dataUtils = { DataManager }
+export const layoutUtils = layout
+
 export default {
   version: '1.0.0',
   install,
@@ -95,5 +99,6 @@ export default {
   groupTmpl,
   animation,
   groupFun,
-  dataUtils
-};
+  dataUtils,
+  layoutUtils
+}

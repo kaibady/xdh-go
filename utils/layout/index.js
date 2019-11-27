@@ -1,5 +1,12 @@
+import VirtualizedForceDirectedLayout, {
+  handlerVirtualForce
+} from './VirtualizedForceDirectedLayout'
+import VirtualizedTreeLayout, {
+  handlerVirtualTree
+} from './VirtualizedTreeLayout'
 // 公共布局配置
-let commonOption = {};
+
+let commonOption = {}
 
 // 网格布局
 function getGridLayout($, go, options = {}) {
@@ -13,8 +20,8 @@ function getGridLayout($, go, options = {}) {
       spacing: new go.Size(50, 50)
     },
     options
-  );
-  return $(go.GridLayout, param);
+  )
+  return $(go.GridLayout, param)
 }
 
 // 分层布局
@@ -28,8 +35,8 @@ function getLayeredDigraphLayout($, go, options = {}) {
       layeringOption: go.LayeredDigraphLayout.LayerLongestPathSource
     },
     options
-  );
-  return $(go.LayeredDigraphLayout, param);
+  )
+  return $(go.LayeredDigraphLayout, param)
 }
 
 // 圆形布局
@@ -42,8 +49,8 @@ function getCircularLayout($, go, options = {}) {
       spacing: 10
     },
     options
-  );
-  return $(go.CircularLayout, param);
+  )
+  return $(go.CircularLayout, param)
 }
 
 // 力牵引布局
@@ -58,18 +65,30 @@ function getForceDirectedLayout($, go, options = {}) {
       defaultSpringStiffness: 0.01
     },
     options
-  );
-  return $(go.ForceDirectedLayout, param);
+  )
+  return $(go.ForceDirectedLayout, param)
 }
 
 // 树形布局
 function getTreeLayout($, go, options = {}) {
-  let param = Object.assign(
-    {},
-    commonOption,
-    options
-  );
-  return $(go.TreeLayout, param);
+  let param = Object.assign({}, commonOption, options)
+  return $(go.TreeLayout, param)
+}
+
+// 虚拟节点力布局
+function getVirtualizedForceDirectedLayout($, go, options = {}) {
+  if (!go.VirtualizedForceDirectedLayout) {
+    go.VirtualizedForceDirectedLayout = VirtualizedForceDirectedLayout(go)
+  }
+  return $(go.VirtualizedForceDirectedLayout, options)
+}
+
+// 虚拟节点树布局
+function getVirtualizedTreeLayout($, go, options = {}) {
+  if (!go.VirtualizedTreeLayout) {
+    go.VirtualizedTreeLayout = VirtualizedTreeLayout(go)
+  }
+  return $(go.VirtualizedTreeLayout, options)
 }
 
 export default {
@@ -77,5 +96,9 @@ export default {
   CircularLayout: getCircularLayout,
   LayeredDigraphLayout: getLayeredDigraphLayout,
   ForceDirectedLayout: getForceDirectedLayout,
-  TreeLayout: getTreeLayout
-};
+  TreeLayout: getTreeLayout,
+  VirtualizedForceDirectedLayout: getVirtualizedForceDirectedLayout,
+  handlerVirtualForce,
+  VirtualizedTreeLayout: getVirtualizedTreeLayout,
+  handlerVirtualTree
+}

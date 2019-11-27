@@ -108,7 +108,11 @@
     {
       "title": "性能",
       "collapsable": false,
-      "children": ["counts"]
+      "children": [
+        "counts",
+        "virtualizedForceDirectedLayout",
+        "virtualizedTreeLayout"
+      ]
     }
   ],
   "/applys/": [

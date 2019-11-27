@@ -36,7 +36,7 @@
       :events="events"
       @on-ready="diagramReady"
     >
-      <xdh-go-overview :diagram="diagram"></xdh-go-overview>
+      <!-- <xdh-go-overview :diagram="diagram"></xdh-go-overview> -->
     </xdh-go>
   </div>
 </template>
@@ -385,7 +385,7 @@
       :events="events"
       @on-ready="diagramReady"
     >
-      <xdh-go-overview :diagram="diagram"></xdh-go-overview>
+      <!-- <xdh-go-overview :diagram="diagram"></xdh-go-overview> -->
     </xdh-go>
   </div>
 </template>

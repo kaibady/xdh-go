@@ -172,6 +172,18 @@ export function nodeBinding($, go, _options) {
       key: 'loc',
       handler: go.Point.parse
     },
+    position: {
+      type: [
+        'makeTwoWay',
+        (p, d) => {
+          return new go.Rect(p.x, p.y, d.bounds.width, d.bounds.height)
+        }
+      ],
+      key: 'bounds',
+      handler(b) {
+        return b.position
+      }
+    },
     scale: {
       key: '',
       handler: getHandler($, go, _options, ['scale'])
