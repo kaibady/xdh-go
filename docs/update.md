@@ -1,4 +1,4 @@
-## v1.4.0 (2019.11.27)
+## v1.4.2 (2019.11.27)
 
 - 文档增加性能测试页
 - 新增虚拟力布局(VirtualizedForceDirectedLayout)
