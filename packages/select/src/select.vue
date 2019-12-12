@@ -95,6 +95,7 @@
  * @property {String} [tips.alertTips] 提示信息
  * @property {Boolean} [tips.showTips] 是否显示提示信息
  */
+import diagramManager from '../../../utils/dataManager/diagramManager'
 
 import go from 'gojs'
 let viewMenus = [
@@ -117,7 +118,8 @@ export default {
   name: 'XdhGoSelect',
   /**
    * 参数属性
-   * @property {Object} [diagram=null] go.Diagram对象
+     * @property {String} [diagramName='dig'] go.Diagram对象名称
+
    * @property {Boolean} [showTips=true] 是否显示顶部操作提示
    * @property {String} [customClass=''] 自定义容器类名
    * @property {Object} [customStyle={}] 自定义样式
@@ -148,11 +150,9 @@ export default {
 ]
    */
   props: {
-    diagram: {
-      type: Object,
-      default() {
-        return null
-      }
+    diagramName: {
+      type: String,
+      default: 'dig'
     },
     showTips: {
       type: Boolean,
@@ -190,18 +190,6 @@ export default {
       }
     }
   },
-  watch: {
-    diagram: {
-      handler(diagram) {
-        if (diagram) {
-          this.unbindDiagramEvent()
-          setTimeout(() => {
-            this.bindDiagramEvent(diagram, go.GraphObject.make, go)
-          }, 300)
-        }
-      }
-    }
-  },
   data() {
     return {
       itemReverseMap: {},
@@ -221,6 +209,16 @@ export default {
     }
   },
   methods: {
+    resetEvents() {
+      this.unbindDiagramEvent()
+      setTimeout(() => {
+        this.bindDiagramEvent(
+          diagramManager[this.diagramName],
+          go.GraphObject.make,
+          go
+        )
+      }, 300)
+    },
     keyupHandler(e) {
       e.preventDefault()
       switch (e.key) {
@@ -236,7 +234,7 @@ export default {
       this.disabledAll = disabled
     },
     setSelectMode(mode) {
-      let diagram = this.diagram
+      let diagram = diagramManager[this.diagramName]
       let model = diagram.model
       model.setDataProperty(model.modelData, 'selectMode', mode)
       this.selectMode = mode
@@ -262,9 +260,11 @@ export default {
       } else if (mode === 'multi') {
         diagram.clearSelection()
       } else if (mode === 'normal') {
-        this.diagram.toolManager.dragSelectingTool.delay = 200
+        diagramManager[
+          this.diagramName
+        ].toolManager.dragSelectingTool.delay = 200
       }
-        /**
+      /**
        * 选择模式切换时触发
        * @event on-change
        * @param {String} mode 选择模式
@@ -273,10 +273,10 @@ export default {
     },
     getSelections(isObject = true) {
       if (isObject) {
-        return this.diagram.selection
+        return diagramManager[this.diagramName].selection
       } else {
         let res = []
-        this.diagram.selection.each(node => {
+        diagramManager[this.diagramName].selection.each(node => {
           res.push(node.data)
         })
         return res
@@ -313,7 +313,7 @@ export default {
       }
     },
     bindDiagramEvent(diagram, $, go) {
-      this.diagram.addDiagramListener(
+      diagramManager[this.diagramName].addDiagramListener(
         'BackgroundSingleClicked',
         this.backgroundClick
       )
@@ -360,7 +360,7 @@ export default {
       let node = obj.subject.part
       let isMultiSelect = false
       if (this.selectMode === 'multi') {
-        this.diagram.clearHighlighteds()
+        diagramManager[this.diagramName].clearHighlighteds()
         isMultiSelect = true
       }
       node.isSelected = true
@@ -368,28 +368,32 @@ export default {
     },
     backgroundClick() {
       this.resetMode()
-      this.diagram.clearSelection()
+      diagramManager[this.diagramName].clearSelection()
     },
     unbindDiagramEvent() {
-      this.diagram.removeDiagramListener(
+      diagramManager[this.diagramName].removeDiagramListener(
         'BackgroundSingleClicked',
         this.backgroundClick
       )
-      this.diagram.removeDiagramListener(
+      diagramManager[this.diagramName].removeDiagramListener(
         'ObjectSingleClicked',
         this.nodeClickSelect
       )
-      this.diagram.toolManager.draggingTool.doMouseMove =
+      diagramManager[this.diagramName].toolManager.draggingTool.doMouseMove =
         go.DraggingTool.prototype.doMouseMove
-      this.diagram.toolManager.clickSelectingTool.doMouseUp =
+      diagramManager[this.diagramName].toolManager.clickSelectingTool.doMouseUp =
         go.ClickSelectingTool.prototype.doMouseUp
-      this.diagram.commandHandler.doKeyDown =
+      diagramManager[this.diagramName].commandHandler.doKeyDown =
         go.CommandHandler.prototype.doKeyDown
     }
   },
   mounted() {
-    if (this.diagram) {
-      this.bindDiagramEvent(this.diagram, go.GraphObject.make, go)
+    if (diagramManager[this.diagramName]) {
+      this.bindDiagramEvent(
+        diagramManager[this.diagramName],
+        go.GraphObject.make,
+        go
+      )
     }
     window.addEventListener('keyup', this.keyupHandler)
   },

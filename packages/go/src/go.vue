@@ -10,6 +10,7 @@
  * @description 基于gojs封装，相关diagram和节点操作方法请参考gojs文档
  */
 import go from 'gojs'
+import diagramManager from '../../../utils/dataManager/diagramManager'
 // import {clone} from '@/utils/convert'
 // import {addResizeListener, removeResizeListener} from 'element-ui/lib/utils/resize-event'
 
@@ -33,9 +34,7 @@ export default {
   name: 'XdhGo',
   provide() {
     return {
-      $: $,
-      go: go,
-      diagram: this.diagram
+      diagramName: this.diagramName
     }
   },
   /**
@@ -60,6 +59,14 @@ export default {
    * @property {Boolean} [palette=false] 是否 Palette Diagram
    */
   props: {
+    diagramName: {
+      type: String,
+      default() {
+        return (
+          'diagram' + new Date().getTime() + Math.floor(Math.random() * 1000)
+        )
+      }
+    },
     goRegister: {
       type: Function
     },
@@ -142,7 +149,6 @@ export default {
   },
   data() {
     return {
-      diagram: null,
       htmlInfo: {},
       timeout: null
     }
@@ -181,15 +187,15 @@ export default {
      * @param {Object[]} [links] 连线数据
      */
     loadData(nodes = [], links = []) {
-      if (!this.diagram) return
-      const model = this.diagram.model
+      if (!diagramManager[this.diagramName]) return
+      const model = diagramManager[this.diagramName].model
       model.nodeDataArray = nodes
 
       // GraphLinksModel 需要设置 linkDataArray
       if (this.type === 'GraphLinksModel') {
         model.linkDataArray = links
       }
-      this.diagram.updateAllRelationshipsFromData()
+      diagramManager[this.diagramName].updateAllRelationshipsFromData()
       /**
        *  nodes或links改变后触发
        *  @event on-load-data
@@ -197,7 +203,7 @@ export default {
        *  @param {object} $ go.GraphObject.make
        *  @param {object} go GoJS命名空间
        */
-      this.$emit('on-load-data', this.diagram, $, go)
+      this.$emit('on-load-data', diagramManager[this.diagramName], $, go)
     },
     /**
      * 初始化载入图表模板
@@ -217,7 +223,7 @@ export default {
     setTemplate(type, templateFunc) {
       if (TEMPLATE_TYPE.includes(type)) {
         if (typeof templateFunc === 'function') {
-          this.diagram[type] = templateFunc($, go, this)
+          diagramManager[this.diagramName][type] = templateFunc($, go, this)
         }
       } else {
         throw new Error(`setTemplate不支持模板类型${type}`)
@@ -230,7 +236,7 @@ export default {
      */
     loadLayout(func) {
       if (func) {
-        this.diagram.layout = func($, go, this)
+        diagramManager[this.diagramName].layout = func($, go, this)
       }
     },
     /**
@@ -239,12 +245,12 @@ export default {
      * @param {object} events 事件名称：处理函数 键值对
      */
     bindEvents(events = {}) {
-      if (!this.diagram) return
+      if (!diagramManager[this.diagramName]) return
 
       for (let name in events) {
         if (events.hasOwnProperty(name)) {
           const listener = (this.listeners[name] = events[name].bind(this))
-          this.diagram.addDiagramListener(name, listener)
+          diagramManager[this.diagramName].addDiagramListener(name, listener)
         }
       }
     },
@@ -254,12 +260,12 @@ export default {
      * @param {object} events 事件名称：处理函数 键值对
      */
     unbindEvents(events = {}) {
-      if (!this.diagram) return
+      if (!diagramManager[this.diagramName]) return
 
       for (let name in events) {
         if (events.hasOwnProperty(name)) {
           const listener = this.listeners[name] || events[name]
-          this.diagram.removeDiagramListener(name, listener)
+          diagramManager[this.diagramName].removeDiagramListener(name, listener)
           delete this.listeners[name]
         }
       }
@@ -277,15 +283,17 @@ export default {
      * chart.findNode('A', true) 查询key为A的节点图形对象
      */
     findNode(find, isGraphObject) {
-      if (!this.diagram) return null
+      if (!diagramManager[this.diagramName]) return null
 
-      const model = this.diagram.model
+      const model = diagramManager[this.diagramName].model
       const nodeDataArray = model.nodeDataArray || []
       const isFunction = typeof find === 'function'
       let data = isFunction
         ? nodeDataArray.find(find)
         : model.findNodeDataForKey(find)
-      return isGraphObject ? this.diagram.findNodeForData(data) : data
+      return isGraphObject
+        ? diagramManager[this.diagramName].findNodeForData(data)
+        : data
     },
     /**
      * 查找多个节点图形或节点数据
@@ -299,16 +307,18 @@ export default {
      * chart.findNodes(item => item.type === 1, true) 查询type=1的节点图形对象
      */
     findNodes(filter, isGraphObject) {
-      if (!this.diagram) return []
+      if (!diagramManager[this.diagramName]) return []
 
       const isFunction = typeof filter === 'function'
       if (!isFunction) throw new Error('findNodes的filter参数必须要是函数')
 
-      const model = this.diagram.model
+      const model = diagramManager[this.diagramName].model
       const nodeDataArray = model.nodeDataArray || []
       let dataArray = nodeDataArray.filter(filter)
       if (isGraphObject) {
-        return dataArray.map(data => this.diagram.findNodeForData(data))
+        return dataArray.map(data =>
+          diagramManager[this.diagramName].findNodeForData(data)
+        )
       } else {
         return dataArray
       }
@@ -326,15 +336,17 @@ export default {
      * chart.findLink('A', true) 查询key为A的连线图形对象
      */
     findLink(find, isGraphObject) {
-      if (!this.diagram) return null
+      if (!diagramManager[this.diagramName]) return null
 
-      const model = this.diagram.model
+      const model = diagramManager[this.diagramName].model
       const linkDataArray = model.linkDataArray || []
       const isFunction = typeof find === 'function'
       let data = isFunction
         ? linkDataArray.find(find)
         : model.findLinkDataForKey(find)
-      return isGraphObject ? this.diagram.findLinkForData(data) : data
+      return isGraphObject
+        ? diagramManager[this.diagramName].findLinkForData(data)
+        : data
     },
     /**
      * 查找多个连线图形或连线数据
@@ -347,16 +359,18 @@ export default {
      * chart.findLinks(item => item.type === 1)  // 查询type=1的数据
      */
     findLinks(filter, isGraphObject) {
-      if (!this.diagram) return []
+      if (!diagramManager[this.diagramName]) return []
 
       const isFunction = typeof filter === 'function'
       if (!isFunction) throw new Error('findLinks的filter参数必须要是函数')
 
-      const model = this.diagram.model
+      const model = diagramManager[this.diagramName].model
       const linkDataArray = model.linkDataArray || []
       let dataArray = linkDataArray.filter(filter)
       if (isGraphObject) {
-        return dataArray.map(data => this.diagram.findLinkForData(data))
+        return dataArray.map(data =>
+          diagramManager[this.diagramName].findLinkForData(data)
+        )
       } else {
         return dataArray
       }
@@ -368,9 +382,9 @@ export default {
      * @returns {Object[]} 子节点连线数组
      */
     findChildLinks(key) {
-      if (!key || !this.diagram) return []
+      if (!key || !diagramManager[this.diagramName]) return []
 
-      const model = this.diagram.model
+      const model = diagramManager[this.diagramName].model
       const linkDataArray = model.linkDataArray || []
       let links = []
       const traversal = function(fromKey) {
@@ -398,7 +412,7 @@ export default {
           nodes.push(this.findNode(link.to))
         })
       } else if (this.type === 'TreeModel') {
-        const model = this.diagram.model
+        const model = diagramManager[this.diagramName].model
         const nodeDataArray = model.nodeDataArray || []
         const traversal = function(parent) {
           const matches = nodeDataArray.filter(
@@ -426,13 +440,13 @@ export default {
      * chart.update(data, 'a', 1) // data数据更新a字段
      */
     update(data, props, value) {
-      if (!this.diagram) return
+      if (!diagramManager[this.diagramName]) return
       const paramType = typeof props
       if (!['string', 'object'].includes(paramType)) {
         throw new Error('update的参数 props 必须事string 或 object类型')
       }
-      const model = this.diagram.model
-      this.diagram.startTransaction('update')
+      const model = diagramManager[this.diagramName].model
+      diagramManager[this.diagramName].startTransaction('update')
       if (paramType === 'string') {
         model.set(data, props, value)
       } else {
@@ -442,7 +456,7 @@ export default {
           }
         }
       }
-      this.diagram.commitTransaction('update')
+      diagramManager[this.diagramName].commitTransaction('update')
     },
     /**
      * 添加节点
@@ -450,13 +464,13 @@ export default {
      * @param {Object|Array} data 节点数据或节点数据数组
      */
     addNode(data) {
-      if (!this.diagram) return
-      const model = this.diagram.model
-      this.diagram.startTransaction('addNode')
+      if (!diagramManager[this.diagramName]) return
+      const model = diagramManager[this.diagramName].model
+      diagramManager[this.diagramName].startTransaction('addNode')
       Array.isArray(data)
         ? model.addNodeDataCollection(data)
         : model.addNodeData(data)
-      this.diagram.commitTransaction('addNode')
+      diagramManager[this.diagramName].commitTransaction('addNode')
     },
     /**
      * 添加连线
@@ -464,13 +478,13 @@ export default {
      * @param {Object|Array} data 连线数据或连线数据数组
      */
     addLink(data) {
-      if (!this.diagram) return
-      const model = this.diagram.model
-      this.diagram.startTransaction('addLink')
+      if (!diagramManager[this.diagramName]) return
+      const model = diagramManager[this.diagramName].model
+      diagramManager[this.diagramName].startTransaction('addLink')
       Array.isArray(data)
         ? model.addLinkDataCollection(data)
         : model.addLinkData(data)
-      this.diagram.commitTransaction('addLink')
+      diagramManager[this.diagramName].commitTransaction('addLink')
     },
     /**
      * 删除节点
@@ -478,18 +492,18 @@ export default {
      * @param {String|Object|Array} data 要删除的节点数据、数组或节点key
      */
     removeNode(data) {
-      if (!this.diagram) return
+      if (!diagramManager[this.diagramName]) return
 
       if (typeof data === 'string') {
         data = this.findNode(data)
       }
       if (data) {
-        const model = this.diagram.model
-        this.diagram.startTransaction('removeNode')
+        const model = diagramManager[this.diagramName].model
+        diagramManager[this.diagramName].startTransaction('removeNode')
         Array.isArray(data)
           ? model.removeNodeDataCollection(data)
           : model.removeNodeData(data)
-        this.diagram.commitTransaction('removeNode')
+        diagramManager[this.diagramName].commitTransaction('removeNode')
       }
     },
     /**
@@ -498,18 +512,23 @@ export default {
      * @param {String|Object|Array} data 要删除的连线数据、数组或连线key
      */
     removeLink(data) {
-      if (!this.diagram || this.type !== 'GraphLinksModel') return
+      if (
+        !diagramManager[this.diagramName] ||
+        this.type !== 'GraphLinksModel'
+      ) {
+        return
+      }
 
       if (typeof data === 'string') {
         data = this.findLink(data)
       }
       if (data) {
-        const model = this.diagram.model
-        this.diagram.startTransaction('removeLink')
+        const model = diagramManager[this.diagramName].model
+        diagramManager[this.diagramName].startTransaction('removeLink')
         Array.isArray(data)
           ? model.removeLinkDataCollection(data)
           : model.removeLinkData(data)
-        this.diagram.commitTransaction('removeLink')
+        diagramManager[this.diagramName].commitTransaction('removeLink')
       }
     },
     /**
@@ -521,21 +540,21 @@ export default {
     removeChild(key, parentName = 'parent') {
       const nodes = this.findChildNodes(key, parentName)
       const links = this.findChildLinks(key, parentName)
-      this.diagram.startTransaction('removeChild')
+      diagramManager[this.diagramName].startTransaction('removeChild')
       this.removeNode(nodes)
       this.removeLink(links)
-      this.diagram.commitTransaction('removeChild')
+      diagramManager[this.diagramName].commitTransaction('removeChild')
     },
     /**
      * 清楚画布所有图形
      * @function clear
      */
     clear() {
-      if (!this.diagram) return
-      const model = this.diagram.model
-      this.diagram.startTransaction('clear')
+      if (!diagramManager[this.diagramName]) return
+      const model = diagramManager[this.diagramName].model
+      diagramManager[this.diagramName].startTransaction('clear')
       model.clear()
-      this.diagram.commitTransaction('clear')
+      diagramManager[this.diagramName].commitTransaction('clear')
     },
     /**
      * 图表转换成json格式字符串
@@ -543,8 +562,8 @@ export default {
      * @returns {String}
      */
     toJson() {
-      if (!this.diagram) return JSON.stringify({})
-      return this.diagram.model.toJson()
+      if (!diagramManager[this.diagramName]) return JSON.stringify({})
+      return diagramManager[this.diagramName].model.toJson()
     },
     /**
      * 根据json构建图表模型
@@ -552,8 +571,8 @@ export default {
      * @param {Object|String} json
      */
     fromJson(json) {
-      if (!this.diagram) return
-      this.diagram.model = go.Model.fromJson(
+      if (!diagramManager[this.diagramName]) return
+      diagramManager[this.diagramName].model = go.Model.fromJson(
         typeof json === 'string' ? json : JSON.stringify(json)
       )
     },
@@ -561,8 +580,8 @@ export default {
      * 更新图形
      */
     resize() {
-      if (!this.diagram) return
-      this.diagram.requestUpdate()
+      if (!diagramManager[this.diagramName]) return
+      diagramManager[this.diagramName].requestUpdate()
     },
     getHtmlInfo() {
       this.$children.forEach(el => {
@@ -583,17 +602,22 @@ export default {
   mounted() {
     // this.proxyResize = this.resize.bind(this)
     // 实例化GoJS
-    this.diagram = $(
-      this.palette ? go.Palette : go.Diagram,
-      this.$el,
-      typeof this.config === 'function' ? this.config($, go) : this.config || {}
+    diagramManager.register(
+      this.diagramName,
+      $(
+        this.palette ? go.Palette : go.Diagram,
+        this.$el,
+        typeof this.config === 'function'
+          ? this.config($, go)
+          : this.config || {}
+      )
     )
     this.getHtmlInfo()
     // 设置模板
     this.loadTemplate()
 
     // 设置数据模型
-    this.diagram.model = $(
+    diagramManager[this.diagramName].model = $(
       go[this.type],
       typeof this.modelConfig === 'function'
         ? this.modelConfig($, go)
@@ -604,7 +628,13 @@ export default {
 
     // 载入模型数据
     if (this.loadDataFunc && typeof this.loadDataFunc === 'function') {
-      this.loadDataFunc(this.diagram, $, go, this.nodes, this.links)
+      this.loadDataFunc(
+        diagramManager[this.diagramName],
+        $,
+        go,
+        this.nodes,
+        this.links
+      )
     } else {
       this.loadData(this.nodes, this.links)
     }
@@ -619,14 +649,15 @@ export default {
      *  @param {object} $ go.GraphObject.make
      *  @param {object} go GoJS命名空间
      */
-    this.$emit('on-ready', this.diagram, $, go)
+    this.$emit('on-ready', diagramManager[this.diagramName], $, go)
 
     // addResizeListener(this.$el, this.proxyResize)
   },
   beforeDestroy() {
     // removeResizeListener(this.$el, this.proxyResize)
     this.unbindEvents(this.events)
-    this.diagram.div = null
+    diagramManager[this.diagramName].div = null
+    delete diagramManager[this.diagramName]
   },
   created() {
     /**
@@ -637,13 +668,11 @@ export default {
     if (this.goRegister && typeof this.goRegister === 'function') {
       this.goRegister($, go)
     }
-    this.go = go
     /**
      * 图表实例
      * @member diagram
      * @type {go.Diagram}
      */
-    this.diagram = null
     /**
      * 图表事件句柄缓存
      * @member listeners

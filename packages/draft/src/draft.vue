@@ -51,6 +51,7 @@
 import go from 'gojs'
 import draggable from '../../../utils/directives/draggable'
 import { save, get, remove } from '../../../utils/storage'
+import diagramManager from '../../../utils/dataManager/diagramManager'
 /**
  * 插槽
  * @member slots
@@ -74,7 +75,7 @@ export default {
    * @property {Boolean} [dragable=true] 是否可拖拽
    * @property {String} [localKey=''] 当存在多个草稿箱时用来区分在localStorage中的key
    * @property {Object} [local=true] 是否使用本地存储，如果选择否，只放在内存中，草稿箱销毁即没有，但可以通过事件提供的数据存储调用接口存储到后端
-   * @property {Object} [diagram=null] go.Diagram对象
+   * @property {String} [diagramName='dig'] go.Diagram对象名称
    * @property {Object} [visible.sync=false] 草稿箱是否显示
    * @property {Object} [list=[]] 初始化的草稿列表，如果local=true,会优先选择本地存储，
    *                            如果本地存储为空，则使用传入的数据
@@ -93,6 +94,10 @@ export default {
                                 }]
    */
   props: {
+    diagramName: {
+      type: String,
+      default: 'dig'
+    },
     dragable: {
       type: Boolean,
       default: true
@@ -105,12 +110,6 @@ export default {
     local: {
       type: Boolean,
       default: true
-    },
-    diagram: {
-      type: Object,
-      default() {
-        return null
-      }
     },
     visible: {
       type: Boolean,
@@ -164,20 +163,20 @@ export default {
      * @description 保存当前记录
      */
     save() {
-      let bounds = this.diagram.documentBounds
+      let bounds = diagramManager[this.diagramName].documentBounds
       let scaleW = 30 / bounds.width
       let scaleH = 30 / bounds.height
       let scale = Math.min(scaleW, scaleH)
       let options = Object.assign({}, this.imageDefaultOption, {
         scale: scale
       })
-      let data = this.diagram.makeImageData(options)
+      let data = diagramManager[this.diagramName].makeImageData(options)
       let date = new Date()
       let item = {
         thumb: data,
         name: this.itemName,
         time: `${date.toLocaleString()} ${date.toLocaleTimeString()}`,
-        json: this.diagram.model.toJson()
+        json: diagramManager[this.diagramName].model.toJson()
       }
       this.draftList.push(item)
       this.$emit('save', item)
@@ -207,8 +206,8 @@ export default {
      * @param {Object} [item] 行数据
      */
     load(item) {
-      this.diagram.clear()
-      this.diagram.model = go.Model.fromJson(item.json)
+      diagramManager[this.diagramName].clear()
+      diagramManager[this.diagramName].model = go.Model.fromJson(item.json)
     },
     /**
      * @function

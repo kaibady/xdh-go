@@ -123,7 +123,6 @@ emit 方法第二个参数传 node 节点对象时，触发单个节点动画，
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
         dataManager = new DataManager(diagram, go)
         // 绑定到diagram中以便使用
         diagram.dataManager = dataManager

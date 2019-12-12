@@ -14,7 +14,7 @@ XdhGoLayout 布局工具条，文档[XdhGoLayout](/api.html?url=/xdh-go/doc/modu
   <!-- 布局 -->
   <div style="position:relative">
     <xdh-go-layout
-      :diagram="diagram"
+      :diagram-name="'dig1'"
       :lock.sync="lock"
       ref="layout"
       custom-class="my-layout"
@@ -23,6 +23,7 @@ XdhGoLayout 布局工具条，文档[XdhGoLayout](/api.html?url=/xdh-go/doc/modu
       >添加节点</el-button
     >
     <xdh-go
+    :diagram-name="'dig1'"
       :nodes="nodes"
       :links="links"
       :type="model"
@@ -37,7 +38,8 @@ XdhGoLayout 布局工具条，文档[XdhGoLayout](/api.html?url=/xdh-go/doc/modu
   </div>
 </template>
 <script>
-  import { XdhGo, XdhGoLayout } from 'xdh-go';
+  import { XdhGo, XdhGoLayout, dataUtils } from 'xdh-go';
+  let { diagramManager } = dataUtils
   export default {
     components: {
       XdhGo,
@@ -81,9 +83,9 @@ XdhGoLayout 布局工具条，文档[XdhGoLayout](/api.html?url=/xdh-go/doc/modu
             key: key,
             category: ['a', 'b', 'c'][Math.floor(Math.random() * 1000) % 3]
           };
-          let length = this.diagram.nodes.count;
+          let length = diagramManager['dig1'].nodes.count;
           let index = Math.floor(Math.random() * (length - 2));
-          let randomNodeKey = this.diagram.model.nodeDataArray[index].key;
+          let randomNodeKey = diagramManager['dig1'].model.nodeDataArray[index].key;
           let link = {
             from: randomNodeKey,
             to: key
@@ -96,7 +98,6 @@ XdhGoLayout 布局工具条，文档[XdhGoLayout](/api.html?url=/xdh-go/doc/modu
         }, 300);
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram;
       },
       config($, go) {
         return {

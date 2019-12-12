@@ -73,6 +73,8 @@
 <script>
 import getLayout from '../../../utils/layout'
 import go from 'gojs'
+import diagramManager from '../../../utils/dataManager/diagramManager'
+
 let $ = go.GraphObject.make
 /**
    * XdhGoLayout功能组件
@@ -97,17 +99,15 @@ export default {
   name: 'XdhGoLayout',
   /**
    * 属性参数
-   * @property {Object} diagram go.Diagram对象
+   * @property {String} diagramName go.Diagram对象名称
    * @property {Boolean} lock 增删节点后其它节点是否重新布局
    * @property {String} customClass 自定义类名
    * @property {Object} customStyle 自定义style对象
    */
   props: {
-    diagram: {
-      type: Object,
-      default() {
-        return null
-      }
+    diagramName: {
+      type: String,
+      default: 'dig'
     },
     lock: {
       type: Boolean,
@@ -163,13 +163,14 @@ export default {
       this.lockState = !this.lockState
       if (this.lockState) {
         let layout = $(go.Layout)
-        this.diagram.layout = layout
-        this.diagram.layoutDiagram(true)
+        diagramManager[this.diagramName].layout = layout
+        diagramManager[this.diagramName].layoutDiagram(true)
       } else {
         let type = this.currLayout
         let options = this.currOption
         if (type === 'GridLayout') {
-          let nodeLength = this.diagram.model.nodeDataArray.length
+          let nodeLength =
+            diagramManager[this.diagramName].model.nodeDataArray.length
           let num = Math.floor(Math.sqrt(nodeLength)) + 1
           options.wrappingColumn = num
         }
@@ -177,8 +178,8 @@ export default {
         this.setNodesFixed(set, false)
         let layout = getLayout[type]($, go, options)
         layout.isOngoing = true
-        this.diagram.layout = layout
-        this.diagram.layoutDiagram(true)
+        diagramManager[this.diagramName].layout = layout
+        diagramManager[this.diagramName].layoutDiagram(true)
       }
     },
     /**
@@ -203,13 +204,13 @@ export default {
       this.currLayout = type
       if (this.lockState) {
         // 设置简单布局，使position定位生效
-        this.diagram.layout = $(go.Layout)
-        this.diagram.layoutDiagram(true)
-        if (this.diagram.selection.count !== 0) {
+        diagramManager[this.diagramName].layout = $(go.Layout)
+        diagramManager[this.diagramName].layoutDiagram(true)
+        if (diagramManager[this.diagramName].selection.count !== 0) {
           let set = new go.Set()
           // 获得点集合的左上角坐标
           let posXmin, posYmin
-          this.diagram.selection.each(N => {
+          diagramManager[this.diagramName].selection.each(N => {
             set.add(N)
             if (!posXmin || N.position.x < posXmin) {
               posXmin = N.position.x
@@ -227,12 +228,12 @@ export default {
         }
       } else {
         let set
-        if (this.diagram.selection.count !== 0) {
+        if (diagramManager[this.diagramName].selection.count !== 0) {
           set = new go.Set()
-          this.diagram.nodes.each(N => {
+          diagramManager[this.diagramName].nodes.each(N => {
             N.isLayoutPositioned = false
           })
-          this.diagram.selection.each(N => {
+          diagramManager[this.diagramName].selection.each(N => {
             set.add(N)
           })
         } else {
@@ -240,42 +241,44 @@ export default {
         }
         this.setNodesFixed(set, false)
         if (type === 'GridLayout') {
-          let nodeLength = this.diagram.model.nodeDataArray.length
+          let nodeLength =
+            diagramManager[this.diagramName].model.nodeDataArray.length
           let num = Math.floor(Math.sqrt(nodeLength)) + 1
           options.wrappingColumn = num
         }
         let layout = getLayout[type]($, go, options)
         layout.isOngoing = true
-        this.diagram.layout = layout
-        this.diagram.layoutDiagram(true)
+        diagramManager[this.diagramName].layout = layout
+        diagramManager[this.diagramName].layoutDiagram(true)
       }
     },
     getAllNodesAndLinks() {
       let set = new go.Set()
-      this.diagram.nodes.each(N => {
+      diagramManager[this.diagramName].nodes.each(N => {
         set.add(N)
       })
-      this.diagram.links.each(L => {
+      diagramManager[this.diagramName].links.each(L => {
         set.add(L)
       })
       return set
     },
     layoutNodes($, go, type, nodes, position, options = {}) {
       if (type === 'GridLayout') {
-        let nodeLength = this.diagram.model.nodeDataArray.length
+        let nodeLength =
+          diagramManager[this.diagramName].model.nodeDataArray.length
         let num = Math.floor(Math.sqrt(nodeLength)) + 1
         options.wrappingColumn = num
       }
       let layout = getLayout[type]($, go, options)
       // 如果不设置isOngoing为false, 添加完的节点会自动按照diagram.layout布局，节点集布局会失效
-      this.diagram.layout.isOngoing = false
+      diagramManager[this.diagramName].layout.isOngoing = false
       this.setNodesFixed(nodes, false)
       layout.doLayout(nodes)
       this.setNodesFixed(nodes, true)
-      this.diagram.layout.isOngoing = true
+      diagramManager[this.diagramName].layout.isOngoing = true
       // 如果是力布局，会以原有位置为基础布局，因此不需要再设置偏移
       if (position && type !== 'ForceDirectedLayout') {
-        this.diagram.moveParts(nodes, position)
+        diagramManager[this.diagramName].moveParts(nodes, position)
       }
     },
     setNodesFixed(nodes, isFixed = true) {
@@ -301,7 +304,7 @@ export default {
         if (type === 'node') {
           node = d
         } else {
-          node = this.diagram.findNodeForData(d)
+          node = diagramManager[this.diagramName].findNodeForData(d)
         }
         if (node) {
           node.findNodesConnected().each(N => {
@@ -316,7 +319,7 @@ export default {
         if (type === 'node') {
           node = nodes[0]
         } else {
-          node = this.diagram.findNodeForData(nodes[0])
+          node = diagramManager[this.diagramName].findNodeForData(nodes[0])
         }
         let connects = node.findNodesConnected()
         connects.each(N => {
@@ -348,7 +351,7 @@ export default {
         if (type === 'node') {
           node = d
         } else {
-          node = this.diagram.findNodeForData(d)
+          node = diagramManager[this.diagramName].findNodeForData(d)
         }
         node.position = position
         set.add(node)
@@ -359,7 +362,7 @@ export default {
           if (type === 'node') {
             link = l
           } else {
-            link = this.diagram.findLinkForData(l)
+            link = diagramManager[this.diagramName].findLinkForData(l)
           }
           set.add(link)
         })

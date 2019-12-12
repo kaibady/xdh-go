@@ -172,7 +172,6 @@ prop 参数用于指定对连线或内部对象的哪个属性施加动画（见
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
         diagram.add(
           $(
             go.Part,

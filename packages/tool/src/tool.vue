@@ -27,8 +27,8 @@
         ></el-button>
       </el-tooltip>
     </div>
-    <xdh-go-draft :visible.sync="draftShow" :diagram="diagram" ref="draft"></xdh-go-draft>
-    <xdh-go-viewer :visible.sync="viewerShow" :diagram="diagram" ref="viewer"></xdh-go-viewer>
+    <xdh-go-draft :visible.sync="draftShow" :diagram-name="diagramName" ref="draft"></xdh-go-draft>
+    <xdh-go-viewer :visible.sync="viewerShow" :diagram-name="diagramName" ref="viewer"></xdh-go-viewer>
   </div>
 </template>
 <script>
@@ -40,6 +40,8 @@
 import draggable from '../../../utils/directives/draggable'
 import XdhGoDraft from '../../draft'
 import XdhGoViewer from '../../viewer'
+import diagramManager from '../../../utils/dataManager/diagramManager'
+
 export default {
   name: 'XdhGoTool',
   components: {
@@ -51,14 +53,13 @@ export default {
   },
   /**
    * 参数属性
-   * @property {Object} [diagarm] go.Diagram对象
+     * @property {String} [diagramName='dig'] go.Diagram对象名称
+
    */
   props: {
-    diagram: {
-      type: Object,
-      default() {
-        return null
-      }
+    diagramName: {
+      type: String,
+      default: 'dig'
     }
   },
   data() {
@@ -74,14 +75,14 @@ export default {
   computed: {},
   methods: {
     clear() {
-      this.diagram.clear()
+      diagramManager[this.diagramName].clear()
     },
     draft() {
       this.draftShow = !this.draftShow
     },
     viewDiagram() {
       this.viewerShow = !this.viewerShow
-      console.log(this.diagram.model.toJson())
+      console.log(diagramManager[this.diagramName].model.toJson())
     }
   },
   created() {},

@@ -61,12 +61,15 @@
  * @property {String} [popover.searchResult.hit] 比中内容
  * @property {String} [popover.searchResult.type] 比中类型
  */
+import diagramManager from '../../../utils/dataManager/diagramManager'
+
 export default {
   name: 'XdhGoSearch',
   components: {},
   /**
    * 参数属性
-   * @property {Object} [diagram=null] go.Diagram对象
+   * @property {String} [diagramName='dig'] go.Diagram对象名称
+
    * @property {Boolean} [pullCenter=true] 搜索后是否将结果居中显示
    * @property {Boolean} [ignoreCase=true] 是否忽略大小写
    * @property {Array} [nodeKeys=['key']] 搜索节点数据字段，可深度搜索，如: ['info.name', 'remark.desc']
@@ -77,11 +80,9 @@ export default {
    * @property {Number} [popDuration={}] 提示框停留的毫秒数，设置为0时不显示提示框
    */
   props: {
-    diagram: {
-      type: Object,
-      default() {
-        return null
-      }
+     diagramName: {
+      type: String,
+      default: 'dig'
     },
     pullCenter: {
       type: Boolean,
@@ -178,7 +179,7 @@ export default {
         node.isSelected = true
         if (this.pullCenter) {
           let rect = node.actualBounds
-          this.diagram.centerRect(rect)
+          diagramManager[this.diagramName].centerRect(rect)
         }
         /**
          * 搜索成功时触发
@@ -201,11 +202,11 @@ export default {
     },
     searchNode() {
       this.keywordCache = this.keyword
-      this.diagram.clearSelection()
+      diagramManager[this.diagramName].clearSelection()
       let nodes = []
       // 查找节点数组
       if (this.mode.includes('node')) {
-        this.diagram.nodes.each(n => {
+        diagramManager[this.diagramName].nodes.each(n => {
           let hit = false // 是否命中
           let hitKeywords = []
           let hitText = []
@@ -239,7 +240,7 @@ export default {
         })
       }
       if (this.mode.includes('link')) {
-        this.diagram.links.each(n => {
+        diagramManager[this.diagramName].links.each(n => {
           let hit = false
           let hitKeywords = []
           let hitText = []

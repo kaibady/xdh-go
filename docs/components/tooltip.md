@@ -12,6 +12,7 @@ XdhGoTooltip 必须与 XdhGoHtml 一同使用, 须在 XdhGoHtml 定义 menu-name
 ```html
 <template>
   <xdh-go
+    :diagram-name="'dig1'"
     :nodes="nodes"
     :links="links"
     :type="model"
@@ -72,6 +73,7 @@ XdhGoTooltip 必须与 XdhGoHtml 一同使用, 须在 XdhGoHtml 定义 menu-name
           htmlInfo: { tool1 }
         }
       ) {
+        console.log(tool1)
         return $(
           go.Node,
           'Auto',
@@ -119,6 +121,7 @@ XdhGoTooltip 必须与 XdhGoHtml 一同使用, 须在 XdhGoHtml 定义 menu-name
 ```html
 <template>
   <xdh-go
+    :diagram-name="'dig2'"
     :nodes="nodes"
     :links="links"
     :type="model"
@@ -234,6 +237,7 @@ tooltip 可以看做一个容器，它支持插槽，你可以通过它实现简
 ```html
 <template>
   <xdh-go
+    :diagram-name="'dig3'"
     :nodes="nodes"
     :links="links"
     :type="model"

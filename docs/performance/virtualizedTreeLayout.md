@@ -32,6 +32,7 @@
       </div>
     </div>
     <xdh-go
+      :diagram-name="'dig1'"
       :nodes="nodes"
       :links="links"
       :node-template-map="nodeTemplateMap"
@@ -59,8 +60,10 @@
     layoutUtils,
     XdhGoOverview
   } from 'xdh-go'
+  import go from 'gojs'
+  let $ = go.GraphObject.make
   let { switcher, binding } = utils
-  let { DataManager } = dataUtils
+  let { DataManager, diagramManager } = dataUtils
   let dataManager
   export default {
     components: {
@@ -173,7 +176,6 @@
         if (init) {
           let myWholeModel = $(go.TreeModel)
           diagram.layout.model = myWholeModel
-          this.diagram = diagram
         } else {
           let model = $(go.TreeModel)
           diagram.model = model
@@ -193,7 +195,6 @@
         this.getTestData().then(res => {
           res.nodes.forEach(n => {
             let node = this.nodeConvert(n)
-            console.log(node)
             // 用于虚拟节点占位
             node.bounds = new go.Rect(0, 0, 100, 120)
             nodes.push(node)
@@ -296,9 +297,7 @@
         setTimeout(() => {
           console.time('layoutCompleted1')
           this.startTime = new Date()
-          let go = this.$refs.diagram1.go
-          let $ = go.GraphObject.make
-          this.loadDataFunc(this.diagram, $, go, false)
+          this.loadDataFunc(diagramManager['dig1'], $, go, false)
         }, 100)
       },
       clearDiagram() {
@@ -314,15 +313,13 @@
           title: 'title' + count,
           parent: '1'
         }
-        let go = this.$refs.diagram1.go
-        let $ = go.GraphObject.make
         let node = this.nodeConvert(nodeData)
         node.bounds = new go.Rect(0, 0, 100, 120)
         // 实际会增加到diagram.layout.model中。 如果要删除数据，也是从diagram.layout.model中删除
-        this.diagram.layout.model.addNodeData(node)
+        diagramManager['dig1'].layout.model.addNodeData(node)
         let model = $(go.TreeModel)
         // 重置diagram.model 以触发layout重新布局
-        this.diagram.model = model
+        diagramManager['dig1'].model = model
       }
     },
     mounted() {},

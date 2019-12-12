@@ -363,7 +363,6 @@ gojs 中有 go.Group 类可实现节点分组效果，但用 go.Group 类实现�
         });
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram;
       }
     }
   };

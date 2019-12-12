@@ -40,6 +40,7 @@ removeLink 方法
       </el-button>
     </div>
     <xdh-go
+      :diagram-name="'dig1'"
       :nodes="nodes"
       :links="links"
       :node-template-map="nodeTemplateMap"
@@ -56,7 +57,7 @@ removeLink 方法
 <script>
   import { XdhGo, utils, dataUtils, nodeTmpl, linkTmpl } from 'xdh-go'
   let { switcher, binding } = utils
-  let { DataManager } = dataUtils
+  let { DataManager, diagramManager } = dataUtils
   let dataManager
   // 测试数据
   function getTestData() {
@@ -144,7 +145,6 @@ removeLink 方法
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
         dataManager = new DataManager(diagram, go)
         // 绑定到diagram中以便使用
         diagram.dataManager = dataManager
@@ -253,13 +253,13 @@ removeLink 方法
         dataManager.removeNode('1')
       },
       removeNodeByData() {
-        let data = this.diagram.model.nodeDataArray.find(r => r.key === '2')
+        let data = diagramManager['dig1'].model.nodeDataArray.find(r => r.key === '2')
         if (data) {
           dataManager.removeNode(data)
         }
       },
       removeNodeByNode() {
-        let node = this.diagram.findNodeForKey('3')
+        let node = diagramManager['dig1'].findNodeForKey('3')
         if (node) {
           dataManager.removeNode(node)
         }
@@ -301,6 +301,7 @@ removeLink 方法
       </el-button>
     </div>
     <xdh-go
+      :diagram-name="'dig2'"
       :nodes="nodes"
       :links="links"
       :node-template-map="nodeTemplateMap"
@@ -406,7 +407,6 @@ removeLink 方法
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
         dataManager = new DataManager(diagram, go)
         // 绑定到diagram中以便使用
         diagram.dataManager = dataManager
@@ -516,14 +516,14 @@ removeLink 方法
         dataManager.removeLink('1')
       },
       removeLinkByData() {
-        let data = this.diagram.model.linkDataArray.find(r => r.key === '2')
+        let data = diagramManager['dig2'].model.linkDataArray.find(r => r.key === '2')
         if (data) {
           dataManager.removeLink(data)
         }
       },
       removeLinkByLink() {
-        let data = this.diagram.model.linkDataArray.find(r => r.key === '3')
-        let link = this.diagram.findLinkForData(data)
+        let data = diagramManager['dig2'].model.linkDataArray.find(r => r.key === '3')
+        let link = diagramManager['dig2'].findLinkForData(data)
         if (link) {
           dataManager.removeLink(link)
         }

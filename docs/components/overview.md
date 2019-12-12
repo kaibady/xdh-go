@@ -12,6 +12,7 @@ overview 默认定位到左上角
 ```html
 <template>
   <xdh-go
+    :diagram-name="'dig1'"
     :nodes="nodes"
     :links="links"
     :type="model"
@@ -27,7 +28,7 @@ overview 默认定位到左上角
   </xdh-go>
 </template>
 <script>
-  import { XdhGo, XdhGoOverview } from 'xdh-go';
+  import { XdhGo, XdhGoOverview } from 'xdh-go'
   export default {
     components: {
       XdhGo,
@@ -41,18 +42,21 @@ overview 默认定位到左上角
           { key: 'B', category: 'b' },
           { key: 'C', category: 'c' }
         ],
-        links: [{ from: 'A', to: 'B' }, { from: 'A', to: 'C' }]
-      };
+        links: [
+          { from: 'A', to: 'B' },
+          { from: 'A', to: 'C' }
+        ]
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 100
-        };
+        }
       },
       layout($, go) {
-        return new go.TreeLayout();
+        return new go.TreeLayout()
       },
       nodeTemplate($, go, color) {
         return $(
@@ -65,27 +69,27 @@ overview 默认定位到左上角
             { margin: 12, stroke: '#ffffff' },
             new go.Binding('text', 'key')
           )
-        );
+        )
       },
       linkTemplate($, go) {
         return $(
           go.Link,
           { routing: go.Link.Orthogonal, corner: 5 },
           $(go.Shape, { strokeWidth: 3, stroke: '#555' })
-        );
+        )
       },
       nodeTemplateMap($, go, vm) {
-        const a = this.nodeTemplate($, go, 'red', vm);
-        const b = this.nodeTemplate($, go, 'blue', vm);
-        const c = this.nodeTemplate($, go, 'green', vm);
-        const map = new go.Map();
-        map.add('a', a);
-        map.add('b', b);
-        map.add('c', c);
-        return map;
+        const a = this.nodeTemplate($, go, 'red', vm)
+        const b = this.nodeTemplate($, go, 'blue', vm)
+        const c = this.nodeTemplate($, go, 'green', vm)
+        const map = new go.Map()
+        map.add('a', a)
+        map.add('b', b)
+        map.add('c', c)
+        return map
       }
     }
-  };
+  }
 </script>
 ```
 
@@ -124,7 +128,7 @@ border: '2px solid #75a3fa',
   </xdh-go>
 </template>
 <script>
-  import { XdhGo, XdhGoOverview } from 'xdh-go';
+  import { XdhGo, XdhGoOverview } from 'xdh-go'
   export default {
     components: {
       XdhGo,
@@ -138,7 +142,10 @@ border: '2px solid #75a3fa',
           { key: 'B', category: 'b' },
           { key: 'C', category: 'c' }
         ],
-        links: [{ from: 'A', to: 'B' }, { from: 'A', to: 'C' }],
+        links: [
+          { from: 'A', to: 'B' },
+          { from: 'A', to: 'C' }
+        ],
         divStyle: {
           width: '100px',
           height: '150px',
@@ -148,17 +155,17 @@ border: '2px solid #75a3fa',
           'background-color': 'rgba(255,100,100,0.3)',
           'box-shadow': '0px 0px 4px rgba(0,0,0,0.4)'
         }
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 100
-        };
+        }
       },
       layout($, go) {
-        return new go.TreeLayout();
+        return new go.TreeLayout()
       },
       nodeTemplate($, go, color) {
         return $(
@@ -171,27 +178,27 @@ border: '2px solid #75a3fa',
             { margin: 12, stroke: '#ffffff' },
             new go.Binding('text', 'key')
           )
-        );
+        )
       },
       linkTemplate($, go) {
         return $(
           go.Link,
           { routing: go.Link.Orthogonal, corner: 5 },
           $(go.Shape, { strokeWidth: 3, stroke: '#555' })
-        );
+        )
       },
       nodeTemplateMap($, go, vm) {
-        const a = this.nodeTemplate($, go, 'red', vm);
-        const b = this.nodeTemplate($, go, 'blue', vm);
-        const c = this.nodeTemplate($, go, 'green', vm);
-        const map = new go.Map();
-        map.add('a', a);
-        map.add('b', b);
-        map.add('c', c);
-        return map;
+        const a = this.nodeTemplate($, go, 'red', vm)
+        const b = this.nodeTemplate($, go, 'blue', vm)
+        const c = this.nodeTemplate($, go, 'green', vm)
+        const map = new go.Map()
+        map.add('a', a)
+        map.add('b', b)
+        map.add('c', c)
+        return map
       }
     }
-  };
+  }
 </script>
 ```
 

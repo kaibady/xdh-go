@@ -16,9 +16,10 @@ XdhGoDraft 草稿箱组件，组件[XdhGoDraft](/api.html?url=/xdh-go/doc/module
       ref="draft"
       :visible.sync="draftShow"
       :local-key="'box1'"
-      :diagram="diagram"
+      :diagram-name="'dig1'"
     ></xdh-go-draft>
     <xdh-go
+      :diagram-name="'dig1'"
       :nodes="nodes"
       :links="links"
       :type="model"
@@ -65,7 +66,6 @@ XdhGoDraft 草稿箱组件，组件[XdhGoDraft](/api.html?url=/xdh-go/doc/module
         return new go.TreeLayout();
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram;
       },
       nodeTemplate($, go, color) {
         return $(

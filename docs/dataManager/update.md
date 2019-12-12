@@ -164,7 +164,6 @@ updateLink 方法
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
         dataManager = new DataManager(diagram, go)
         // 绑定到diagram中以便使用
         diagram.dataManager = dataManager
@@ -432,7 +431,6 @@ updateLink 方法
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
         dataManager = new DataManager(diagram, go)
         // 绑定到diagram中以便使用
         diagram.dataManager = dataManager

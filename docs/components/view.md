@@ -15,11 +15,12 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
 <template>
   <div style="position:relative">
     <xdh-go-view
-      :diagram="diagram"
+      :diagram-name="'dig1'"
       custom-class="my-view"
       ref="view"
     ></xdh-go-view>
     <xdh-go
+      :diagram-name="'dig1'"
       :nodes="nodes"
       :links="links"
       :type="model"
@@ -34,7 +35,7 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
   </div>
 </template>
 <script>
-  import { XdhGo, XdhGoView } from 'xdh-go';
+  import { XdhGo, XdhGoView } from 'xdh-go'
   export default {
     components: {
       XdhGo,
@@ -62,17 +63,15 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
           { from: 'E', to: 'F' }
         ],
         timeout: null
-      };
+      }
     },
     computed: {},
     methods: {
-      diagramReady(diagram, $, go) {
-        this.diagram = diagram;
-      },
+      diagramReady(diagram, $, go) {},
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       nodeTemplate($, go, color) {
         return $(
@@ -90,7 +89,7 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
             new go.Binding('text', 'key')
           ),
           new go.Binding('location').makeTwoWay(go.Point.stringify)
-        );
+        )
       },
       linkTemplate($, go) {
         return $(
@@ -103,24 +102,24 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
           $(go.Shape, {
             toArrow: 'Standard'
           })
-        );
+        )
       },
       nodeTemplateMap($, go, vm) {
-        const a = this.nodeTemplate($, go, 'red', vm);
-        const b = this.nodeTemplate($, go, 'blue', vm);
-        const c = this.nodeTemplate($, go, 'green', vm);
-        const map = new go.Map();
-        map.add('a', a);
-        map.add('b', b);
-        map.add('c', c);
-        return map;
+        const a = this.nodeTemplate($, go, 'red', vm)
+        const b = this.nodeTemplate($, go, 'blue', vm)
+        const c = this.nodeTemplate($, go, 'green', vm)
+        const map = new go.Map()
+        map.add('a', a)
+        map.add('b', b)
+        map.add('c', c)
+        return map
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, {})
       }
     },
     created() {}
-  };
+  }
 </script>
 <style type="text/scss" lang="scss" scoped>
   .my-view {
@@ -180,13 +179,14 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
 <template>
   <div style="position:relative">
     <xdh-go-view
-      :diagram="diagram"
+      :diagram-name="'dig2'"
       custom-class="my-view"
       :menus="customMenu"
       :handlers="menuHandler"
       ref="view"
     ></xdh-go-view>
     <xdh-go
+      :diagram-name="'dig2'"
       :nodes="nodes"
       :links="links"
       :type="model"
@@ -201,7 +201,7 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
   </div>
 </template>
 <script>
-  import { XdhGo, XdhGoView } from 'xdh-go';
+  import { XdhGo, XdhGoView } from 'xdh-go'
   export default {
     components: {
       XdhGo,
@@ -246,10 +246,10 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
         ],
         menuHandler: {
           自定义按钮1: (diagram, $, go, item) => {
-            this.customHandler1(diagram, $, go, item);
+            this.customHandler1(diagram, $, go, item)
           }
         }
-      };
+      }
     },
     computed: {},
     methods: {
@@ -259,15 +259,13 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
           message: `点击了${item.name}, 当前节点数据${JSON.stringify(
             diagram.model.nodeDataArray
           )}`
-        });
+        })
       },
-      diagramReady(diagram, $, go) {
-        this.diagram = diagram;
-      },
+      diagramReady(diagram, $, go) {},
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       nodeTemplate($, go, color) {
         return $(
@@ -285,7 +283,7 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
             new go.Binding('text', 'key')
           ),
           new go.Binding('location').makeTwoWay(go.Point.stringify)
-        );
+        )
       },
       linkTemplate($, go) {
         return $(
@@ -298,24 +296,24 @@ XdhGoView 提供了对节点的显示及隐藏功能，以及图形的缩放功�
           $(go.Shape, {
             toArrow: 'Standard'
           })
-        );
+        )
       },
       nodeTemplateMap($, go, vm) {
-        const a = this.nodeTemplate($, go, 'red', vm);
-        const b = this.nodeTemplate($, go, 'blue', vm);
-        const c = this.nodeTemplate($, go, 'green', vm);
-        const map = new go.Map();
-        map.add('a', a);
-        map.add('b', b);
-        map.add('c', c);
-        return map;
+        const a = this.nodeTemplate($, go, 'red', vm)
+        const b = this.nodeTemplate($, go, 'blue', vm)
+        const c = this.nodeTemplate($, go, 'green', vm)
+        const map = new go.Map()
+        map.add('a', a)
+        map.add('b', b)
+        map.add('c', c)
+        return map
       },
       layout($, go) {
-        return $(go.LayeredDigraphLayout, {});
+        return $(go.LayeredDigraphLayout, {})
       }
     },
     created() {}
-  };
+  }
 </script>
 <style type="text/scss" lang="scss" scoped>
   .my-view {

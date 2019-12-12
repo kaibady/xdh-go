@@ -1,7 +1,7 @@
 # CircleMenu 圆形菜单
 
 ::: tip 提示
-XdhGoCircleMenu 实现了一个圆形菜单，文档[XdhGoCircleMenu](/api.html?url=/xdh-go/doc/module-xdh-go-circle-menu.html)，相关组件XdhGoHtml文档[XdhGoHtml](/api.html?url=/xdh-go/doc/module-xdh-go-html.html)
+XdhGoCircleMenu 实现了一个圆形菜单，文档[XdhGoCircleMenu](/api.html?url=/xdh-go/doc/module-xdh-go-circle-menu.html)，相关组件 XdhGoHtml 文档[XdhGoHtml](/api.html?url=/xdh-go/doc/module-xdh-go-html.html)
 :::
 
 ## 基础用法
@@ -13,6 +13,7 @@ XdhGoCircleMenu 必须与 XdhGoHtml 一同使用, 须在 XdhGoHtml 定义 menu-n
 ```html
 <template>
   <xdh-go
+    :diagram-name="'dig1'"
     :nodes="nodes"
     :links="links"
     :type="model"
@@ -43,7 +44,7 @@ XdhGoCircleMenu 必须与 XdhGoHtml 一同使用, 须在 XdhGoHtml 定义 menu-n
   </xdh-go>
 </template>
 <script>
-  import { XdhGo, XdhGoCircleMenu, XdhGoHtml } from 'xdh-go';
+  import { XdhGo, XdhGoCircleMenu, XdhGoHtml } from 'xdh-go'
   export default {
     components: {
       XdhGo,
@@ -58,7 +59,10 @@ XdhGoCircleMenu 必须与 XdhGoHtml 一同使用, 须在 XdhGoHtml 定义 menu-n
           { key: 'B', category: 'b' },
           { key: 'C', category: 'c' }
         ],
-        links: [{ from: 'A', to: 'B' }, { from: 'A', to: 'C' }],
+        links: [
+          { from: 'A', to: 'B' },
+          { from: 'A', to: 'C' }
+        ],
         menuOptions: {
           menuList: [],
           trigger: 'mouseover',
@@ -71,58 +75,54 @@ XdhGoCircleMenu 必须与 XdhGoHtml 一同使用, 须在 XdhGoHtml 定义 menu-n
           textRotate: true,
           itemGap: 15
         }
-      };
+      }
     },
     methods: {
       beforeShowMenu(obj, diagram, tool, menu) {
+        console.log(obj, diagram, tool, menu)
         this.menuOptions.menuList = [
           { tag: 'edit', label: '编辑', icon: 'iconfont icon-edit' },
           { tag: 'delete', label: '删除', icon: 'iconfont icon-delete' }
-        ];
-        let menuLength = this.menuOptions.menuList.length;
+        ]
+        let menuLength = this.menuOptions.menuList.length
         if (menuLength < 5) {
           this.menuOptions.angleRange = {
             1: [45, 135],
             2: [30, 150],
             3: [0, 180],
             4: [-30, 210]
-          }[menuLength];
+          }[menuLength]
         } else {
-          this.menuOptions.angleRange = [-90, 270];
+          this.menuOptions.angleRange = [-90, 270]
         }
       },
       showMenu(obj, diagram, tool, menu) {
-        menu.style.display = 'block';
-        let el = diagram.div;
-        let offset = el.getBoundingClientRect();
-        let point = diagram.transformDocToView(obj.actualBounds.center);
-        menu.style.left = point.x + offset.left + 'px';
-        menu.style.top = point.y + offset.top + 'px';
+        console.log(obj, diagram, tool, menu)
+        menu.style.display = 'block'
+        let el = diagram.div
+        let offset = el.getBoundingClientRect()
+        let point = diagram.transformDocToView(obj.actualBounds.center)
+        menu.style.left = point.x + offset.left + 'px'
+        menu.style.top = point.y + offset.top + 'px'
       },
       menuClick(ev, item) {
-          console.log(item)
+        console.log(item)
         this.$message({
           type: 'info',
           message: `点击了:${item.tag}`
-        });
+        })
       },
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center,
           'toolManager.hoverDelay': 100
-        };
+        }
       },
       layout($, go) {
-        return new go.TreeLayout();
+        return new go.TreeLayout()
       },
-      nodeTemplate(
-        $,
-        go,
-        color,
-        {
-          htmlInfo: { circleMenu }
-        }
-      ) {
+      nodeTemplate($, go, color, { htmlInfo: { circleMenu } }) {
+        console.log(circleMenu)
         return $(
           go.Node,
           'Auto',
@@ -133,27 +133,27 @@ XdhGoCircleMenu 必须与 XdhGoHtml 一同使用, 须在 XdhGoHtml 定义 menu-n
             { margin: 12, stroke: '#ffffff' },
             new go.Binding('text', 'key')
           )
-        );
+        )
       },
       linkTemplate($, go) {
         return $(
           go.Link,
           { routing: go.Link.Orthogonal, corner: 5 },
           $(go.Shape, { strokeWidth: 3, stroke: '#555' })
-        );
+        )
       },
       nodeTemplateMap($, go, vm) {
-        const a = this.nodeTemplate($, go, 'red', vm);
-        const b = this.nodeTemplate($, go, 'blue', vm);
-        const c = this.nodeTemplate($, go, 'green', vm);
-        const map = new go.Map();
-        map.add('a', a);
-        map.add('b', b);
-        map.add('c', c);
-        return map;
+        const a = this.nodeTemplate($, go, 'red', vm)
+        const b = this.nodeTemplate($, go, 'blue', vm)
+        const c = this.nodeTemplate($, go, 'green', vm)
+        const map = new go.Map()
+        map.add('a', a)
+        map.add('b', b)
+        map.add('c', c)
+        return map
       }
     }
-  };
+  }
 </script>
 ```
 

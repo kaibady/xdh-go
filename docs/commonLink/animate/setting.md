@@ -223,7 +223,6 @@
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
         this.tokenPart = getToken($, go)
       }
     }

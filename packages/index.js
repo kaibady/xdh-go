@@ -21,6 +21,8 @@ import group from '../utils/template/group/index'
 import layout from '../utils/layout'
 // 数据管理
 import DataManager from '../utils/dataManager/dataManager'
+// diagram管理
+import diagramManager from '../utils/dataManager/diagramManager'
 
 // group
 import {
@@ -74,7 +76,7 @@ export const animation = {
   AnimationEvents: AnimationEvents
 }
 export const groupFun = { getGroupLayout, getGroupDragging, setGroupLayout }
-export const dataUtils = { DataManager }
+export const dataUtils = { DataManager, diagramManager }
 export const layoutUtils = layout
 
 export default {

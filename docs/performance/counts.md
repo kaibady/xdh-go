@@ -2,7 +2,7 @@
 
 ## 通用节点测试
 
-由于通用节点内部有不少数据绑定会消耗一定的性能，下图默认使用 go.ForceDirectedLayout 布局，测试上限为 800 个(chrome 浏览器,i5cpu)，耗时 约 45 秒,如果超过了，浏览器容易崩溃。
+由于通用节点内部有不少数据绑定会消耗一定的性能，下图默认使用 go.ForceDirectedLayout 布局，试输入1000 个(chrome 浏览器,i5cpu)，耗时 约 8 秒。
 :::demo
 
 ```html
@@ -26,6 +26,7 @@
     <xdh-go
       :nodes="nodes"
       :links="links"
+      :diagram-name="'digCount1'"
       :node-template-map="nodeTemplateMap"
       :link-template="linkTemplate"
       :type="model"
@@ -50,7 +51,7 @@
     XdhGoOverview
   } from 'xdh-go'
   let { switcher, binding } = utils
-  let { DataManager } = dataUtils
+  let { DataManager, diagramManager } = dataUtils
   let dataManager
   export default {
     components: {
@@ -59,7 +60,6 @@
     },
     data() {
       return {
-        diagram: null,
         model: 'GraphLinksModel',
         nodes: [],
         links: [],
@@ -140,7 +140,6 @@
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
         dataManager = new DataManager(diagram, go)
         // 绑定到diagram中以便使用
         diagram.dataManager = dataManager
@@ -375,6 +374,7 @@
     <xdh-go
       :nodes="nodes"
       :links="links"
+      :diagram-name="'digCount2'"
       :node-template="nodeTemplate"
       :link-template="linkTemplate"
       :type="model"
@@ -390,9 +390,10 @@
   </div>
 </template>
 <script>
+  import go from 'gojs'
   import { XdhGo, utils, dataUtils, XdhGoOverview } from 'xdh-go'
   let { switcher, binding, node, link, shape } = utils
-  let { DataManager } = dataUtils
+  let { DataManager, diagramManager } = dataUtils
   let dataManager
   export default {
     components: {
@@ -486,7 +487,7 @@
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
+        console.log(diagram)
         dataManager = new DataManager(diagram, go)
         // 绑定到diagram中以便使用
         diagram.dataManager = dataManager
@@ -648,13 +649,12 @@
             res.links.forEach(l => {
               dataManager.addLink(l, 'linkCv1')
             })
-            this.diagram.layoutDiagram()
+            diagramManager['digCount2'].layoutDiagram()
           })
         }, 100)
       },
       setLayout(layout) {
         this.currLayout = layout
-        let go = this.$refs.diagram.go
         let $ = go.GraphObject.make
         let options = {}
         if (layout === 'LayeredDigraphLayout') {
@@ -663,7 +663,7 @@
           options.angle = 90
         }
         this.startTime = new Date()
-        this.diagram.layout = $(go[layout], options)
+        diagramManager['digCount2'].layout = $(go[layout], options)
       },
       clearDiagram() {
         dataManager.clear()

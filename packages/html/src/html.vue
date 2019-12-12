@@ -21,11 +21,11 @@
  * 插槽
  * @member slot [default]
  */
-// import go from 'gojs'
-// let $ = go.GraphObject.make
+import go from 'gojs'
+let $ = go.GraphObject.make
 export default {
   name: 'XdhGoHtml',
-  inject: ['$', 'go', 'diagram'],
+  inject: ['diagramName'],
   /**
    * 属性参数
    * @property {String} menuName 菜单名称，必须
@@ -79,8 +79,6 @@ export default {
      * @returns {go.HTMLInfo}
      */
     bindMenu() {
-      let go = this.go,
-        $ = this.$
       this.menuObj = this.$children[0]
       this.menu = this.$children[0].$el
       // 取消原生右键点击事件
@@ -122,6 +120,9 @@ export default {
         this.menu.style.display = 'none'
       }
     }
+  },
+  mounted() {
+    document.body.append(this.$children[0].$el)
   }
 }
 </script>

@@ -158,6 +158,7 @@
       </div>
     </div>
     <xdh-go
+      :diagram-name="'dig1'"
       :nodes="nodes"
       :links="links"
       :type="model"
@@ -172,7 +173,8 @@
   </div>
 </template>
 <script>
-  import { XdhGo, nodeTmpl, linkTmpl } from 'xdh-go'
+  import { XdhGo, nodeTmpl, linkTmpl, dataUtils } from 'xdh-go'
+  let { diagramManager } = dataUtils
   export default {
     components: {
       XdhGo
@@ -215,7 +217,7 @@
         let label = Object.assign({}, this.links[0].label, {
           placement: `placement:${placement}`
         })
-        let linkData = this.diagram.model.linkDataArray[0]
+        let linkData = diagramManager['dig1'].model.linkDataArray[0]
         this.$refs.diagram.update(linkData, 'label', label)
       },
       config($, go) {
@@ -246,7 +248,6 @@
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
       }
     }
   }

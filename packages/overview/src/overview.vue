@@ -2,6 +2,10 @@
   <div :style="style"></div>
 </template>
 <script>
+import go from 'gojs'
+import diagramManager from '../../../utils/dataManager/diagramManager'
+
+let $ = go.GraphObject.make
 /**
  * XdhGoOverview组件
  * @module xdh-go-overview
@@ -9,10 +13,12 @@
  */
 export default {
   name: 'XdhGoOverview',
-  inject: ['$', 'go', 'diagram'],
+  inject: ['diagramName'],
   components: {},
   /**
    * 参数属性
+   * @property {String} diagramName go.Diagram对象名称
+   * 
    * @property {Object} [divStyle={}] 鹰眼外框样式, 默认 {
         position: 'absolute',
         width: '150px',
@@ -24,6 +30,10 @@ export default {
    *
    */
   props: {
+    diagramName: {
+      type: String,
+      default: 'dig'
+    },
     divStyle: {
       type: Object,
       default() {
@@ -49,9 +59,8 @@ export default {
   methods: {},
   mounted() {
     let el = this.$el
-    let go = this.go
     this.$parent.$once('on-ready', () => {
-      new go.Overview(el).observed = this.$parent.diagram
+      new go.Overview(el).observed = diagramManager[this.diagramName]
       this.$parent.$el.appendChild(el)
     })
   },

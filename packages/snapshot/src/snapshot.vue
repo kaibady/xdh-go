@@ -29,13 +29,16 @@
  * @property {Function} [default.makeSvg] 生成svg对象
  */
 import go from 'gojs'
+import diagramManager from '../../../utils/dataManager/diagramManager'
+
 export default {
   name: 'XdhGoSnapshot',
   components: {},
   /**
    * 参数属性
    * @property {String} [layout='image,imageData,svg'] 按钮布局
-   * @property {Object} [diagarm] go.Diagram对象
+   * @property {String} [diagramName='dig'] go.Diagram对象名称
+
    * @property {Object} [options={image:{}, imageData: {},svg: {}}] 快照配置
    */
   props: {
@@ -43,9 +46,9 @@ export default {
       type: String,
       default: 'image,imageData,svg'
     },
-    diagram: {
-      type: Object,
-      default: null
+    diagramName: {
+      type: String,
+      default: 'dig'
     },
     options: {
       type: Object,
@@ -70,7 +73,7 @@ export default {
   computed: {},
   methods: {
     makeImage() {
-      let bounds = this.diagram.documentBounds
+      let bounds = diagramManager[this.diagramName].documentBounds
       let size = new go.Size(bounds.width + 20, bounds.height + 20)
       let options = Object.assign(
         {},
@@ -80,7 +83,7 @@ export default {
         },
         this.options.image || {}
       )
-      let data = this.diagram.makeImage(options)
+      let data = diagramManager[this.diagramName].makeImage(options)
       /**
        * 点击快照按钮时触发
        * @event on-snap
@@ -90,7 +93,7 @@ export default {
       this.$emit('on-snap', 'image', data)
     },
     makeImageData() {
-      let bounds = this.diagram.documentBounds
+      let bounds = diagramManager[this.diagramName].documentBounds
       let size = new go.Size(bounds.width + 20, bounds.height + 20)
       let options = Object.assign(
         {},
@@ -100,11 +103,11 @@ export default {
         },
         this.options.imageData || {}
       )
-      let data = this.diagram.makeImageData(options)
+      let data = diagramManager[this.diagramName].makeImageData(options)
       this.$emit('on-snap', 'imageData', data)
     },
     makeSvg() {
-      let bounds = this.diagram.documentBounds
+      let bounds = diagramManager[this.diagramName].documentBounds
       let size = new go.Size(bounds.width + 20, bounds.height + 20)
       let options = Object.assign(
         {},
@@ -114,7 +117,7 @@ export default {
         },
         this.options.svg || {}
       )
-      let data = this.diagram.makeSvg(options)
+      let data = diagramManager[this.diagramName].makeSvg(options)
       this.$emit('on-snap', 'svg', data)
     }
   },

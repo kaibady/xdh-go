@@ -52,6 +52,8 @@
  * @property {Function} [default.menuClick] 菜单点击回调
  */
 import go from 'gojs'
+import diagramManager from '../../../utils/dataManager/diagramManager'
+
 let viewMenus = [
   {
     name: '隐藏',
@@ -87,7 +89,8 @@ export default {
   components: {},
   /**
    * 参数属性
-   * @property {Object} [diagarm] go.Diagram对象
+   * @property {String} [diagramName='dig'] go.Diagram对象名称
+
    * @property {String} [customClass=''] 自定义容器类名
    * @property {Object} [customStyle={}] 自定义样式
    * @property {Array} [menus=[]] 自定义菜单
@@ -95,11 +98,9 @@ export default {
    
    */
   props: {
-    diagram: {
-      type: Object,
-      default() {
-        return null
-      }
+    diagramName: {
+      type: String,
+      default: 'dig'
     },
     customClass: {
       type: String,
@@ -158,11 +159,11 @@ export default {
        */
       this.$emit('item-click', item)
       if (this.handlers[name]) {
-        this.handlers[name](this.diagram, go.GraphObject.make, go, item)
+        this.handlers[name](diagramManager[this.diagramName], go.GraphObject.make, go, item)
         return
       }
       let set = new go.Set()
-      let diagram = this.diagram
+      let diagram = diagramManager[this.diagramName]
       let model = diagram.model
       switch (name) {
         case '隐藏节点':
@@ -177,14 +178,14 @@ export default {
           break
         case '隐藏关系label':
           model.setDataProperty(
-            this.diagram.model.modelData,
+            diagramManager[this.diagramName].model.modelData,
             'showLinkLabels',
             false
           )
           break
         case '隐藏关系连线':
           model.setDataProperty(
-            this.diagram.model.modelData,
+            diagramManager[this.diagramName].model.modelData,
             'showLinks',
             false
           )

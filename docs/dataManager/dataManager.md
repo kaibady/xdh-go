@@ -500,7 +500,6 @@ getLink 方法
         })
       },
       diagramReady(diagram, $, go) {
-        this.diagram = diagram
         dataManager = new DataManager(diagram, go)
         // 绑定到diagram中以便使用
         diagram.dataManager = dataManager
@@ -626,7 +625,6 @@ getLink 方法
       addDupLink(options) {
         // 添加一个nodeCode已存在的节点，但level不相同
         dataManager.addLink(this.duplicateData, 'linkCv1', options)
-        console.log(this.diagram.model.linkDataArray)
       }
     },
     mounted() {}
