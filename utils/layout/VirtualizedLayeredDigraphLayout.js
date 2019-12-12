@@ -1,21 +1,18 @@
-// The normal mechanism for determining the size of the document depends on all of the
-// Nodes and Links existing, so we need to use a function that depends only on the model data.
 function computeDocumentBounds(model, go) {
   var b = new go.Rect()
   var ndata = model.nodeDataArray
   for (var i = 0; i < ndata.length; i++) {
     var d = ndata[i]
     if (!d.bounds) continue
+    let rect = d.bounds
     if (i === 0) {
-      b.set(d.bounds)
+      b.set(rect)
     } else {
-      b.unionRect(d.bounds)
+      b.unionRect(rect)
     }
   }
   return b
 }
-
-// As the user scrolls or zooms, make sure the Parts (Nodes and Links) exist in the viewport.
 function onViewportChanged(e, myWholeModel, go, updateCounts) {
   var diagram = e.diagram
   // make sure there are Nodes for each node data that is in the viewport
@@ -31,7 +28,8 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
   for (var i = 0; i < ndata.length; i++) {
     var n = ndata[i]
     if (!n.bounds) continue
-    if (n.bounds.intersectsRect(viewb)) {
+    var bounds = n.bounds
+    if (bounds.intersectsRect(viewb)) {
       model.addNodeData(n)
     }
     if (model instanceof go.TreeModel) {
@@ -117,8 +115,7 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
       removeOffscreen(diagram, go, updateCounts)
     }, 3000)
   }
-
-  updateCounts(diagram, diagram.layout.model) // only for this sample
+  updateCounts(diagram, diagram.layout.model)
 }
 
 var myRemoveTimer = null
@@ -162,31 +159,31 @@ function removeOffscreen(diagram, go, updateCounts) {
     }
     diagram.skipsUndoManager = oldskips
   }
-
-  updateCounts(diagram, diagram.layout.model) // only for this sample
+  updateCounts(diagram, diagram.layout.model)
 }
 
-function getVirtualizedTreeLayout(go) {
-  function VirtualizedTreeLayout() {
-    go.TreeLayout.call(this)
+function getVirtualizedLayeredDigraphLayout(go) {
+  function VirtualizedLayeredDigraphLayout() {
+    go.LayeredDigraphLayout.call(this)
     this.isOngoing = false
-    this.model = null // add this property for holding the whole TreeModel
+    this.model = null // add this property for holding the whole GraphLinksModel
   }
-  go.Diagram.inherit(VirtualizedTreeLayout, go.TreeLayout)
 
-  VirtualizedTreeLayout.prototype.createNetwork = function() {
-    return new VirtualizedTreeNetwork(this, this.diagram) // defined below
+  go.Diagram.inherit(VirtualizedLayeredDigraphLayout, go.CircularLayout)
+  VirtualizedLayeredDigraphLayout.prototype.createNetwork = function() {
+    return new VirtualizedLayeredDigraphNetwork(this) // defined below
   }
 
   // ignore the argument, an (implicit) collection of Parts
-  VirtualizedTreeLayout.prototype.makeNetwork = function(coll) {
+  VirtualizedLayeredDigraphLayout.prototype.makeNetwork = function(coll) {
     var net = this.createNetwork()
     net.addData(this.model) // use the model data, not any actual Nodes and Links
     return net
   }
 
-  VirtualizedTreeLayout.prototype.commitLayout = function() {
-    go.TreeLayout.prototype.commitLayout.call(this)
+  /** k */
+  VirtualizedLayeredDigraphLayout.prototype.commitLayout = function() {
+    go.LayeredDigraphLayout.prototype.commitLayout.call(this)
     // can't depend on regular bounds computation that depends on all Nodes existing
     this.diagram.fixedBounds = computeDocumentBounds(this.model, go)
     // update the positions of any existing Nodes
@@ -194,59 +191,49 @@ function getVirtualizedTreeLayout(go) {
       node.updateTargetBindings()
     })
   }
-  // end VirtualizedTreeLayout class
+  // end VirtualizedLayeredDigraphLayout class
 
-  function VirtualizedTreeNetwork(layout, diagram) {
-    go.TreeNetwork.call(this, layout)
-    this.diagram = diagram
+  function VirtualizedLayeredDigraphNetwork(layout) {
+    go.LayeredDigraphNetwork.call(this, layout)
   }
-  go.Diagram.inherit(VirtualizedTreeNetwork, go.TreeNetwork)
-
-  VirtualizedTreeNetwork.prototype.addData = function(model) {
-    // if (model instanceof go.TreeModel) {
-    var dataVertexMap = new go.Map()
-    var ndata = model.nodeDataArray
-    for (var i = 0; i < ndata.length; i++) {
-      var d = ndata[i]
-      var v = this.createVertex()
-      v.data = d // associate this Vertex with data, not a Node
-      dataVertexMap.set(d, v)
-      this.addVertex(v)
-    }
-
-    for (let i = 0; i < ndata.length; i++) {
-      let child = ndata[i]
-      //   var parentkey = model.getParentKeyForNodeData(child)
-      let parentNode = model.linkDataArray.find(r => r.to === child.key)
-      let parent, parentkey
-      if (parentNode) {
-        parentkey = parentNode && parentNode.key
+  go.Diagram.inherit(VirtualizedLayeredDigraphNetwork, go.LayeredDigraphNetwork)
+  VirtualizedLayeredDigraphNetwork.prototype.addData = function(model) {
+    if (model instanceof go.GraphLinksModel) {
+      var dataVertexMap = new go.Map()
+      // create a vertex for each node data
+      var ndata = model.nodeDataArray
+      for (var i = 0; i < ndata.length; i++) {
+        var d = ndata[i]
+        var v = this.createVertex()
+        v.data = d // associate this Vertex with data, not a Node
+        dataVertexMap.set(model.getKeyForNodeData(d), v)
+        this.addVertex(v)
       }
-      parent = model.findNodeDataForKey(parentkey)
-      if (parent !== null) {
-        // if there is a parent, there should be an edge
+      // create an edge for each link data
+      var ldata = model.linkDataArray
+      for (var i = 0; i < ldata.length; i++) {
+        var d = ldata[i]
         // now find corresponding vertexes
-        var f = dataVertexMap.get(parent)
-        var t = dataVertexMap.get(child)
-        if (f === null || t === null) continue // skip
-        // create and add VirtualizedTreeEdge
+        var from = dataVertexMap.get(model.getFromKeyForLinkData(d))
+        var to = dataVertexMap.get(model.getToKeyForLinkData(d))
+        if (from === null || to === null) continue // skip
+        // create and add VirtualizedLayeredDigraphEdge
         var e = this.createEdge()
-        e.data = child // associate this Edge with data, not a Link
-        e.fromVertex = f
-        e.toVertex = t
+        e.data = d // associate this Edge with data, not a Link
+        e.fromVertex = from
+        e.toVertex = to
         this.addEdge(e)
       }
+    } else {
+      throw new Error('can only handle GraphLinksModel data')
     }
-    // } else {
-    //   throw new Error('can only handle TreeModel data')
-    // }
   }
-  return VirtualizedTreeLayout
+
+  VirtualizedLayeredDigraphNetwork.prototype.deleteArtificialVertexes = function() {}
+  return VirtualizedLayeredDigraphLayout
 }
-
-export default getVirtualizedTreeLayout
-
-export function handlerVirtualTree(
+export default getVirtualizedLayeredDigraphLayout
+export function handlerVirtualLayeredDigraph(
   go,
   diagram,
   myWholeModel,
