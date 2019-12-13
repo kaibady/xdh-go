@@ -95,11 +95,17 @@ export function linkBinding($, go, _options) {
     curve: {
       key: '',
       handler(d) {
-        if (d.type && d.type === 'curve') {
+        let type
+        if (d.type) {
+          type = d.type
+        } else {
+          type = _options.props.type
+        }
+        if (type === 'curve') {
           return go.Link.Bezier
-        } else if (d.type && d.type === 'straight') {
+        } else if (type === 'straight') {
           return go.Link.None
-        } else if (d.type && d.type === 'route') {
+        } else if (type === 'route') {
           return go.Link.JumpGap
         } else {
           return go.Link.Bezier
@@ -109,11 +115,17 @@ export function linkBinding($, go, _options) {
     curviness: {
       key: '',
       handler(d) {
-        if (d.type && d.type === 'curve') {
+        let type
+        if (d.type) {
+          type = d.type
+        } else {
+          type = _options.props.type
+        }
+        if (type === 'curve') {
           return NaN
-        } else if (d.type && d.type === 'straight') {
+        } else if (type === 'straight') {
           return 0
-        } else if (d.type && d.type === 'route') {
+        } else if (type === 'route') {
           return 20
         } else {
           return NaN
@@ -123,7 +135,13 @@ export function linkBinding($, go, _options) {
     corner: {
       key: '',
       handler(d) {
-        if (d.type && d.type === 'route') {
+        let type
+        if (d.type) {
+          type = d.type
+        } else {
+          type = _options.props.type
+        }
+        if (type === 'route') {
           return 10
         } else {
           return 10
@@ -133,7 +151,13 @@ export function linkBinding($, go, _options) {
     routing: {
       key: '',
       handler(d) {
-        if (d.type && d.type === 'route') {
+        let type
+        if (d.type) {
+          type = d.type
+        } else {
+          type = _options.props.type
+        }
+        if (type === 'route') {
           return go.Link.AvoidsNodes
         } else {
           return go.Link.Normal
@@ -143,11 +167,13 @@ export function linkBinding($, go, _options) {
     smoothness: {
       key: '',
       handler(d) {
+        let smoothness
         if (d.smoothness !== undefined) {
-          return d.smoothness
+          smoothness = d.smoothness
         } else {
-          return _options.props.smoothness
+          smoothness = _options.props.smoothness
         }
+        return smoothness
       }
     },
     opacity: {
