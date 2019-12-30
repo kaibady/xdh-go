@@ -1,28 +1,29 @@
 {
-  "_from": "gojs",
-  "_id": "gojs@2.0.15",
+  "_from": "gojs@2.1.0",
+  "_id": "gojs@2.1.0",
   "_inBundle": false,
-  "_integrity": "sha1-jv5MTYuHJLM1xbx+yKfuh8KtlwA=",
+  "_integrity": "sha1-ZNzOzJFTmWk2Q4JwE22XYOWel+w=",
   "_location": "/gojs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "gojs",
+    "raw": "gojs@2.1.0",
     "name": "gojs",
     "escapedName": "gojs",
-    "rawSpec": "",
+    "rawSpec": "2.1.0",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "2.1.0"
   },
   "_requiredBy": [
     "#USER",
-    "/"
+    "/",
+    "/xdh-go"
   ],
-  "_resolved": "https://registry.npm.taobao.org/gojs/download/gojs-2.0.15.tgz",
-  "_shasum": "8efe4c4d8b8724b335c5bc7ec8a7ee87c2ad9700",
-  "_spec": "gojs",
-  "_where": "E:\\xdh-project\\xdh-go",
+  "_resolved": "https://registry.npm.taobao.org/gojs/download/gojs-2.1.0.tgz",
+  "_shasum": "64dccecc9153996936438270136d9760e59e97ec",
+  "_spec": "gojs@2.1.0",
+  "_where": "E:\\my-project\\gojs-test",
   "author": {
     "name": "Northwoods Software"
   },
@@ -124,5 +125,5 @@
     "url": "git+https://github.com/NorthwoodsSoftware/GoJS.git"
   },
   "typings": "release/go.d.ts",
-  "version": "2.0.15"
+  "version": "2.1.0"
 }

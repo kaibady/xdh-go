@@ -18,20 +18,21 @@ module.exports = {
         libraryTarget: 'var',
         library: 'gcs'
     },
-    externals:[
+    externals: [
         {
             'gojs': 'go'
         }
     ],
     module: {
-        rules: [ 
+        rules: [
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
             }
         ]
     },
-    plugins: [ 
-        ////new UglifyJSPlugin({ sourceMap: true }) 
+    plugins: [
+        new webpack.BannerPlugin("Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.")
+        ////new UglifyJSPlugin({ sourceMap: true })
     ]
 };

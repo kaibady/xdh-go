@@ -2,6 +2,14 @@
 *  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
 */
 
+/*
+* This is an extension and not part of the main GoJS library.
+* Note that the API for this class may change with any version, even point releases.
+* If you intend to use an extension in production, you should copy the code to your own source directory.
+* Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
+* See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
+*/
+
 import * as go from '../release/go';
 
 // These are the definitions for all of the predefined buttons.
@@ -465,6 +473,7 @@ go.GraphObject.defineBuilder('PanelExpanderButton', (args: any): go.Panel => {
     if (elt !== null) {
       const pan = elt.findObject(eltname);
       if (pan !== null) {
+        e.handled = true;
         diagram.startTransaction('Collapse/Expand Panel');
         pan.visible = !pan.visible;
         diagram.commitTransaction('Collapse/Expand Panel');
