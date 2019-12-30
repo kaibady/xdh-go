@@ -123,6 +123,7 @@ shape 参数为'icon'时有效
 | ----------- | ---------------------------- | ------ | ------ | --------- |
 | image       | 图片地址                     | String | -      | undefined |
 | brokenImage | 加载失败时默认显示的图片地址 | String | -      | undefined |
+| crossOrigin | 图片跨域配置 | String/null | 'anonymous'/'use-credentials'/null     | 'anonymous' |
 
 :::demo
 
@@ -164,6 +165,10 @@ shape 参数为'icon'时有效
           {
             label: '图片错误',
             image: imgPath + 'img/node/circleimage/a.png'
+          },
+          {
+            label: '图片跨域',
+            image: 'https://img.alicdn.com/tfs/TB1MaLKRXXXXXaWXFXXXXXXXXXX-480-260.png'
           }
         ]
       }

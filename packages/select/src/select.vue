@@ -260,9 +260,8 @@ export default {
       } else if (mode === 'multi') {
         diagram.clearSelection()
       } else if (mode === 'normal') {
-        diagramManager[
-          this.diagramName
-        ].toolManager.dragSelectingTool.delay = 200
+        let name = this.diagramName
+        diagramManager[name].toolManager.dragSelectingTool.delay = 200
       }
       /**
        * 选择模式切换时触发
@@ -381,7 +380,8 @@ export default {
       )
       diagramManager[this.diagramName].toolManager.draggingTool.doMouseMove =
         go.DraggingTool.prototype.doMouseMove
-      diagramManager[this.diagramName].toolManager.clickSelectingTool.doMouseUp =
+        let name = this.diagramName;
+      diagramManager[name].toolManager.clickSelectingTool.doMouseUp =
         go.ClickSelectingTool.prototype.doMouseUp
       diagramManager[this.diagramName].commandHandler.doKeyDown =
         go.CommandHandler.prototype.doKeyDown

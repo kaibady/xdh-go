@@ -204,7 +204,11 @@ prop 参数用于指定对节点或内部对象的哪个属性施加动画（见
                   visible: {
                     key: '',
                     handler(d) {
-                      return d.showShape
+                      if(d.showShape === true) {
+                        return d.showShape
+                      } else {
+                        return false
+                      }
                     }
                   }
                 })

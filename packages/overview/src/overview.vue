@@ -5,7 +5,6 @@
 import go from 'gojs'
 import diagramManager from '../../../utils/dataManager/diagramManager'
 
-let $ = go.GraphObject.make
 /**
  * XdhGoOverview组件
  * @module xdh-go-overview

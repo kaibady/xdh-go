@@ -11,6 +11,7 @@ export let getDefaultProps = ($, go) => {
     clipShape: 'Circle',
     image: undefined,
     brokenImage: undefined,
+    crossOrigin: 'anonymous',
     linkPort: 'tFigure', // 'tNode/tFigure/tLabel'
     labelStroke: {
       normal: 'transparent',

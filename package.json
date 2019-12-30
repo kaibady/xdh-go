@@ -1,6 +1,6 @@
 {
   "name": "xdh-go",
-  "version": "1.5.1",
+  "version": "1.5.5",
   "keywords": [
     "gojs",
     "vue"
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "element-ui": "^2.9.1",
-    "gojs": "^2.0.15"
+    "gojs": "^2.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",

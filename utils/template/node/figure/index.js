@@ -1,5 +1,5 @@
-import { panel, picture, iconfont, shape } from '../../../node-parts';
-import tag from '../tag/index';
+import { panel, picture, iconfont, shape } from '../../../node-parts'
+import tag from '../tag/index'
 import {
   pictureBinding,
   pictureCircleBinding,
@@ -9,7 +9,7 @@ import {
   pictureClipBinding,
   iconfontBinding,
   figurePanelBinding
-} from './bind';
+} from './bind'
 export default function figure($, go, _options) {
   return panel($, go, {
     type: 'spot',
@@ -26,7 +26,6 @@ export default function figure($, go, _options) {
           portId: 'tState',
           figure: 'Circle',
           background: 'transparent',
-          portId: 'StateShape',
           ..._options.props._stateShapeOptions.props
         },
         parts: [..._options.props._stateShapeOptions.parts],
@@ -124,5 +123,5 @@ export default function figure($, go, _options) {
       ...figurePanelBinding($, go, _options),
       ..._options.props._figurePanelOptions.binding
     ]
-  });
+  })
 }

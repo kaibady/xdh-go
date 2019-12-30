@@ -1,26 +1,26 @@
-import { defaultImage } from '../default';
-import { getHandler, shapeParamsBinding, bindToState } from '../bindings';
-import { binding } from '../../../node-parts/index';
+import { defaultImage } from '../default'
+import { getHandler, shapeParamsBinding, bindToState } from '../bindings'
+import { binding } from '../../../node-parts/index'
 function getSizeHandler($, go, _options, type) {
-  let index;
+  let index
   switch (type) {
     case 'width':
-      index = 0;
-      break;
+      index = 0
+      break
     case 'height':
-      index = 1;
-      break;
+      index = 1
+      break
   }
   let fun = d => {
     if (typeof d.size === 'number') {
-      return d.size;
+      return d.size
     } else if (d.size instanceof Array) {
-      return d.size[index];
+      return d.size[index]
     } else {
-      return _options.props.size[index];
+      return _options.props.size[index]
     }
-  };
-  return fun;
+  }
+  return fun
 }
 // 绑定图片裁剪
 export function pictureClipBinding($, go, _options) {
@@ -40,14 +40,14 @@ export function pictureClipBinding($, go, _options) {
           d.clipShape === null ||
           (d.clipShape === undefined && _options.props.clipShape === null)
         ) {
-          return false;
+          return false
         } else if (
           (d.shape && d.shape === 'clipImage') ||
           (!d.shape && _options.props.shape === 'clipImage')
         ) {
-          return true;
+          return true
         } else {
-          return false;
+          return false
         }
       }
     },
@@ -64,15 +64,15 @@ export function pictureClipBinding($, go, _options) {
           d.shapeParams.clipShape &&
           d.shapeParams.clipShape.geometryString
         ) {
-          return 'None';
+          return 'None'
         } else if (d.clipShape) {
-          return d.clipShape;
+          return d.clipShape
         } else {
-          return _options.props.clipShape;
+          return _options.props.clipShape
         }
       }
     }
-  });
+  })
 }
 
 export function picturePanelBinding($, go, _options) {
@@ -84,9 +84,9 @@ export function picturePanelBinding($, go, _options) {
           (d.shape && d.shape === 'clipImage') ||
           (!d.shape && _options.props.shape === 'clipImage')
         ) {
-          return true;
+          return true
         } else {
-          return false;
+          return false
         }
       }
     },
@@ -97,20 +97,33 @@ export function picturePanelBinding($, go, _options) {
           (d.shape && ['image', 'clipImage'].includes(d.shape)) ||
           (!d.shape && ['image', 'clipImage'].includes(_options.props.shape))
         ) {
-          return true;
+          return true
         } else {
-          return false;
+          return false
+        }
+      }
+    },
+    portId: {
+      key: '',
+      handler(d) {
+        if (
+          (d.linkPort !== undefined && d.linkPort === 'tPicture') ||
+          (d.linkPort === undefined && _options.props.linkPort === 'tPicture')
+        ) {
+          return ''
+        } else {
+          return 'tPicture'
         }
       }
     }
-  });
+  })
 }
 export function pictureBinding($, go, _options) {
   return binding($, go, {
     source: {
       key: '',
       handler(d) {
-        return d.image;
+        return d.image
       }
     },
     errorFunction: {
@@ -118,20 +131,38 @@ export function pictureBinding($, go, _options) {
       key: '',
       handler(n) {
         return (pic, e) => {
-          let brokenImage = n.data.brokenImage || _options.props.brokenImage;
+          let brokenImage = n.data.brokenImage || _options.props.brokenImage
           if (brokenImage) {
-            let img = new Image();
-            img.src = brokenImage;
+            let img = new Image()
+            img.src = brokenImage
             img.onload = () => {
-              pic.source = brokenImage;
-            };
+              pic.source = brokenImage
+            }
             img.onerror = () => {
-              pic.source = defaultImage;
-            };
+              pic.source = defaultImage
+            }
           } else {
-            pic.source = defaultImage;
+            pic.source = defaultImage
           }
-        };
+        }
+      }
+    },
+    sourceCrossOrigin: {
+      key: '',
+      handler(d) {
+        let crossOrigin = 'anonymous'
+        if (typeof d.crossOrigin !== undefined) {
+          crossOrigin = d.crossOrigin
+        } else {
+          crossOrigin = _options.props.crossOrigin
+        }
+        if (typeof crossOrigin === 'string') {
+          return pict => {
+            return crossOrigin
+          }
+        } else {
+          return null
+        }
       }
     },
     width: {
@@ -142,14 +173,17 @@ export function pictureBinding($, go, _options) {
       key: '',
       handler: getSizeHandler($, go, _options, 'height')
     }
-  });
+  })
 }
 export function figurePanelBinding($, go, _options) {
   return binding($, go, {
     visible: {
       key: '',
       handler(d) {
-        if(d.shape === null || (d.shape === undefined && _options.props.shape === null)) {
+        if (
+          d.shape === null ||
+          (d.shape === undefined && _options.props.shape === null)
+        ) {
           return false
         } else {
           return true
@@ -163,9 +197,9 @@ export function figurePanelBinding($, go, _options) {
           (d.linkPort !== undefined && d.linkPort === 'tFigure') ||
           (d.linkPort === undefined && _options.props.linkPort === 'tFigure')
         ) {
-          return '';
+          return ''
         } else {
-          return 'tFigure';
+          return 'tFigure'
         }
       }
     },
@@ -173,15 +207,15 @@ export function figurePanelBinding($, go, _options) {
       key: '',
       handler(d) {
         if (typeof d.figureMargin === 'number') {
-          return d.figureMargin;
+          return d.figureMargin
         } else if (d.figureMargin instanceof Array) {
-          return new go.Margin(...d.figureMargin);
+          return new go.Margin(...d.figureMargin)
         } else {
-          return _options.props.figureMargin;
+          return _options.props.figureMargin
         }
       }
     }
-  });
+  })
 }
 export function pictureCircleBinding($, go, _options) {
   return binding($, go, {
@@ -192,9 +226,9 @@ export function pictureCircleBinding($, go, _options) {
           d.stateShape === null ||
           (d.stateShape === undefined && _options.props.stateShape === null)
         ) {
-          return false;
+          return false
         } else {
-          return true;
+          return true
         }
       }
     },
@@ -210,21 +244,21 @@ export function pictureCircleBinding($, go, _options) {
       type: 'ofObject',
       key: '',
       handler(n) {
-        return bindToState(n, _options, 'strokeColor');
+        return bindToState(n, _options, 'strokeColor')
       }
     },
     strokeWidth: {
       type: 'ofObject',
       key: '',
       handler(n) {
-        return bindToState(n, _options, 'strokeWidth');
+        return bindToState(n, _options, 'strokeWidth')
       }
     },
     fill: {
       type: 'ofObject',
       key: '',
       handler(n) {
-        return bindToState(n, _options, 'background');
+        return bindToState(n, _options, 'background')
       }
     },
     ...shapeParamsBinding(_options, 'stateShape', [
@@ -240,15 +274,28 @@ export function pictureCircleBinding($, go, _options) {
           d.shapeParams.stateShape &&
           d.shapeParams.stateShape.geometryString
         ) {
-          return 'None';
+          return 'None'
         } else if (d.stateShape) {
-          return d.stateShape;
+          return d.stateShape
         } else {
-          return _options.props.stateShape;
+          return _options.props.stateShape
+        }
+      }
+    },
+    portId: {
+      key: '',
+      handler(d) {
+        if (
+          (d.linkPort !== undefined && d.linkPort === 'tState') ||
+          (d.linkPort === undefined && _options.props.linkPort === 'tState')
+        ) {
+          return ''
+        } else {
+          return 'tState'
         }
       }
     }
-  });
+  })
 }
 export function pictureHolderBinding($, go, _options) {
   return binding($, go, {
@@ -259,9 +306,9 @@ export function pictureHolderBinding($, go, _options) {
           (d.shape && ['clipImage', 'image'].includes(d.shape)) ||
           (!d.shape && ['image', 'clipImage'].includes(_options.props.shape))
         ) {
-          return true;
+          return true
         } else {
-          return false;
+          return false
         }
       }
     },
@@ -286,11 +333,11 @@ export function pictureHolderBinding($, go, _options) {
           d.shapeParams.holderShape &&
           d.shapeParams.holderShape.geometryString
         ) {
-          return 'None';
+          return 'None'
         } else if (d.clipShape) {
-          return d.clipShape;
+          return d.clipShape
         } else {
-          return _options.props.clipShape;
+          return _options.props.clipShape
         }
       }
     },
@@ -298,15 +345,15 @@ export function pictureHolderBinding($, go, _options) {
       key: '',
       handler(d) {
         if (d.isGray) {
-          let grayColor;
+          let grayColor
           if (d.background && d.background.gray) {
-            grayColor = d.background.gray;
+            grayColor = d.background.gray
           } else {
-            grayColor = _options.props.background.gray;
+            grayColor = _options.props.background.gray
           }
-          return grayColor;
+          return grayColor
         } else {
-          return 'transparent';
+          return 'transparent'
         }
       }
     },
@@ -314,13 +361,26 @@ export function pictureHolderBinding($, go, _options) {
       key: '',
       handler(d) {
         if (d.isGray) {
-          return 0.7;
+          return 0.7
         } else {
-          return 0;
+          return 0
+        }
+      }
+    },
+    portId: {
+      key: '',
+      handler(d) {
+        if (
+          (d.linkPort !== undefined && d.linkPort === 'tHolder') ||
+          (d.linkPort === undefined && _options.props.linkPort === 'tHolder')
+        ) {
+          return ''
+        } else {
+          return 'tHolder'
         }
       }
     }
-  });
+  })
 }
 export function shapeBinding($, go, _options) {
   return binding($, go, {
@@ -332,9 +392,9 @@ export function shapeBinding($, go, _options) {
           (!d.shape &&
             ['clipImage', 'image', 'icon'].includes(_options.props.shape))
         ) {
-          return false;
+          return false
         } else {
-          return true;
+          return true
         }
       }
     },
@@ -342,21 +402,21 @@ export function shapeBinding($, go, _options) {
       type: 'ofObject',
       key: '',
       handler(n) {
-        return bindToState(n, _options, 'background');
+        return bindToState(n, _options, 'background')
       }
     },
     stroke: {
       type: 'ofObject',
       key: '',
       handler(n) {
-        return bindToState(n, _options, 'strokeColor');
+        return bindToState(n, _options, 'strokeColor')
       }
     },
     strokeWidth: {
       type: 'ofObject',
       key: '',
       handler(n) {
-        return bindToState(n, _options, 'strokeWidth');
+        return bindToState(n, _options, 'strokeWidth')
       }
     },
     width: {
@@ -380,21 +440,34 @@ export function shapeBinding($, go, _options) {
           d.shapeParams.figureShape &&
           d.shapeParams.figureShape.geometryString
         ) {
-          return 'None';
+          return 'None'
         } else if (
           d.shape &&
           !['clipImage', 'image', 'icon'].includes(d.shape)
         ) {
-          return d.shape;
+          return d.shape
         } else if (
           !d.shape &&
           !['clipImage', 'image', 'icon'].includes(_options.props.shape)
         ) {
-          return _options.props.shape;
+          return _options.props.shape
+        }
+      }
+    },
+    portId: {
+      key: '',
+      handler(d) {
+        if (
+          (d.linkPort !== undefined && d.linkPort === 'tShape') ||
+          (d.linkPort === undefined && _options.props.linkPort === 'tShape')
+        ) {
+          return ''
+        } else {
+          return 'tShape'
         }
       }
     }
-  });
+  })
 }
 export function iconfontBinding($, go, _options) {
   return binding($, go, {
@@ -405,9 +478,9 @@ export function iconfontBinding($, go, _options) {
           (d.shape && d.shape === 'icon') ||
           (!d.shape && _options.props.shape === 'icon')
         ) {
-          return true;
+          return true
         } else {
-          return false;
+          return false
         }
       }
     },
@@ -415,11 +488,11 @@ export function iconfontBinding($, go, _options) {
       key: '',
       handler(d) {
         if (d.icon && typeof d.icon === 'string') {
-          return d.icon;
+          return d.icon
         } else if (d.icon && d.icon.text) {
-          return d.icon.text;
+          return d.icon.text
         } else {
-          return _options.props.icon.text;
+          return _options.props.icon.text
         }
       }
     },
@@ -431,8 +504,21 @@ export function iconfontBinding($, go, _options) {
       type: 'ofObject',
       key: '',
       handler(n) {
-        return bindToState(n, _options, 'iconColor');
+        return bindToState(n, _options, 'iconColor')
+      }
+    },
+    portId: {
+      key: '',
+      handler(d) {
+        if (
+          (d.linkPort !== undefined && d.linkPort === 'tIcon') ||
+          (d.linkPort === undefined && _options.props.linkPort === 'tIcon')
+        ) {
+          return ''
+        } else {
+          return 'tIcon'
+        }
       }
     }
-  });
+  })
 }

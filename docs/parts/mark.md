@@ -36,8 +36,9 @@ figure 可选值：
   </div>
 </template>
 <script>
-  import { XdhGo, utils } from 'xdh-go';
-  let { mark, node, textBlock } = utils;
+  import { XdhGo, utils, go } from 'xdh-go'
+
+  let { mark, node, textBlock } = utils
   export default {
     components: {
       XdhGo
@@ -61,19 +62,19 @@ figure 可选值：
             }
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.GridLayout, {});
+        return $(go.GridLayout, {})
       },
       nodeTemplateMap($, go) {
-        let map = new go.Map();
+        let map = new go.Map()
         map.add(
           'mark1',
           node($, go, {
@@ -86,7 +87,7 @@ figure 可选值：
               })
             ]
           })
-        );
+        )
 
         map.add(
           'mark2',
@@ -102,21 +103,21 @@ figure 可选值：
             ],
             events: {
               click(ev, obj) {
-                let node = obj.part;
+                let node = obj.part
                 node.diagram.model.set(
                   node.data,
                   'showMark',
                   !node.data.showMark
-                );
+                )
               }
             }
           })
-        );
-        return map;
+        )
+        return map
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
@@ -144,8 +145,8 @@ figure 可选值：
   </div>
 </template>
 <script>
-  import { XdhGo, utils, nodeTmpl } from 'xdh-go';
-  let { mark, node, textBlock } = utils;
+  import { XdhGo, utils, nodeTmpl } from 'xdh-go'
+  let { mark, node, textBlock } = utils
   export default {
     components: {
       XdhGo
@@ -170,19 +171,19 @@ figure 可选值：
             }
           }
         ]
-      };
+      }
     },
     methods: {
       config($, go) {
         return {
           initialContentAlignment: go.Spot.Center
-        };
+        }
       },
       layout($, go) {
-        return $(go.GridLayout, {});
+        return $(go.GridLayout, {})
       },
       nodeTemplateMap($, go) {
-        let map = new go.Map();
+        let map = new go.Map()
 
         map.add(
           'node',
@@ -200,23 +201,22 @@ figure 可选值：
             },
             events: {
               click(ev, obj) {
-                let node = obj.part;
+                let node = obj.part
                 node.diagram.model.set(
                   node.data,
                   'showMark',
                   !node.data.showMark
-                );
+                )
               }
             }
           })
-        );
-        return map;
+        )
+        return map
       },
       diagramReady(diagram, $, go) {}
     }
-  };
+  }
 </script>
 ```
 
 :::
-

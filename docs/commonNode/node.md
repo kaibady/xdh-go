@@ -9,7 +9,7 @@
 | containerShape       | 节点的外框形状                                | String/null  | null/(go.Shape 内置图形类型)                              | null,不可见                         |
 | containerBackground  | 节点的外框背景色                              | Object       | -                                                         | gray 状态为#ccc,其余状态为'#85a5ff' |
 | containerStrokeColor | 节点的外框边框色                              | Object       | -                                                         | gray 状态为#ccc,其余状态为'#061178' |
-| linkPort             | 连线指向节点的哪个位置                        | String       | 'tNode'/'tFigure'/'tLabel'                   | 'tFigure'                           |
+| linkPort             | 连线指向节点的哪个位置                        | String       | 'tNode'/'tFigure'/'tLabel'/'tState'/'tShape'/'tIcon'/'tHolder'                    | 'tFigure'                           |
 | loc                  | 节点位置,双向数据绑定                         | String       | -                                                         | '0 0'                               |
 
 ## layout,opacity,scale,loc

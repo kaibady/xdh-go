@@ -54,7 +54,7 @@ getNode 方法
 | 参数名 | 说明 | 类型 |可选值|默认值 |
 | ----------------- | ------ |------ | ------ | --------------------------------- |
 | node | 节点数据 | String/Object/go.Node 对象 |-| - |
-| isObject | 是否获取节点对象,如果为否，获得的是数据 | Boolean |-| - |
+| isObject | 是否获取节点对象,如果为否，获得的是数据 | Boolean |-| false |
 | isByExample | 是否使用 getNodesByExample 方法，将会搜索满足条件的节点，返回数组 | Boolean |-| false |
 
 getLink 方法
@@ -217,6 +217,7 @@ getLink 方法
         })
       },
       diagramReady(diagram, $, go) {
+        console.log(go.version)
         dataManager = new DataManager(diagram, go)
         // 绑定到diagram中以便使用
         diagram.dataManager = dataManager
@@ -334,6 +335,7 @@ getLink 方法
         })
       },
       addDupNode(options) {
+        console.log(dataManager.diagram.nodes, dataManager.diagram.nodes.count)
         // 添加一个nodeCode已存在的节点，但level不相同
         dataManager.addNode(this.duplicateData, 'nodeCv1', options)
       }

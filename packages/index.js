@@ -1,4 +1,5 @@
 import '../theme/index.scss'
+import go from 'gojs'
 import Go from './go'
 import Html from './html'
 import Tooltip from './tooltip'
@@ -30,6 +31,7 @@ import {
   getGroupDragging,
   setGroupLayout
 } from '../utils/group'
+console.log('go', go)
 const components = [
   Go,
   Html,
@@ -78,7 +80,7 @@ export const animation = {
 export const groupFun = { getGroupLayout, getGroupDragging, setGroupLayout }
 export const dataUtils = { DataManager, diagramManager }
 export const layoutUtils = layout
-
+export { go }
 export default {
   version: '1.0.0',
   install,
@@ -94,6 +96,8 @@ export default {
   View,
   Select,
   Search,
+  // go对象
+  go,
   // 方法类
   utils,
   nodeTmpl,
