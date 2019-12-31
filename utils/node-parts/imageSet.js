@@ -58,9 +58,16 @@ export default function($, go, options = {}) {
     padding: 2,
     shape: 'Circle'
   }
+  let defaultClip = {
+    width: 80,
+    height: 80,
+    figure: 'Circle'
+  }
   let _options = Object.assign(
     {
       layout: 'Spot',
+      isClipping: false,
+      clip: {},
       props: {},
       binding: [],
       images: []
@@ -71,20 +78,32 @@ export default function($, go, options = {}) {
   _options.images.forEach(item => {
     images.push(getImage($, go, item, defaultImage, _options.layout))
   })
+  _options.clips = Object.assign({}, defaultClip, _options.clips)
   return panel($, go, {
     type: _options.layout,
-    width: 100,
-    height: 100,
+    props: {
+      isClipping: _options.isClipping
+    },
     parts: [
+      $(go.Shape, 'Circle', {
+        width: _options.clip.width,
+        height: _options.clip.height,
+        fill: 'red',
+        stroke: null,
+        alignment: go.Spot.Center,
+        visible: _options.isClipping,
+        figure: _options.clip.figure || 'Circle'
+      }),
       $(go.Shape, 'Circle', {
         width: 2,
         height: 2,
         name: 'imageSetLoc',
-        fill: 'red',
+        fill: 'transparent',
         stroke: null,
         alignment: go.Spot.Center
       }),
       ...images
-    ]
+    ],
+    binding: _options.binding
   })
 }

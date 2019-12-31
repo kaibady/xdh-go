@@ -6,6 +6,11 @@
 |参数|说明|类型|可选值|默认值|
 |----|----|----|----|----|
 |layout|图片集的布局|'Spot'/'Vertical'/'Horizontal'/'Position'其它 go.PanelLayout|-|'Spot'|
+|isClipping|外框是否裁剪|Boolean|true/false|false|
+|clip|裁剪框的属性|Object|-|-|
+|clip.width|裁剪框的宽|Number|-|80|
+|clip.height|裁剪框的高|Number|-|80|
+|clip.figure|裁剪框的图形,isClipping 为 true 时可用|go.Shape 内置图形|-|'Circle'|
 |images|图片集|Array|-|-|
 |images[].name|对象名称|String|-|''|
 |images[].src|图片地址|String|-|''|

@@ -116,11 +116,11 @@
       ]
     }
   ],
-  "/applys/": [
+  "/examples/": [
     {
-      "title": "综合应用",
+      "title": "综合示例",
       "collapsable": false,
-      "children": ["base", "example1", "example2"]
+      "children": ["example1"]
     }
   ],
   "/api": null,
