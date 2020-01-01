@@ -48,7 +48,7 @@ export default {
         width: '150px',
         height: '150px',
         border: '2px solid #75a3fa',
-        'z-index': 9999,
+        'z-index': 1,
         'background-color': 'rgba(100,100,100,0.4)'
       },
       style: {}

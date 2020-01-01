@@ -173,6 +173,10 @@ export default {
     itemGap: {
       type: Number,
       default: 5
+    },
+    zIndex: {
+      type: Number,
+      default: 2
     }
   },
   computed: {
@@ -183,6 +187,7 @@ export default {
       return this.fixed
         ? `width: ${(this.innerRadius + this.itemWidth) * 2}px;
           height: ${(this.innerRadius + this.itemWidth) * 2}px;
+          z-index: ${this.zIndex};
           `
         : ''
     },
@@ -196,6 +201,7 @@ export default {
           height:${this.innerRadius * 2}px;
           margin-left: ${-this.innerRadius + this.fixedOffset}px;
           margin-top: ${-this.innerRadius + this.fixedOffset}px;
+          z-index: ${this.zIndex + 1};
           `
     }
   },
@@ -508,7 +514,7 @@ export default {
   top: 0;
   left: 0;
   position: fixed;
-  z-index: 10000;
+  z-index: 2;
   &.fixed {
     position: relative;
     display: block;

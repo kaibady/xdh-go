@@ -33,8 +33,8 @@ function getLayeredDigraphLayout($, go, options = {}) {
     {},
     commonOption,
     {
-      layerSpacing: 80,
-      columnSpacing: 30,
+      setsPortSpots: false,
+      layerSpacing: 0,
       layeringOption: go.LayeredDigraphLayout.LayerLongestPathSource
     },
     options

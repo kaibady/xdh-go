@@ -213,7 +213,8 @@ export default function handleAnimation(
       }
       return
     }
-    let oldIsOngoing, diagram, oldskips
+    // let oldIsOngoing
+    let diagram, oldskips
     let existEvent = animation.some(r => r.trigger === event)
     // 如果与当前事件无关，则返回
     if (existEvent) {
@@ -223,7 +224,7 @@ export default function handleAnimation(
       // animationPool = {};
       relateObjectState = {}
       animationQueue = {}
-      oldIsOngoing = node.diagram.layout.isOnging
+      // oldIsOngoing = node.diagram.layout.isOngoing
     } else {
       return
     }
@@ -236,7 +237,7 @@ export default function handleAnimation(
         }
         let propType = con.propType || propMapReverse[con.prop] || 'number'
         let keyFrame = handleKeyFrame(con.keyType, obj, con, propType)
-        node.diagram.layout.isOngoing = false
+        // node.diagram.layout.isOngoing = false
         tween({
           keyFrame: keyFrame,
           easingFunc: con.easingFunc || ['easeInQuad'],
@@ -272,7 +273,7 @@ export default function handleAnimation(
             if (obj) {
               obj.isAnimated = true
             }
-            node.diagram.layout.isOngoing = oldIsOngoing
+            // node.diagram.layout.isOngoing = oldIsOngoing
             if (afterFinish && typeof afterFinish === 'function') {
               afterFinish(true)
             }

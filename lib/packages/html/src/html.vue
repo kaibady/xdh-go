@@ -40,6 +40,10 @@ export default {
       type: String,
       required: true
     },
+    appendToBody: {
+      type: Boolean,
+      default: true
+    },
     menuStyle: {
       type: Object,
       default() {
@@ -122,7 +126,11 @@ export default {
     }
   },
   mounted() {
-    document.body.append(this.$children[0].$el)
+    if (this.appendToBody) {
+      document.body.append(this.$children[0].$el)
+    } else {
+      this.$parent.$parent.$el.append(this.$children[0].$el)
+    }
   }
 }
 </script>

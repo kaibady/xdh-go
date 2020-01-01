@@ -1,3 +1,8 @@
+## v1.5.8 (2020.1.1)
+
+- 修改imageSet参数
+- XdhGoHtml组件增加appendToBody参数
+
 ## v1.5.7 (2019.12.30)
 
 - 通用节点figure增加跨域设置配置
