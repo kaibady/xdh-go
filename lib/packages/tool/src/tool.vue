@@ -28,7 +28,7 @@
       </el-tooltip>
     </div>
     <xdh-go-draft :visible.sync="draftShow" :diagram-name="diagramName" ref="draft"></xdh-go-draft>
-    <xdh-go-viewer :visible.sync="viewerShow" :diagram-name="diagramName" ref="viewer"></xdh-go-viewer>
+    <xdh-go-viewer :visible.sync="viewerShow" v-if="viewerShow" :diagram-name="diagramName" ref="viewer"></xdh-go-viewer>
   </div>
 </template>
 <script>

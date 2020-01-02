@@ -1,7 +1,8 @@
-## v1.5.8 (2020.1.1)
+## v1.5.9 (2020.1.2)
 
 - 修改imageSet参数
 - XdhGoHtml组件增加appendToBody参数
+- 修改select,tool内部对于diagram-name参数的处理
 
 ## v1.5.7 (2019.12.30)
 

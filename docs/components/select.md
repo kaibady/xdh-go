@@ -26,6 +26,7 @@ XdhGoSelect 用于选择节点, 文档[XdhGoSelect](/api.html?url=/xdh-go/doc/mo
 <template>
   <div style="position:relative">
     <xdh-go-select
+       v-if="diagramShow"
       :diagram-name="'dig1'"
       ref="select"
       custom-class="my-select"
@@ -56,7 +57,7 @@ XdhGoSelect 用于选择节点, 文档[XdhGoSelect](/api.html?url=/xdh-go/doc/mo
     data() {
       return {
         model: 'GraphLinksModel',
-        diagram: null,
+        diagramShow: false,
         lock: false,
         nodes: [
           { key: 'A', category: 'a' },
@@ -79,6 +80,7 @@ XdhGoSelect 用于选择节点, 文档[XdhGoSelect](/api.html?url=/xdh-go/doc/mo
     computed: {},
     methods: {
       diagramReady(diagram, $, go) {
+        this.diagramShow = true
       },
       config($, go) {
         return {

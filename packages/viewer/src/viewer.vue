@@ -83,6 +83,8 @@
  */
 // import go from 'gojs'
 import draggable from '../../../utils/directives/draggable'
+import diagramManager from '../../../utils/dataManager/diagramManager'
+
 export default {
   name: 'XdhGoViewer',
   components: {},
@@ -91,15 +93,13 @@ export default {
   },
   /**
    * 参数属性
-   * @property {Object} [diagram=null] go.Diagram对象
+   * @property {String} [diagramName='dig'] go.Diagram对象名称
    * @property {Boolean} [visible=false] 是否可见
    */
   props: {
-    diagram: {
-      type: Object,
-      default() {
-        return null
-      }
+    diagramName: {
+      type: String,
+      default: 'dig'
     },
     visible: {
       type: Boolean,
@@ -132,7 +132,7 @@ export default {
       this.viewerVisible = val
       this.reloadDiagram()
     },
-    diagram(dig) {
+    diagramName(dig) {
       if (dig) {
         this.unbindEvents()
         setTimeout(() => {
@@ -144,7 +144,7 @@ export default {
   },
   methods: {
     reloadDiagram() {
-      let modelJson = this.diagram.model.toJson()
+      let modelJson = diagramManager[this.diagramName].model.toJson()
       let model = JSON.parse(modelJson)
       let nodes = [],
         links = []
@@ -215,27 +215,28 @@ export default {
       }
     },
     findNode(item) {
-      let nodeData = this.diagram.model.nodeDataArray.find(
+      let nodeData = diagramManager[this.diagramName].model.nodeDataArray.find(
         r => r.key === item.data.key
       )
       if (nodeData) {
-        let node = this.diagram.findNodeForData(nodeData)
-        this.diagram.clearSelection()
+        let node = diagramManager[this.diagramName].findNodeForData(nodeData)
+        diagramManager[this.diagramName].clearSelection()
         node.isSelected = true
         let rect = node.actualBounds
-        this.diagram.centerRect(rect)
+        diagramManager[this.diagramName].centerRect(rect)
         this.currKey = node.data.key
       } else {
-        let linkData = this.diagram.model.linkDataArray.find(r => {
+        let name = this.diagramName
+        let linkData = diagramManager[name].model.linkDataArray.find(r => {
           return r.from === item.data.from && r.to === item.data.to
         })
         if (linkData) {
-          let node = this.diagram.findLinkForData(linkData)
-          this.diagram.clearSelection()
+          let node = diagramManager[this.diagramName].findLinkForData(linkData)
+          diagramManager[this.diagramName].clearSelection()
           if (node) {
             node.isSelected = true
             let rect = node.actualBounds
-            this.diagram.centerRect(rect)
+            diagramManager[this.diagramName].centerRect(rect)
             this.currKey = `${node.data.from}_${node.data.to}`
           }
         }
@@ -273,15 +274,21 @@ export default {
       }, 300)
     },
     bindEvents() {
-      this.diagram.addDiagramListener('ObjectSingleClicked', this.objectClick)
-      this.diagram.addDiagramListener('ObjectDoubleClicked', this.objectDbClick)
-    },
-    unbindEvents() {
-      this.diagram.removeDiagramListener(
+      diagramManager[this.diagramName].addDiagramListener(
         'ObjectSingleClicked',
         this.objectClick
       )
-      this.diagram.removeDiagramListener(
+      diagramManager[this.diagramName].addDiagramListener(
+        'ObjectDoubleClicked',
+        this.objectDbClick
+      )
+    },
+    unbindEvents() {
+      diagramManager[this.diagramName].removeDiagramListener(
+        'ObjectSingleClicked',
+        this.objectClick
+      )
+      diagramManager[this.diagramName].removeDiagramListener(
         'ObjectDoubleClicked',
         this.objectDbClick
       )
@@ -292,7 +299,7 @@ export default {
   },
   mounted() {
     document.body.appendChild(this.$el)
-    if (this.diagram) {
+    if (diagramManager[this.diagramName]) {
       this.reloadDiagram()
     }
   },
