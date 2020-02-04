@@ -107,7 +107,7 @@ class DataManager {
     if (nodeData.key === undefined) {
       throw new Error('节点数据必须定义key')
     }
-    let exist = this.nodeExist[nodeData.key] ? true : false
+    let exist = this.nodeExist[nodeData.key]
     if (!exist) {
       this.diagram.model.addNodeData(nodeData)
       this.nodeExist[nodeData.key] = nodeData

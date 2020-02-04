@@ -60,7 +60,7 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
             model.addNodeData(n) // add N so that link to parent appears
             var child = diagram.findNodeForData(n)
             if (child !== null) {
-              var link = child.findTreeParentLink()
+              let link = child.findTreeParentLink()
               if (link !== null) {
                 // do this now to avoid delayed routing outside of transaction
                 link.fromNode.ensureBounds()
@@ -76,7 +76,7 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
 
   if (model instanceof go.GraphLinksModel) {
     var ldata = myWholeModel.linkDataArray
-    for (var i = 0; i < ldata.length; i++) {
+    for (let i = 0; i < ldata.length; i++) {
       var l = ldata[i]
       var fromkey = myWholeModel.getFromKeyForLinkData(l)
       if (fromkey === undefined) continue
@@ -96,7 +96,7 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
         model.addNodeData(from)
         model.addNodeData(to)
         model.addLinkData(l)
-        var link = diagram.findLinkForData(l)
+        let link = diagram.findLinkForData(l)
         if (link !== null) {
           // do this now to avoid delayed routing outside of transaction
           link.fromNode.ensureBounds()
@@ -202,8 +202,8 @@ function getVirtualizedLayeredDigraphLayout(go) {
       var dataVertexMap = new go.Map()
       // create a vertex for each node data
       var ndata = model.nodeDataArray
-      for (var i = 0; i < ndata.length; i++) {
-        var d = ndata[i]
+      for (let i = 0; i < ndata.length; i++) {
+        let d = ndata[i]
         var v = this.createVertex()
         v.data = d // associate this Vertex with data, not a Node
         dataVertexMap.set(model.getKeyForNodeData(d), v)
@@ -211,7 +211,7 @@ function getVirtualizedLayeredDigraphLayout(go) {
       }
       // create an edge for each link data
       var ldata = model.linkDataArray
-      for (var i = 0; i < ldata.length; i++) {
+      for (let i = 0; i < ldata.length; i++) {
         var d = ldata[i]
         // now find corresponding vertexes
         var from = dataVertexMap.get(model.getFromKeyForLinkData(d))

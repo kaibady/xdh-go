@@ -60,9 +60,9 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
           b.unionRect(parent.bounds)
           if (b.intersectsRect(viewb)) {
             model.addNodeData(n) // add N so that link to parent appears
-            var child = diagram.findNodeForData(n)
+            let child = diagram.findNodeForData(n)
             if (child !== null) {
-              var link = child.findTreeParentLink()
+              let link = child.findTreeParentLink()
               if (link !== null) {
                 // do this now to avoid delayed routing outside of transaction
                 link.fromNode.ensureBounds()
@@ -78,7 +78,7 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
 
   if (model instanceof go.GraphLinksModel) {
     var ldata = myWholeModel.linkDataArray
-    for (var i = 0; i < ldata.length; i++) {
+    for (let i = 0; i < ldata.length; i++) {
       var l = ldata[i]
       var fromkey = myWholeModel.getFromKeyForLinkData(l)
       if (fromkey === undefined) continue
@@ -98,7 +98,7 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
         model.addNodeData(from)
         model.addNodeData(to)
         model.addLinkData(l)
-        var link = diagram.findLinkForData(l)
+        let link = diagram.findLinkForData(l)
         if (link !== null) {
           // do this now to avoid delayed routing outside of transaction
           link.fromNode.ensureBounds()
@@ -213,7 +213,7 @@ function getVirtualizedTreeLayout(go) {
         this.addVertex(v)
       }
 
-      for (var i = 0; i < ndata.length; i++) {
+      for (let i = 0; i < ndata.length; i++) {
         var child = ndata[i]
         var parentkey = model.getParentKeyForNodeData(child)
         var parent = model.findNodeDataForKey(parentkey)
