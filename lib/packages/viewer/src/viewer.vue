@@ -87,7 +87,8 @@ import diagramManager from '../../../utils/dataManager/diagramManager'
 
 export default {
   name: 'XdhGoViewer',
-  components: {},
+  components: {
+  },
   directives: {
     draggable
   },

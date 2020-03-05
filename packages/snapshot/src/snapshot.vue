@@ -30,10 +30,10 @@
  */
 import go from 'gojs'
 import diagramManager from '../../../utils/dataManager/diagramManager'
-
 export default {
   name: 'XdhGoSnapshot',
-  components: {},
+  components: {
+  },
   /**
    * 参数属性
    * @property {String} [layout='image,imageData,svg'] 按钮布局

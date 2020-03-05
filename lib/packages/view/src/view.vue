@@ -53,7 +53,6 @@
  */
 import go from 'gojs'
 import diagramManager from '../../../utils/dataManager/diagramManager'
-
 let viewMenus = [
   {
     name: '隐藏',
@@ -86,7 +85,8 @@ let viewMenus = [
 ]
 export default {
   name: 'XdhGoView',
-  components: {},
+  components: {
+  },
   /**
    * 参数属性
    * @property {String} [diagramName='dig'] go.Diagram对象名称
@@ -159,7 +159,12 @@ export default {
        */
       this.$emit('item-click', item)
       if (this.handlers[name]) {
-        this.handlers[name](diagramManager[this.diagramName], go.GraphObject.make, go, item)
+        this.handlers[name](
+          diagramManager[this.diagramName],
+          go.GraphObject.make,
+          go,
+          item
+        )
         return
       }
       let set = new go.Set()

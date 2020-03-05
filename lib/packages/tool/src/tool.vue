@@ -41,7 +41,6 @@ import draggable from '../../../utils/directives/draggable'
 import XdhGoDraft from '../../draft'
 import XdhGoViewer from '../../viewer'
 import diagramManager from '../../../utils/dataManager/diagramManager'
-
 export default {
   name: 'XdhGoTool',
   components: {

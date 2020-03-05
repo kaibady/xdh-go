@@ -96,7 +96,6 @@
  * @property {Boolean} [tips.showTips] 是否显示提示信息
  */
 import diagramManager from '../../../utils/dataManager/diagramManager'
-
 import go from 'gojs'
 let viewMenus = [
   {
@@ -116,6 +115,8 @@ let viewMenus = [
 ]
 export default {
   name: 'XdhGoSelect',
+  components: {
+  },
   /**
    * 参数属性
      * @property {String} [diagramName='dig'] go.Diagram对象名称
@@ -380,7 +381,7 @@ export default {
       )
       diagramManager[this.diagramName].toolManager.draggingTool.doMouseMove =
         go.DraggingTool.prototype.doMouseMove
-        let name = this.diagramName;
+      let name = this.diagramName
       diagramManager[name].toolManager.clickSelectingTool.doMouseUp =
         go.ClickSelectingTool.prototype.doMouseUp
       diagramManager[this.diagramName].commandHandler.doKeyDown =

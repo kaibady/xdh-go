@@ -222,7 +222,7 @@ shape 参数为'icon'时有效
 |参数|说明|类型|可选值|默认值|
 |----|----|----|----|----|
 |icon|字体图标类型参数|Object/String|-|-|
-|icon.font|字体图标 iconfont|String|-|'30px "iconfont"',font-family 类型默认为 iconfont|
+|icon.font|字体图标 iconfont|String|-|'30px "element-icons"',font-family 类型默认为 element-icons|
 |icon.text|字体图标内容|String|-|'\uE7BD'|
 |iconColor|图标颜色|Object/String|-|gray 状态为'#ccc', 其它为'#1890ff'|
 

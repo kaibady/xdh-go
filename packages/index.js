@@ -31,7 +31,7 @@ import {
   getGroupDragging,
   setGroupLayout
 } from '../utils/group'
-console.log('go', go)
+
 const components = [
   Go,
   Html,
@@ -82,7 +82,7 @@ export const dataUtils = { DataManager, diagramManager }
 export const layoutUtils = layout
 export { go }
 export default {
-  version: '1.0.0',
+  version: '1.6.3',
   install,
   Go,
   Html,

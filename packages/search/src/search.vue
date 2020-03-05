@@ -9,7 +9,7 @@
       :index="index"
       :popoverShow="popoverShow"
     >
-      <el-popover v-model="popoverShow" ref="popover" trigger="manual" placement="bottom">
+      <el-popover v-model="popoverShow" ref="popover" trigger="manual" popper-class="xdh-go-popover" placement="bottom">
         <slot name="popover" :searchResult="searchResult" :keyword="keyword">
           <div>比中类型: {{searchResult.type}}</div>
           <div>关键字: {{keyword}}</div>
@@ -62,10 +62,10 @@
  * @property {String} [popover.searchResult.type] 比中类型
  */
 import diagramManager from '../../../utils/dataManager/diagramManager'
-
 export default {
   name: 'XdhGoSearch',
-  components: {},
+  components: {
+  },
   /**
    * 参数属性
    * @property {String} [diagramName='dig'] go.Diagram对象名称
