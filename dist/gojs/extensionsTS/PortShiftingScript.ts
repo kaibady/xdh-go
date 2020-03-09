@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 /*
@@ -10,9 +10,9 @@
 * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
 */
 
-import * as go from '../release/go';
-import './Figures';
-import { PortShiftingTool } from './PortShiftingTool';
+import * as go from '../release/go.js';
+import './Figures.js';
+import { PortShiftingTool } from './PortShiftingTool.js';
 
 const red: string = 'orangered';  // 0 or false
 const green: string = 'forestgreen';  // 1 or true

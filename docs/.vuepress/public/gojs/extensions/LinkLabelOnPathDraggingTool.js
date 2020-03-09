@@ -1,6 +1,6 @@
 "use strict";
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 // A custom Tool for moving a label on a Link that keeps the label on the link's path.
@@ -25,8 +25,6 @@ function LinkLabelOnPathDraggingTool() {
 
   /** @type {GraphObject} */
   this.label = null;
-  /** @type {number} */
-  this._originalIndex = null;
   /** @type {number} */
   this._originalFraction = null;
 }
@@ -80,7 +78,6 @@ LinkLabelOnPathDraggingTool.prototype.doActivate = function() {
   this.startTransaction("Shifted Label");
   this.label = this.findLabel();
   if (this.label !== null) {
-    this._originalIndex = this.label.segmentIndex;
     this._originalFraction = this.label.segmentFraction;
   }
   go.Tool.prototype.doActivate.call(this);
@@ -110,7 +107,6 @@ LinkLabelOnPathDraggingTool.prototype.doStop = function() {
 */
 LinkLabelOnPathDraggingTool.prototype.doCancel = function() {
   if (this.label !== null) {
-    this.label.segmentIndex = this._originalIndex;
     this.label.segmentFraction = this._originalFraction;
   }
   go.Tool.prototype.doCancel.call(this);
@@ -138,7 +134,7 @@ LinkLabelOnPathDraggingTool.prototype.doMouseUp = function() {
 }
 
 /**
-* Save the label's GraphObject.segmentIndex and segmentFraction at the closest point to the mouse.
+* Save the label's GraphObject.segmentFraction at the closest point to the mouse.
 * @this {LinkLabelOnPathDraggingTool}
 */
 LinkLabelOnPathDraggingTool.prototype.updateSegmentOffset = function() {
@@ -148,13 +144,8 @@ LinkLabelOnPathDraggingTool.prototype.updateSegmentOffset = function() {
   if (!(link instanceof go.Link)) return;
 
   var last = this.diagram.lastInput.documentPoint;
-  var idx = link.findClosestSegment(last);
-  idx = Math.min(Math.max(link.firstPickIndex, idx), link.lastPickIndex - 1);
-  var p1 = link.getPoint(idx);
-  var p2 = link.getPoint(idx + 1);
-  var total = Math.sqrt(p1.distanceSquaredPoint(p2));
-  var p = last.copy().projectOntoLineSegmentPoint(p1, p2);
-  var frac = Math.sqrt(p1.distanceSquaredPoint(p)) / total;
-  lab.segmentIndex = idx;
-  lab.segmentFraction = frac;
+  // find the fractional distance along the link path closest to this point
+  var path = link.path;
+  var localpt = path.getLocalPoint(last);
+  lab.segmentFraction = path.geometry.getFractionForPoint(localpt);
 }

@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 1998-2019 by Northwoods Software Corporation
+* Copyright (C) 1998-2020 by Northwoods Software Corporation
 * All Rights Reserved.
 *
 * Go Net Core (unfinished)
@@ -7,7 +7,7 @@
 
 import { Promise } from 'es6-promise';
 import * as go from 'gojs';
-import * as gcs from './GoCloudStorage';
+import * as gcs from './GoCloudStorage.js';
 
 /**
  * @hidden

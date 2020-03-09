@@ -1,16 +1,16 @@
 /*
- * Type definitions for GoJS v2.1.0
+ * Type definitions for GoJS v2.1.9
  * Project: https://gojs.net
  * Definitions by: Northwoods Software <https://github.com/NorthwoodsSoftware>
  * Definitions: https://github.com/NorthwoodsSoftware/GoJS
- * Copyright (C) 1998-2019 by Northwoods Software Corporation.
+ * Copyright (C) 1998-2020 by Northwoods Software Corporation.
  * This requires TypeScript v2.8 or later.
  */
 
 
 // UMD. For ES6, use go-module.d.ts
 
-export namespace go {
+export as namespace go;
 
 /**
  * The ObjectData type is the same as `{ [index: string]: any; }`.
@@ -1404,6 +1404,20 @@ export class Point {
      */
     direction(px: number, py: number): number;
     /**
+     * Undocumented.
+     * This static function is true if two finite straight line segments intersect each other.
+     * @param {number} a1x
+     * @param {number} a1y
+     * @param {number} a2x
+     * @param {number} a2y
+     * @param {number} b1x
+     * @param {number} b1y
+     * @param {number} b2x
+     * @param {number} b2y
+     * @return {boolean} True if the two given finite line segments intersect with each other, false otherwise.
+     */
+    static intersectingLineSegments(a1x: number, a1y: number, a2x: number, a2y: number, b1x: number, b1y: number, b2x: number, b2y: number): boolean;
+    /**
      * Modify this point to be the closest point to this point that is on a finite line segment.
      * @param {number} px one end of the finite line segment
      * @param {number} py one end of the finite line segment
@@ -1938,6 +1952,20 @@ export class Rect {
      * @return {boolean} true if there is any overlap.
      */
     static intersects(rx: number, ry: number, rw: number, rh: number, x: number, y: number, w: number, h: number): boolean;
+    /**
+     * Undocumented.
+     * This static function is true if a rectangular area is intersected by a finite straight line segment.
+     * @param {number} x The X coordinate of the rectangle to check for intersection with the line segment.
+     * @param {number} y The Y coordinate of the rectangle to check for intersection with the line segment.
+     * @param {number} w The Width of the rectangle to check for intersection with the line segment.
+     * @param {number} h The Height of the rectangle to check for intersection with the line segment.
+     * @param {number} p1x The X coordinate of one end of the line segment.
+     * @param {number} p1y The Y coordinate of one end of the line segment.
+     * @param {number} p2x The X coordinate of other end of the line segment.
+     * @param {number} p2y The Y coordinate of other end of the line segment.
+     * @return {boolean} True if the given finite line segment intersects with the given rectangular area, false otherwise.
+     */
+    static intersectsLineSegment(x: number, y: number, w: number, h: number, p1x: number, p1y: number, p2x: number, p2y: number): boolean;
     /**
      * Gets or sets the top-left x coordinate of the Rect.
      */
@@ -2677,16 +2705,29 @@ export class Geometry {
      */
     rotate(angle: number, x?: number, y?: number): Geometry;
     /**
-     * Undocumented
+     * Undocumented.
+     * @param {Point} p in local geometry coordinates
+     * @param {number=} sw half the stroke width that a Shape has or that you want to pretend it has
+     * @return {boolean}
+     */
+    containsPoint(p: Point, sw?: number): boolean;
+    /**
+     * Returns the point at the fractional distance (0-1) along this Geometry's path.
      * @param {number} fraction A fractional amount between 0 and 1, inclusive.
-     * @param {Point=} result an optional Point that is modified and returned.
-     * @return {Point}
+     * @param {Point=} result an optional Point that is modified and returned; otherwise it allocates and returns a new Point.
+     * @return {Point} the Point, in local coordinates, of the fractional distance along the path.
      */
     getPointAlongPath(fraction: number, result?: Point): Point;
     /**
-     * Undocumented
-     * @param {Point} pt A Point near the this Geometry.
+     * Returns the slope expressed as an angle at the fractional distance (0-1) along this Geometry's path, in local coordinates.
+     * @param {number} fraction A fractional amount between 0 and 1, inclusive.
      * @return {number}
+     */
+    getAngleAlongPath(fraction: number): number;
+    /**
+     * Returns the fractional distance (0-1) along this Geometry's path for a nearby point.
+     * @param {Point} pt A Point, in local coordinates, near this Geometry.
+     * @return {number} A fractional amount between 0 and 1, inclusive.
      */
     getFractionForPoint(pt: Point): number;
     /**
@@ -5573,6 +5614,21 @@ export class DraggingTool extends Tool {
      * This property is a convenience getter/setter, and sets a value on dragOptions.
      */
     dragsTree: boolean;
+    /** @hidden
+     * The cursor to show when a drop is allowed and will result in a copy.
+     * This defaults to 'copy'.
+     */
+    copyCursor: string;
+    /** @hidden
+     * The cursor to show when a drop is allowed and will result in a move.
+     * This defaults to the empty string, which refers to the Diagram#defaultCursor.
+     */
+    moveCursor: string;
+    /** @hidden
+     * The cursor to show when a drop is not allowed.
+     * This defaults to 'no-drop'.
+     */
+    nodropCursor: string;
     /**
      * Gets the Part found at the mouse point.
      * This is normally set by a call to #standardMouseSelect.
@@ -5775,12 +5831,11 @@ export class DraggingTool extends Tool {
      * Undocumented
      * @expose
      * @param {Event} e
-     * @param {Diagram} other
      * @param {Point} modelpt
      * @param {Diagram} curdiag
      * @return {boolean}
      */
-    simulatedMouseUp(e: Event | Touch | null, other: Diagram | null, modelpt: Point, curdiag: Diagram | null): boolean;
+    simulatedMouseUp(e: Event | Touch | null, modelpt: Point, curdiag: Diagram | null): boolean;
     /**
      * This predicate is true when the diagram allows objects to be copied and inserted,
      * and some object in the selection is copyable,
@@ -5862,6 +5917,11 @@ export abstract class LinkingBaseTool extends Tool {
      * @since 1.3
      */
     isUnconnectedLinkValid: boolean;
+    /** @hidden
+     * Gets or sets the cursor used during the linking or relinking operation.
+     * This defaults to 'pointer'.
+     */
+    linkingCursor: string;
     /**
      * Gets or sets the temporary Link that is shown while the user is drawing or reconnecting a link.
      * Setting this property does not raise any events.
@@ -7089,6 +7149,12 @@ export class ResizingTool extends Tool {
      * Setting this property does not raise any events.
      */
     isGridSnapEnabled: boolean;
+    /**
+     * Undocumented.
+     * Gets the Point opposite to the chosen, dragged handle of the "Resizing" Adornment.
+     * This property has no meaning until after #doActivate has been called.
+     */
+    oppositePoint: Point;
     /**
      * This read-only property returns the Size that was the original value of the GraphObject#desiredSize
      * of the element that is being resized.
@@ -10299,10 +10365,12 @@ export class Diagram {
      * Deselect all selected Parts.
      * This removes all parts from the #selection collection.
      * This method raises the "ChangingSelection" and "ChangedSelection" Diagram events.
+     * @expose
+     * @param {boolean=} skipsEvents if true, do not raise the DiagramEvents "ChangingSelection" and "ChangedSelection"; if not supplied the value is assumed to be false.
      * @see #select
      * @see #selectCollection
      */
-    clearSelection(): void;
+    clearSelection(skipsEvents?: boolean): void;
     /**
      * Make the given object the only selected object.
      * This method raises the "ChangingSelection" and "ChangedSelection" Diagram events.
@@ -10323,6 +10391,7 @@ export class Diagram {
     /**
      * Remove highlights from all Parts.
      * This removes all parts from the #highlighteds collection.
+     * @expose
      * @see #highlight
      * @see #highlightCollection
      * @see Part#isHighlighted
@@ -10366,6 +10435,7 @@ export class Diagram {
      * @param {Rect} r
      * @see #centerRect
      * @see #scroll
+     * @see CommandHandler#scrollToPart
      */
     scrollToRect(r: Rect): void;
     /**
@@ -12166,6 +12236,8 @@ export class Overview extends Diagram {
      * @param {Element|string} div A reference to a div or its ID as a string.
      */
     constructor(div?: Element | string);
+    private saveSnapshot;
+    private drawObserved;
     /**
      * Gets or sets the Diagram for which this Overview is
      * displaying a model and showing its viewport into that model.
@@ -12183,9 +12255,32 @@ export class Overview extends Diagram {
     /**
      * Gets or sets whether this overview draws the temporary layers of the observed Diagram.
      * The default value is true.
+     * Setting this property to false may improve drawing performance,
+     * especially if the Diagram#grid is visible.
+     *
+     * Setting this property does not notify about any changed event.
      * @since 1.2
      */
     drawsTemporaryLayers: boolean;
+    /**
+     * Gets or sets whether this overview draws the Diagram#grid of the observed Diagram,
+     * if it is visible.  The default value is true.
+     *
+     * This property is only considered when #drawsTemporaryLayers is true.
+     * Setting this to false may help improve drawing performance.
+     *
+     * Setting this property does not notify about any changed event.
+     */
+    drawsGrid: boolean;
+    /**
+     * Undocumented.
+     * Gets or sets how long it waits before updating, in milliseconds.
+     * The default value is zero.
+     * Any new value must be a non-negative number.
+     *
+     * Setting this property does not notify about any changed event.
+     */
+    updateDelay: number;
 }
 /**
  * The Diagram#commandHandler implements various
@@ -12580,7 +12675,7 @@ export class CommandHandler {
      * This method may be overridden, but you should consider calling this base method in order to get all of its functionality.
      * Please read the Introduction page on <a href="../../intro/extensions.html">Extensions</a> for how to override methods and how to call this base method.
      * @expose
-     * @param {number=} newscale This defaults to #defaultScale, which is normally 1.0.  The value should be greater than zero.
+     * @param {number=} newscale This defaults to Diagram#defaultScale, which is normally 1.0.  The value should be greater than zero.
      * @see #canResetZoom
      */
     resetZoom(newscale?: number): void;
@@ -12591,7 +12686,7 @@ export class CommandHandler {
      * This method must not have any side-effects.
      * Please read the Introduction page on <a href="../../intro/extensions.html">Extensions</a> for how to override methods and how to call this base method.
      * @expose
-     * @param {number=} newscale This defaults to #defaultScale, which is normally 1.0.  The value should be greater than zero.
+     * @param {number=} newscale This defaults to Diagram#defaultScale, which is normally 1.0.  The value should be greater than zero.
      * @return {boolean}
      * This returns true if Diagram#allowZoom is true.
      * and if the new scale is within the range of Diagram#minScale and Diagram#maxScale.
@@ -12632,15 +12727,19 @@ export class CommandHandler {
      * if there are any Parts in that collection, or else in the Diagram#selection collection,
      * scrolling to each one in turn by calling Diagram#centerRect.
      *
+     * This method animates to the scrolled part, and Diagram#scrollToRect does not.
+     *
      * This is normally invoked by the `Space` keyboard shortcut.
      * If there is no argument and there is no highlighted or selected Part, this command does nothing.
      *
      * This method may be overridden, but you should consider calling this base method in order to get all of its functionality.
      * Please read the Introduction page on <a href="../../intro/extensions.html">Extensions</a> for how to override methods and how to call this base method.
+     *
      * @expose
      * @param {Part=} part This defaults to the first highlighted Part of Diagram#highlighteds,
      *                     or, if there are no highlighted Parts, the first selected Part.
      * @see #canScrollToPart
+     * @see Diagram#scrollToRect
      * @since 1.6
      */
     scrollToPart(part?: Part): void;
@@ -13041,14 +13140,8 @@ export class CommandHandler {
      */
     memberValidation: ((aGroup: Group, somePart: Part) => boolean) | null;
     /**
+     * Undocumented.
      * Deprecated in favor of Diagram#defaultScale.
-     *
-     * Gets or sets the Diagram#scale set by #resetZoom.
-     *
-     * The default value is 1.0.
-     * The value must be a number larger than 0.
-     * Setting this property does not raise any events.
-     * @since 1.3
      */
     defaultScale: number;
     /**
@@ -13562,7 +13655,10 @@ export abstract class GraphObject {
      * Non-negative numbers count up from zero, which is the first segment, at the "from" end of the Link.
      * Negative numbers count segments from the "to" end of the Link, where -1 means the last segment
      * and -2 means the next-to-last segment.
-     * The value should be an integer.
+     * The default value is -Infinity. The value should be an integer or NaN.
+     *
+     * Setting this value to NaN means #segmentFraction's fractional distance will be calculated along the entire link route.
+     * A NaN value also means the Link#midPoint and Link#midAngle will not be used when determining label positions.
      *
      * If you do not set this property, the Link will choose a place that is approximately at the
      * mid-point of the link's route.
@@ -13578,6 +13674,8 @@ export abstract class GraphObject {
      * The value should be between zero and one, where zero is at the point at the start of the segment,
      * and where one is at the point at the end of the segment.
      * The default value is zero.
+     *
+     * If #segmentIndex is set to NaN, the fractional distance will be calculated along the entire link route.
      *
      * For examples of how to use this property, see <a href="../../intro/linkLabels.html">Link Labels</a>.
      * @see #segmentIndex
@@ -15460,7 +15558,7 @@ export abstract class PanelLayout {
      * @expose
      * @param {Panel} panel Panel which called this layout
      * @param {number} width expected width of the panel
-     * @param {number} height expected width of the panel
+     * @param {number} height expected height of the panel
      * @param {Array.<GraphObject>} elements Array of Panel elements
      * @param {Rect} union rectangle to contain the expected union bounds of every element in the Panel. Useful for arrange.
      * @param {number} minw minimum width of the panel
@@ -15473,7 +15571,7 @@ export abstract class PanelLayout {
      *
      * @param {GraphObject} obj Panel which called this layout
      * @param {number} width expected width of the GraphObject
-     * @param {number} height expected width of the GraphObject
+     * @param {number} height expected height of the GraphObject
      * @param {number} minw minimum width of the GraphObject
      * @param {number} minh minimum height of the GraphObject
      */
@@ -18785,7 +18883,7 @@ export class Part extends Panel {
      * This predicate is true if this part is a member of the given Part, perhaps indirectly.
      *
      * If the given part is a Group and this part is a member of the given group, this returns true.
-     * If this part is a Node and it is a label node for the given link, this returns true.
+     * If this part is a Node and it is a label node for a link that is a member of the given group, this returns true.
      * Otherwise this searches recursively any Part#containingGroup of the given part.
      *
      * A part cannot be contained by itself.
@@ -19782,6 +19880,19 @@ export class Group extends Node {
      */
     constructor(type?: PanelLayout);
     /**
+     * Measures if needed to make sure the GraphObject#measuredBounds and GraphObject#naturalBounds are all real numbers,
+     * primarily to get the actual width and height.
+     * GraphObject#actualBounds will get a real width and height, but the x and y values may continue to be `NaN`
+     * if they were that way beforehand.
+     *
+     * This is sometimes necessary to call when defining custom layouts or implementing virtualization,
+     * so that it can work with the actual size of the nodes.
+     *
+     * For efficiency, do not call this method unnecessarily.
+     * @since 1.6
+     */
+    ensureBounds(): void;
+    /**
      * This read-only property returns a Placeholder that this group may contain in its visual tree.
      */
     readonly placeholder: Placeholder | null;
@@ -19940,7 +20051,7 @@ export class Group extends Node {
     findExternalNodesConnected(): Iterator<Node>;
     /**
      * Return a collection of Parts that are all of the nodes and links
-     * that are members of this group, including inside nested groups,
+     * that are members of this group, including inside nested groups and label nodes,
      * but excluding this group itself.
      *
      * For member nodes that are Groups, this will include its members recursively.
@@ -21054,8 +21165,21 @@ export class Link extends Part {
      * The value must be one of Link.None|None, Link.End|End, Link.Scale|Scale, or Link.Stretch|Stretch.
      *
      * The default value is Link.None|None -- the route is completely recalculated each time.
+     * @see #computeAdjusting
      */
     adjusting: EnumValue;
+    /**
+     * Returns the #adjusting value, unless this Link's Diagram is animating, then it will return Link.End|End
+     *
+     * This method may be overridden.
+     * Please read the Introduction page on <a href="../../intro/extensions.html">Extensions</a> for how to override methods and how to call this base method.
+     *
+     * @expose
+     * @return {EnumValue}
+     * @since 2.1
+     * @see #adjusting
+     */
+    computeAdjusting(): EnumValue;
     /**
      * Gets or sets how rounded the corners are for adjacent line segments when the #curve
      * is Link.None|None, Link.JumpGap|JumpGap, or Link.JumpOver|JumpOver and
@@ -22637,6 +22761,16 @@ export class Model {
      */
     skipsUndoManager: boolean;
     /**
+     * Undocumented.
+     * This is called during an undo or redo to modify the model or its objects.
+     *
+     * This does not raise a ChangedEvent.
+     * @expose
+     * @param {ChangedEvent} e This describes the change that needs to be done.
+     * @param {boolean} undo If true, this method should restore the older state, otherwise the newer state.
+     */
+    changeState(e: ChangedEvent, undo: boolean): void;
+    /**
      * Begin a transaction, where the changes are held by a Transaction object
      * in the UndoManager.
      * This just calls UndoManager#startTransaction.
@@ -23376,7 +23510,7 @@ export class Binding {
      * @param {function(*,*)|null=} conv A side-effect-free function converting the data property value to the value to set the target property.
      *   If the function is null or not supplied, no conversion takes place.
      */
-    constructor(targetprop?: string, sourceprop?: string, conv?: ((val: any, targetObj: any) => void) | null);
+    constructor(targetprop?: string, sourceprop?: string, conv?: ((val: any, targetObj: any) => any) | null);
     /**
      * Create a copy of this Binding, with the same property values.
      * @expose
@@ -23483,7 +23617,7 @@ export class Binding {
      * If the #targetProperty is the empty string, the function should
      * set a property on the second argument, which will be the target GraphObject.
      */
-    converter: ((val: any, targetObj: any) => void) | null;
+    converter: ((val: any, targetObj: any) => any) | null;
     /**
      * Gets or sets a converter function to apply to the GraphObject property value
      * in order to produce the value to set to a data property.
@@ -23506,7 +23640,7 @@ export class Binding {
      * If the #sourceProperty is the empty string, the function should
      * modify the second argument, which will be the source data object.
      */
-    backConverter: ((val: any, srcData: any, model: any) => void) | null;
+    backConverter: ((val: any, srcData: any, model: any) => any) | null;
     /**
      * Gets or sets the directions and frequency in which the binding may be evaluated.
      * The default value is Binding.OneWay.
@@ -23535,7 +23669,7 @@ export class Binding {
      * @param {function(*,*,*) | null=} backconv
      * @return {Binding} this two-way Binding.
      */
-    makeTwoWay(backconv?: ((val: any, srcData: any, model: any) => void) | null): Binding;
+    makeTwoWay(backconv?: ((val: any, srcData: any, model: any) => any) | null): Binding;
     /**
      * Modify this Binding to set its #sourceName property so as to identify
      * a GraphObject in the visual tree of the bound Panel as the data source,
@@ -27036,8 +27170,4 @@ export class TreeEdge extends LayoutEdge {
     relativePoint: Point;
 }
 
-
-
-
-} //END go
 

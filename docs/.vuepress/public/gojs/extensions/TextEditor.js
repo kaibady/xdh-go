@@ -1,6 +1,6 @@
 "use strict";
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 // HTML + JavaScript text editor menu, made with HTMLInfo
@@ -75,9 +75,12 @@
 
   TextEditor.mainElement = textarea; // to reference it more easily
 
+  TextEditor.tool = null; // Initialize
+
   // used to be in doActivate
   TextEditor.show = function(textBlock, diagram, tool) {
     if (!(textBlock instanceof go.TextBlock)) return;
+    if (TextEditor.tool !== null) return; // Only one at a time.
 
     TextEditor.tool = tool;  // remember the TextEditingTool for use by listeners
 

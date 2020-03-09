@@ -1,14 +1,14 @@
 /*
-* Copyright (C) 1998-2019 by Northwoods Software Corporation
+* Copyright (C) 1998-2020 by Northwoods Software Corporation
 * All Rights Reserved.
 *
 * FLOOR PLANNER: WALL RESHAPING TOOL
 * Used to reshape walls via their endpoints in a Floorplan
 */
 
-import * as go from '../../../release/go';
-import { Floorplan } from './Floorplan';
-import { WallBuildingTool } from './WallBuildingTool';
+import * as go from '../../../release/go.js';
+import { Floorplan } from './Floorplan.js';
+import { WallBuildingTool } from './WallBuildingTool.js';
 
 export class WallReshapingTool extends go.Tool {
 

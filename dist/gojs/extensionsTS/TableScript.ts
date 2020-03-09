@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 /*
@@ -10,8 +10,8 @@
 * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
 */
 
-import * as go from '../release/go';
-import { TableLayout } from './TableLayout';
+import * as go from '../release/go.js';
+import { TableLayout } from './TableLayout.js';
 
 // define a custom ResizingTool to limit how far one can shrink a row or column
 class LaneResizingTool extends go.ResizingTool {

@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 /*
@@ -10,9 +10,8 @@
 * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
 */
 
-import * as go from '../release/go';
-import { FishboneLayout } from './FishboneLayout';
-import { FishboneLink } from './FishboneLayout';
+import * as go from '../release/go.js';
+import { FishboneLayout, FishboneLink } from './FishboneLayout.js';
 
 let myDiagram: go.Diagram;
 

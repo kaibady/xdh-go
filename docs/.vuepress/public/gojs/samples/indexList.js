@@ -1,4 +1,4 @@
-/* Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved. */
+/* Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved. */
 /**
  * Be sure to add any new samples to this list, to assets/js/goSamples.js, and to samples/all.html.
  */
@@ -976,6 +976,14 @@ arr.push([
 ]);
 
 arr.push([
+  "../extensions/PackedHierarchy",
+  "Packed Hierarchy",
+  "A customized PackedLayout that arranges nested circular groups.",
+  "PackedHierarchy",
+  ["customlayout", "extensions"]
+]);
+
+arr.push([
   "svgDataUrl",
   "SVG Data URL",
   "In makeSVG, replace image sources with Base64",
@@ -1679,9 +1687,9 @@ arr.push([
 ]);
 
 arr.push([
-  "customAnimations",
-  "Custom Animations",
-  "Shows how to create several custom Node animations.",
-  "customAnimations",
-  ["animation"]
+  "gameOfLife",
+  "Game of Life",
+  "A cellular automation simulation.",
+  "gameOfLife",
+  [""]
 ]);

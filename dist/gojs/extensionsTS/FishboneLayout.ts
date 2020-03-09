@@ -1,5 +1,5 @@
 ﻿/*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 /*
@@ -10,8 +10,7 @@
 * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
 */
 
-import * as go from '../release/go';
-import { TreeVertex } from '../release/go';
+import * as go from '../release/go.js';
 
 /**
  * FishboneLayout is a custom {@link Layout} derived from {@link TreeLayout} for creating "fishbone" diagrams.
@@ -54,7 +53,7 @@ export class FishboneLayout extends go.TreeLayout {
     const net = super.makeNetwork(coll);
     // make a copy of the collection of TreeVertexes
     // because we will be modifying the TreeNetwork.vertexes collection in the loop
-    const verts = new go.List<go.TreeVertex>().addAll(net.vertexes as any as go.Set<TreeVertex>);
+    const verts = new go.List<go.TreeVertex>().addAll(net.vertexes.iterator as go.Iterator<go.TreeVertex>);
     verts.each(function(v: go.TreeVertex) {
       // ignore leaves of tree
       if (v.destinationEdges.count === 0) return;
@@ -235,6 +234,7 @@ export class FishboneLayout extends go.TreeLayout {
  * @category Part Extension
  */
 export class FishboneLink extends go.Link {
+  public computeAdjusting(): go.EnumValue { return this.adjusting; }
   /**
    * Determines the points for this link based on spots and maintains horizontal lines.
    */

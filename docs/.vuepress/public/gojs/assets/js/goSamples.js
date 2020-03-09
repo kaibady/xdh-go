@@ -1,4 +1,4 @@
-/* Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved. */
+/* Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved. */
 
 // When adding samples or extensions, modify this file, samples/all.html, and samples/indexList.js
 // along with adding a 400x400 screenshot in assets/images/screenshots.
@@ -65,6 +65,7 @@ function goSamples() {
   // determine if it's an extension
   var isExtension = (location.pathname.split('/').slice(-2)[0].indexOf("extensions") >= 0);
   var isTS = (location.pathname.split('/').slice(-2)[0].indexOf("TS") > 0);
+  var isJSM = (location.pathname.split('/').slice(-2)[0].indexOf("JSM") > 0);
 
   // save the body for goViewSource() before we modify it
   window.bodyHTML = document.body.innerHTML;
@@ -106,7 +107,7 @@ function goSamples() {
   var samplename = location.pathname.substring(location.pathname.lastIndexOf("/") + 1);
   p1.innerHTML = "<a href='https://github.com/NorthwoodsSoftware/GoJS/blob/master/" +
                  (isExtension ? "extensions" : "samples") +
-                 (isTS ? "TS/" : "/") +
+                 (isJSM ? "JSM/" : (isTS ? "TS/" : "/")) +
                  samplename +
                  "' target='_blank'>View this sample page's source on GitHub</a>";
   hdr.appendChild(p1);
@@ -114,9 +115,9 @@ function goSamples() {
   samplediv.appendChild(hdr);
   var footer = document.createElement("div");
   footer.className = "footer";
-  var msg = "Copyright &copy; 1998-2019 by Northwoods Software Corporation.";
-  if (go && go.version) {
-    msg = "GoJS&reg; version " + go.version + ". " + msg;
+  var msg = "Copyright &copy; 1998-2020 by Northwoods Software Corporation.";
+  if (window.go && window.go.version) {
+    msg = "GoJS&reg; version " + window.go.version + ". " + msg;
   }
   footer.innerHTML = msg;
   samplediv.appendChild(footer);
@@ -314,6 +315,7 @@ var mySampleMenu = '\
           <li><a href="cLayout.html">Circular Layout</a></li>\
           <li><a href="interactiveForce.html">Interactive Force</a></li>\
           <li><a href="../extensions/Fishbone.html">GoJS Extensions</a></li>\
+          <li><a href="../projects/index.html">GoJS Projects</a></li>\
           <li><a href="all.html">Complete List</a></li>\
         </ul>\
       </div>\
@@ -398,6 +400,7 @@ var myExtensionMenu = '\
           <li><a href="TextEditorRadioButtons.js" target="_blank">TextEditorRadioButtons.js</a></li>\
           <li><a href="TextEditorSelectBox.js" target="_blank">TextEditorSelectBox.js</a></li>\
           <li><a href="../samples/flowchart.html">GoJS Samples</a></li>\
+          <li><a href="../projects/index.html">GoJS Projects</a></li>\
           <li><a href="../samples/all.html">Complete List</a></li>\
         </ul>\
       </div>\

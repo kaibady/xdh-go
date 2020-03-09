@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Extending GoJS -- Northwoods Software</title>
-  <!-- Copyright 1998-2019 by Northwoods Software Corporation. -->
+  <!-- Copyright 1998-2020 by Northwoods Software Corporation. -->
   <script src="../release/go.js"></script>
   <script src="goIntro.js"></script>
 </head>
@@ -33,10 +33,13 @@
 </p>
 
 <p class="box bg-info">
-  In addition to our samples, <b>GoJS</b> provides an <strong><a href="../extensions/">extensions gallery</a></strong>, showcasing the creation of custom tools and layouts.
-  All of those classes and samples have been translated into TypeScript, available at <code>../extensionsTS/</code>.
-  You can load your own copy of those extension files, or you can link to a copy on a CDN, such as at
-  <code>https://unpkg.com/gojs/extensionsTS/BalloonLink.js</code> or <code>https://cdn.jsdelivr.net/npm/gojs/extensionsTS/DataInspector.js</code>.
+  In addition to our samples, <b>GoJS</b> provides an <strong><a href="../extensions/">extensions gallery</a></strong>,
+  showcasing the creation of custom tools and layouts.
+  Those classes and samples have been translated into TypeScript, available at <code>../extensionsTS/</code>.
+  Those extension classes are UMD modules; they use the <code>../release/go.js</code> library.
+  The extension classes are also available as ES6 modules at <code>../extensionsJSM/</code>; these use the <code>../release/go-module.js</code> library.
+  We recommend that you copy the files that you need into your project, so that you can adjust how they refer to the "go.js" library
+  and so that you can include them into your own building and packaging procedures.
 </p>
 
 <h2 id="CommandHandler">Command Handler</h2>
@@ -60,6 +63,7 @@
   Some of our samples, such as the <a href="../samples/pipes.html">Pipes sample</a>, contain examples of custom tools.
   More custom tool examples are available in the <a href="../extensions/">extensions gallery</a>.
   TypeScript versions of those classes and samples are available in <code>../extensionsTS/</code>.
+  Those custom tool classes are also available as ES6 modules in <code>../extensionsJSM/</code>.
 </p>
 
 <p>
@@ -71,6 +75,7 @@
   Some of our samples, such as the <a href="../samples/parseTree.html">Parse Tree sample</a>, contain examples of custom layouts.
   More custom layout examples are available in the <a href="../extensions/">extensions gallery</a>.
   TypeScript versions of those classes are available in <code>../extensionsTS/</code>.
+  Those custom layout classes are also available as ES6 modules in <code>../extensionsJSM/</code>.
 </p>
 
 <h2 id="OverridingMethodWithoutDefiningSubclass">Overriding a Method Without Defining a Subclass</h2>

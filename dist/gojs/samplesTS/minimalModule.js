@@ -1,11 +1,11 @@
 'use strict';
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 // Unlike the other files in this directory,
 // you must compile this file with:
 // tsc -p .\tsconfigModule.json
-import { go } from '../release/go-module.js';
+import * as go from '../release/go-module.js';
 export function init() {
     if (window.goSamples)
         window.goSamples(); // init for these samples -- you don't need to call this
@@ -17,7 +17,7 @@ export function init() {
     // define a simple Node template
     myDiagram.nodeTemplate =
         $(go.Node, 'Auto', // the Shape will go around the TextBlock
-        $(go.Shape, 'RoundedRectangle', { strokeWidth: 0 },
+        $(go.Shape, 'RoundedRectangle', { strokeWidth: 0 }, 
         // Shape.fill is bound to Node.data.color
         new go.Binding('fill', 'color')), $(go.TextBlock, { margin: 8 }, // some room around the text
         // TextBlock.text is bound to Node.data.key

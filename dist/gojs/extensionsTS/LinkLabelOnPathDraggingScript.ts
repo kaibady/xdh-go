@@ -1,5 +1,5 @@
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 /*
@@ -10,8 +10,8 @@
 * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
 */
 
-import * as go from '../release/go';
-import { LinkLabelOnPathDraggingTool } from './LinkLabelOnPathDraggingTool';
+import * as go from '../release/go.js';
+import { LinkLabelOnPathDraggingTool } from './LinkLabelOnPathDraggingTool.js';
 
 export function init() {
   if ((window as any).goSamples) (window as any).goSamples();  // init for these samples -- you don't need to call this
@@ -61,7 +61,8 @@ export function init() {
       $(go.Shape),
       $(go.Shape, { toArrow: 'OpenTriangle' }),
       $(go.Panel, 'Auto',
-        { _isLinkLabel: true },  // marks this Panel as being a draggable label
+        // mark this Panel as being a draggable label, and set default segment props
+        { _isLinkLabel: true, segmentIndex: NaN, segmentFraction: .5 },
         $(go.Shape, { fill: 'white' }),
         $(go.TextBlock, '?', { margin: 3 },
           new go.Binding('text', 'color')),

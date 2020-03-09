@@ -1,3 +1,6 @@
+/*
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
+*/
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -17,14 +20,11 @@ var __extends = (this && this.__extends) || (function () {
         if (v !== undefined) module.exports = v;
     }
     else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "../release/go", "./Quadtree"], factory);
+        define(["require", "exports", "../release/go.js", "./Quadtree.js"], factory);
     }
 })(function (require, exports) {
-    'use strict';
+    "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    /*
-    *  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
-    */
     /*
     * This is an extension and not part of the main GoJS library.
     * Note that the API for this class may change with any version, even point releases.
@@ -32,8 +32,8 @@ var __extends = (this && this.__extends) || (function () {
     * Extensions can be found in the GoJS kit under the extensions or extensionsTS folders.
     * See the Extensions intro page (https://gojs.net/latest/intro/extensions.html) for more information.
     */
-    var go = require("../release/go");
-    var Quadtree_1 = require("./Quadtree");
+    var go = require("../release/go.js");
+    var Quadtree_js_1 = require("./Quadtree.js");
     /**
      * @hidden @internal
      * Used to represent the perimeter of the currently packed
@@ -155,7 +155,7 @@ var __extends = (this && this.__extends) || (function () {
             /** @hidden @internal */ _this._minYSegment = null;
             /** @hidden @internal */ _this._maxXSegment = null;
             /** @hidden @internal */ _this._maxYSegment = null;
-            /** @hidden @internal */ _this._tree = new Quadtree_1.Quadtree();
+            /** @hidden @internal */ _this._tree = new Quadtree_js_1.Quadtree();
             // saved node bounds and segment list to use to calculate enclosing circle in the enclosingCircle getter
             /** @hidden @internal */ _this._nodeBounds = [];
             /** @hidden @internal */ _this._segments = new CircularDoublyLinkedList();
@@ -1329,8 +1329,8 @@ var __extends = (this && this.__extends) || (function () {
          * @param force whether or not to force an update based on the quadtree even if none of the segments were deleted
          */
         PackedLayout.prototype.fixMissingMinMaxSegments = function (force) {
-            var _a;
             if (force === void 0) { force = false; }
+            var _a;
             if (!this._minXSegment || !this._maxXSegment || !this._minYSegment || !this._maxYSegment || force) {
                 _a = this._tree.findExtremeObjects(), this._minXSegment = _a[0], this._maxXSegment = _a[1], this._minYSegment = _a[2], this._maxYSegment = _a[3];
             }

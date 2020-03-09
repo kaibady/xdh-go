@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 1998-2019 by Northwoods Software Corporation
+ * Copyright (C) 1998-2020 by Northwoods Software Corporation
  * All Rights Reserved.
  *
  * Go Cloud Storage Manager
@@ -7,7 +7,7 @@
 
 import { Promise } from 'es6-promise';
 import * as go from 'gojs';
-import * as gcs from './GoCloudStorage';
+import * as gcs from './GoCloudStorage.js';
 
 /**
  * Class for easily saving / loading GoJS {@link Model}s to / from a user-defined set of Cloud Storage Services with a pre-defined UI.

@@ -5,7 +5,7 @@
   <title>Swim Lanes</title>
   <meta name="description" content="Horizontal swim lanes and pools with collapsible lanes and limited dragging." />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Copyright 1998-2019 by Northwoods Software Corporation. -->
+  <!-- Copyright 1998-2020 by Northwoods Software Corporation. -->
 
   <script src="../release/go.js"></script>
   <script src="../assets/js/goSamples.js"></script>  <!-- this is only for the GoJS Samples framework -->
@@ -201,6 +201,7 @@
           });
 
       // this is a Part.dragComputation function for limiting where a Node may be dragged
+      // use GRIDPT instead of PT if DraggingTool.isGridSnapEnabled and movement should snap to grid
       function stayInGroup(part, pt, gridpt) {
         // don't constrain top-level nodes
         var grp = part.containingGroup;

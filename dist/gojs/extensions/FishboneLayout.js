@@ -1,6 +1,6 @@
 ﻿"use strict";
 /*
-*  Copyright (C) 1998-2019 by Northwoods Software Corporation. All Rights Reserved.
+*  Copyright (C) 1998-2020 by Northwoods Software Corporation. All Rights Reserved.
 */
 
 // FishboneLayout is a custom Layout derived from TreeLayout for creating "fishbone" diagrams.
@@ -202,6 +202,8 @@ function FishboneLink() {
   go.Link.call(this);
 };
 go.Diagram.inherit(FishboneLink, go.Link);
+
+FishboneLink.prototype.computeAdjusting = function() { return this.adjusting; }
 
 FishboneLink.prototype.computePoints = function() {
   var result = go.Link.prototype.computePoints.call(this);

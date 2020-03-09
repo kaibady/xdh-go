@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GoJS Introduction -- Northwoods Software</title>
-  <!-- Copyright 1998-2019 by Northwoods Software Corporation. -->
+  <!-- Copyright 1998-2020 by Northwoods Software Corporation. -->
   <script src="../release/go.js"></script>
   <script src="goIntro.js"></script>
 </head>
@@ -200,8 +200,7 @@
     &lt;head&gt;
     . . .
     &lt;!-- Include the GoJS library. --&gt;
-    &lt;script src="go-debug.js"&gt;&lt;/script&gt;
-  </pre>
+    &lt;script src="go-debug.js"&gt;&lt;/script&gt;</pre>
   <p>
     If you are using <a href="http://requirejs.org" target="_blank">RequireJS</a>, <b>GoJS</b> supports UMD module definitions.
     See the <a href="../samples/require.html" target="samples">Require sample</a> for an example.
@@ -210,11 +209,18 @@
     that can be <code>import</code>ed. or <code>require</code>d.
   </p>
   <p>
-    In ES6 (ECMAScript 2015) or TypeScript code, just import the "go.js" library:
+    In ES6 (ECMAScript 2015) or TypeScript code, just import the <code>go.js</code> library:
     <pre class="lang-ts">import * as go from "./path/to/gojs/release/go";</pre>
     or, if depending on your npm environment:
     <pre class="lang-ts">import * as go from "gojs";</pre>
   </p>
+  <p>
+    If you want to use ES6 modules, use <code>go-module.js</code> in the <code>../release/</code> directory.
+    The extension classes are also available as ES6 modules in the <code>../extensionsJSM/</code> directory.
+  </p>
+  <pre>
+    import * as go from "./path/to/gojs/release/go-module.js";
+    import { DoubleTreeLayout } from "./path/to/gojs/extensionsJSM/DoubleTreeLayout.js";</pre>
 
   <h3 id="HostingGoJSinaDivElement">Hosting GoJS in a Div Element</h3>
   <p>
@@ -229,8 +235,7 @@
     . . .
     &lt;!-- The DIV for a Diagram needs an explicit size or else we won't see anything.
          In this case we also add a border to help see the edges. --&gt;
-    &lt;div id="myDiagramDiv" style="border: solid 1px blue; width:400px; height:150px"&gt;&lt;/div&gt;
-  </pre>
+    &lt;div id="myDiagramDiv" style="border: solid 1px blue; width:400px; height:150px"&gt;&lt;/div&gt;</pre>
 
   <p>
     Then you can create the <a>Diagram</a> in JavaScript with a reference to that Div element.
@@ -248,8 +253,7 @@
        { key: "World!" }],
       [{ from: "Hello", to: "World!"}]  // one link data, in an Array
     );
-  &lt;/script&gt;
-  </pre>
+  &lt;/script&gt;</pre>
 
   <div id="myDiagramDiv" style="border: solid 1px blue; width:400px; height:150px"></div>
 
@@ -295,6 +299,11 @@
     The TypeScript definition file for <b>GoJS</b> is named "go.d.ts" and is located in the same directory as the "go.js" and "go-debug.js" libraries.
     In some editors, access to the definition file also greatly improves documentation feedback while editing TypeScript code.
     The extension classes have also been translated into TypeScript, available at <code>../extensionsTS/</code>.
+  </p>
+
+  <p>
+    To learn about new features and bug fixes, read the <a href="https://gojs.net/latest/changelog.html" target="_blank">Change Log</a>.
+    Read about getting the latest releases at <a href="../download.html">Downloads</a>.
   </p>
 
   <p>
