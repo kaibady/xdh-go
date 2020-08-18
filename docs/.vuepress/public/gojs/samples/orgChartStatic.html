@@ -40,8 +40,8 @@
         $(go.Diagram, "myDiagramDiv",  // the DIV HTML element
           {
             // Put the diagram contents at the top center of the viewport
-            initialDocumentSpot: go.Spot.TopCenter,
-            initialViewportSpot: go.Spot.TopCenter,
+            initialDocumentSpot: go.Spot.Top,
+            initialViewportSpot: go.Spot.Top,
             // OR: Scroll to show a particular node, once the layout has determined where that node is
             // "InitialLayoutCompleted": function(e) {
             //  var node = e.diagram.findNodeForKey(28);
@@ -89,7 +89,7 @@
       myDiagram.nodeTemplate =
         $(go.Node, "Auto",
           {
-            locationSpot: go.Spot.TopCenter,
+            locationSpot: go.Spot.Top,
             isShadowed: true, shadowBlur: 1,
             shadowOffset: new go.Point(0, 1),
             shadowColor: "rgba(0, 0, 0, .14)",
@@ -103,8 +103,8 @@
           },
           $(go.Shape, "RoundedRectangle", roundedRectangleParams,
             { name: "SHAPE", fill: "#ffffff", strokeWidth: 0 },
-            // bluish if highlighted, white otherwise
-            new go.Binding("fill", "isHighlighted", function(h) { return h ? "#e8eaf6" : "#ffffff"; }).ofObject()
+            // gold if highlighted, white otherwise
+            new go.Binding("fill", "isHighlighted", function(h) { return h ? "gold" : "#ffffff"; }).ofObject()
           ),
           $(go.Panel, "Vertical",
             $(go.Panel, "Horizontal",
@@ -112,7 +112,7 @@
               $(go.Picture,  // flag image, only visible if a nation is specified
                 { margin: mr8, visible: false, desiredSize: new go.Size(50, 50) },
                 new go.Binding("source", "nation", theNationFlagConverter),
-                new go.Binding("visible", "nation", function(nat) { return nat !== undefined; }),
+                new go.Binding("visible", "nation", function(nat) { return nat !== undefined; })
               ),
               $(go.Panel, "Table",
                 $(go.TextBlock,
@@ -134,7 +134,7 @@
                 $("PanelExpanderButton", "INFO",
                   { row: 0, column: 1, rowSpan: 2, margin: ml8 }
                 )
-              ),
+              )
             ),
             $(go.Shape, "LineH",
               {
@@ -235,7 +235,7 @@
     function searchDiagram() {  // called by button
       var input = document.getElementById("mySearch");
       if (!input) return;
-      input.focus();
+      myDiagram.focus();
 
       myDiagram.startTransaction("highlight search");
 

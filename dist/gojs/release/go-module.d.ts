@@ -1,5 +1,5 @@
 /*
- * Type definitions for GoJS v2.1.9
+ * Type definitions for GoJS v2.1.23
  * Project: https://gojs.net
  * Definitions by: Northwoods Software <https://github.com/NorthwoodsSoftware>
  * Definitions: https://github.com/NorthwoodsSoftware/GoJS
@@ -4296,6 +4296,18 @@ export class UndoManager {
      * You should not modify this List.
      */
     readonly nestedTransactionNames: List<string>;
+    /**
+     * Undocumented.
+     */
+    isPendingClear: boolean;
+    /**
+     * Undocumented.
+     */
+    isPendingUnmodified: boolean;
+    /**
+     * Undocumented.
+     */
+    readonly isJustDiscarded: boolean;
 }
 /**
  * Tools handle mouse, keyboard, and touch events.
@@ -5766,6 +5778,13 @@ export class DraggingTool extends Tool {
      * @since 1.1
      */
     moveParts(parts: Map<Part, DraggingInfo>, offset: Point, check: boolean): void;
+    /**
+     * Undocumented.
+     * @expose
+     * @param pt
+     * @return {GraphObject|null}
+     */
+    protected findDragOverObject(pt: Point): GraphObject | null;
     /**
      * Perform any additional side-effects during a drag, whether an internal move or copy or an external drag,
      * that may affect the existing non-moved object(s).
@@ -7853,7 +7872,7 @@ export class PanningTool extends Tool {
  * <a href="../../samples/customContextMenu.html">Custom Context Menu</a> and
  * <a href="../../samples/htmlLightBoxContextMenu.html">HTML LightBox Context Menu</a> samples, the
  * <a href="../../samples/customTextEditingTool.html">Custom TextEditingTool sample</a>, and the
- * <a href="../../extensions/textEditor.html">Text Editor implementation extension</a>.
+ * <a href="../../extensions/TextEditor.html">Text Editor implementation extension</a>.
  *
  * Here is the outline for typical usage of HTMLInfo as a context menu:
  * ```js
@@ -7884,7 +7903,7 @@ export class PanningTool extends Tool {
  * ```
  *
  * By default, TextEditingTool#defaultTextEditor is an instance of HTMLInfo.
- * You can see its default implementation details <a href="../../extensions/textEditor.html">here</a>.
+ * You can see its default implementation details <a href="../../extensions/TextEditor.html">here</a>.
  * @unrestricted
  * @since 1.7
  * @category Tool
@@ -8297,7 +8316,7 @@ export class TextEditingTool extends Tool {
      * and HTMLInfo#hide during #doDeactivate.
      *
      * By default the value is an HTMLInfo, and the HTMLInfo#mainElement is an `HTMLTextArea`.
-     * You can see the default implementation details <a href="../../extensions/textEditor.html">here</a>.
+     * You can see the default implementation details <a href="../../extensions/TextEditor.html">here</a>.
      *
      * For typical operation, HTMLInfo implementations should have a way of calling TextEditingTool#acceptText.
      */
@@ -8368,24 +8387,6 @@ export class TextEditingTool extends Tool {
      * TextEditingTool.MouseDown, TextEditingTool.Tab, or TextEditingTool.Enter.
      */
     acceptText(reason: EnumValue): void;
-    /**
-     * Call the #textBlock's TextBlock#errorFunction, if there is one.
-     * This is called only when the #isValidText method returned false.
-     * The value of #state will be StateInvalid.
-     * When this method returns, the text editor will be shown again.
-     * @param oldstring
-     * @param newstring
-     */
-    doError(oldstring: string, newstring: string): void;
-    /**
-     * Call the #textBlock's TextBlock#textEdited event handler, if there is one.
-     * This is called just after the TextBlock.text has been set to the new string value.
-     * When this method returns, this tool raises the "TextEdited" DiagramEvent
-     * and commits the transaction.
-     * @param oldstring
-     * @param newstring
-     */
-    doSuccess(oldstring: string, newstring: string): void;
     /**
      * Release the mouse.
      *
@@ -8481,8 +8482,15 @@ export class AnimationManager {
      */
     constructor();
     /**
-     * This read-only property returns a Set of reasons the default animation may start.
-     * This set can be queried in #canStart to turn off specific default animations.
+     * Undocumented
+     */
+    readonly animationReasons: Set<string>;
+    /**
+     * This method is passed the reason the animation is to begin,
+     * and must return true or false based on whether or not the animation is to be allowed.
+     * Returning true means the animation will occur, returning false will stop the animation's setup.
+     *
+     * By default, this method always returns true.
      *
      * These are the possible reasons GoJS will begin an animation:
      * ```md
@@ -8499,30 +8507,18 @@ export class AnimationManager {
      *   Called by AnimationTriggers:
      *     "Trigger"
      * ```
-     * @return {Set.<string>}
-     * @see #canStart
-     * @since 2.1
-     */
-    readonly animationReasons: Set<string>;
-    /**
-     * This method is passed the reason the animation is to begin,
-     * and must return true or false based on whether or not the animation is to be allowed.
-     * Returning true means the animation will occur, returning false will stop the animation's setup.
      *
-     * By default, this method always returns true.
+     * Example usage:
      *
-     * The reasons GoJS will begin an animation are collected in the set #animationReasons,
-     * and can be queried in this method to conditionally allow animations, for instance:
      * ```js
      * // disallow expand/collapse animations, but allow all others
      * myDiagram.animationManager.canStart = function(reason) {
-     *   if (this.animationReasons.contains("Expand Tree")) return false;
+     *   if (reason === "Expand Tree") return false;
      *   return true;
      * }
      * ```
      * @param {string} reason Reason for starting the animation
      * @return {boolean}
-     * @see #animationReasons
      * @since 2.1
      */
     canStart(reason: string): boolean;
@@ -8586,6 +8582,7 @@ export class AnimationManager {
      * You should not add anything to or start the default animation, GoJS does so automatically, internally.
      * When the default animation begins it raises the `"AnimationStarting"` Diagram event,
      * upon completion it raises the `"AnimationFinished"` Diagram event.
+     * You should not modify the properties Animation#runCount or Animation#reversible on the default animation.
      *
      * See the <a href="../../intro/animation.html">Introduction Page on Animations</a> for more detail.
      * @since 2.1
@@ -8823,14 +8820,17 @@ export class Animation {
      * Gets or sets whether this Animation will repeat its animation in reverse at the end of the duration. Default false.
      *
      * A reversible Animation, if stopped early, will end at its original state.
-     *
      * Setting this to true doubles the effective #duration of the Animation.
+     *
+     * This property should not be set on the AnimationManager#defaultAnimation
      */
     reversible: boolean;
     /**
      * Gets or sets whether this Animation should be repeat, and how many times. The default is 1, which means the animation does not repeat.
      *
      * This can be set to any non-zero positive integer, or `Infinity`. Setting this to `Infinity` will repeat an animation forever.
+     *
+     * This property should not be set on the AnimationManager#defaultAnimation
      *
      * @see #reversible
      */
@@ -10195,7 +10195,7 @@ export class Diagram {
      * ```js
      * $(go.Diagram, . . .,
      *    {
-     *        "ModelChanged": function(e) { if (e.isTransactionFinished) saveModel(); }
+     *        "ModelChanged": function(e) { if (e.isTransactionFinished) saveModel(e.model); }
      *        . . .
      *    })
      * ```
@@ -11539,10 +11539,6 @@ export class Diagram {
     /**
      * Undocumented
      */
-    ensureDocumentBounds(): void;
-    /**
-     * Undocumented
-     */
     isVirtualized: boolean;
     /**
      * Gets or sets the scale transform of this Diagram.
@@ -11691,7 +11687,7 @@ export class Diagram {
     zoomPoint: Point;
     /**
      * Gets or sets the content alignment Spot of this Diagram, to be used in determining
-     * how parts are positioned when the #viewportBounds width or height is smaller than the #documentBounds.
+     * how parts are positioned when the #viewportBounds width or height is larger than the #documentBounds.
      *
      * For instance a spot of Spot.Center would ensure that the Diagram's
      * contents are always centered in the viewport.
@@ -11708,7 +11704,7 @@ export class Diagram {
     contentAlignment: Spot;
     /**
      * Gets or sets the initial content alignment Spot of this Diagram, to be used in determining
-     * how parts are positioned initially relative to the viewport, when the #viewportBounds width or height is smaller than the #documentBounds.
+     * how parts are positioned initially relative to the viewport, when the #viewportBounds width or height is larger than the #documentBounds.
      *
      * For instance a spot of Spot.Center would ensure that the Diagram's contents are initially centered in the viewport.
      *
@@ -11834,12 +11830,25 @@ export class Diagram {
      */
     raiseDiagramEvent(name: DiagramEventName, obj?: ObjectData, param?: any): void;
     /**
-     * Gets or sets the Margin that describes the Diagram's autoScrollRegion. The default value is a Margin of 16 on all sides.
+     * Gets or sets number of milliseconds between autoscroll events.
+     * The default value is 250.
+     */
+    autoScrollInterval: number;
+    /**
+     * Gets or sets the Margin that describes the area along the inside edges of the viewport,
+     * in viewport coordinates, where autoscrolling will occur while the mouse is held there
+     * during dragging or linking or drag-selecting.
+     *
+     * The default value is a Margin of 16 on all sides.
+     * Increase this value in order to make it easier for the user to autoscroll by having
+     * a larger area in which to hold the mouse down during a dragging operation.
+     *
      * When the mouse drag point is within this region on the left or right sides,
-     * the view will automatically scroll horizontally in that direction.  When the point is within
-     * the region on the top or bottom, the view will automatically scroll
-     * vertically in that direction.  You can specify a distance of zero to disable autoscrolling
-     * in a direction; a value of 0,0,0,0 turns off autoscrolling altogether.
+     * the view will automatically scroll horizontally in that direction.
+     * When the point is within the region on the top or bottom, the view will automatically scroll
+     * vertically in that direction.
+     * You can specify a Margin side of zero to disable autoscrolling in a particular direction;
+     * a value of Margin(0,0,0,0) turns off autoscrolling in all four directions.
      */
     autoScrollRegion: MarginLike;
     /**
@@ -11851,6 +11860,13 @@ export class Diagram {
      * Undocumented
      */
     stopAutoScroll(): void;
+    /**
+     * Undocumented
+     * @expose
+     * @param {Point} viewPnt in viewport coordinates
+     * @return {Point} in document coordinates
+     */
+    computeAutoScrollPosition(viewPnt: Point): Point;
     /**
      * Create an SVGElement that contains a SVG rendering of the current Diagram.
      *
@@ -11875,6 +11891,8 @@ export class Diagram {
      *
      * At the current time methods such as Diagram#makeImage,
      * Diagram#makeImageData and Diagram#makeSvg do not work on Overviews.
+     *
+     * For the rendering to work, the diagram must have an HTML Div element as the #div.
      * @param {any=} options a JavaScript object detailing optional arguments for SVG creation.
      * @return {SVGElement}
      * @see #makeImage
@@ -11901,8 +11919,15 @@ export class Diagram {
      *
      * By default this method returns a snapshot of the visible diagram, but optional arguments give more options.
      *
+     * Note that a returned HTMLImageElement, either returned directly or passed to the callback function,
+     * might not yet have the <code>complete</code> property set to true.
+     * So if you need to draw the image immediately, you should check that property first.
+     * If it is false, add a "load" listener to the HTMLImageElement that does the drawing you want.
+     *
      * At the current time methods such as Diagram#makeImage,
      * Diagram#makeImageData and Diagram#makeSvg do not work on Overviews.
+     *
+     * For the rendering to work, the diagram must have an HTML Div element as the #div.
      * @param {any=} options a JavaScript object detailing optional arguments for image creation, to be passed to #makeImageData.
      * @return {HTMLImageElement | null} An HTML Image element, or null if a callback is specified, or null if there is no DOM.
      * @see #makeImageData
@@ -11926,8 +11951,15 @@ export class Diagram {
      * <p class="boxread">
      * See the page on <a href="../../intro/makingImages.html">Making Images</a> for more usage examples.
      *
+     * Note that a returned HTMLImageElement, either returned directly or passed to the callback function,
+     * might not yet have the <code>complete</code> property set to true.
+     * So if you need to draw the image immediately, you should check that property first.
+     * If it is false, add a "load" listener to the HTMLImageElement that does the drawing you want.
+     *
      * At the current time methods such as Diagram#makeImage,
      * Diagram#makeImageData and Diagram#makeSvg do not work on Overviews.
+     *
+     * For the rendering to work, the diagram must have an HTML Div element as the #div.
      * @param {any=} options a JavaScript object detailing optional arguments for image creation.
      * Rendering options for both images and SVG:
      *   - **size:**
@@ -11938,10 +11970,13 @@ export class Diagram {
      *     The scale of the diagram. If **scale** is specified and **size** is not, the resulting image will be sized to uniformly
      *     fit the space needed for the given scale.
      *     Can be constrained by the **maxSize** property. A scale value of `NaN` will
-     *     automatically scale ot fit within the maxSize, but may be smaller, with a maximum computed scale of 1.
+     *     automatically scale to fit within the maxSize, but may be smaller, with a maximum computed scale of 1.
      *   - **maxSize:**
-     *     The maximum size of the created image, as a Size. The default value is `(Infinity, Infinity)` for SVG and `(2000, 2000)` for images.
-     *     This is typically used when **scale** is specified.
+     *     The maximum size of the created image, as a Size.
+     *     The default value is `(Infinity, Infinity)` for SVG and `(2000, 2000)` for images.
+     *     This is typically used when **scale** is specified and helps prevent accidental excessive memory usage,
+     *     which is especially needed in limited-memory environments.
+     *     You cannot use Infinity when providing a maximum size for an image -- consider calling #makeSvg instead.
      *   - **position:**
      *     The position of the diagram, as a Point.
      *     By default this is the position of Diagram#documentBounds with the Diagram#padding removed.
@@ -11967,20 +12002,9 @@ export class Diagram {
      *   - **document:**
      *     An HTML Document, defaulting to `window.document` (or the root object in other contexts)
      *     This may be useful to set if you intend your Image or SVG to be opened in a new window.
-     *
-     * Additional image-specific arguments (not for SVG):
-     *   - **type:**
-     *     The optional MIME type of the image. Valid values are typically `"image/png"` and `"image/jpeg"`.
-     *     Some browsers allow `"image/webp"`. The default value is `"image/png"`, and unrecognized values will defer to the default.
-     *   - **returnType:**
-     *     The optional return type of the image data. Valid values are `"ImageData"`, `"string"`, and `"blob"`.
-     *     The `"string"` option returns a base64 string representation of the image.
-     *     The `"ImageData"` option returns an `ImageData` object representation of the image.
-     *     The `"Image"` option returns an `HTMLImageElement` using `ImageData` as the `HTMLImageElement.src`.
-     *     The `"blob"` option requires that the **callback** property is also defined.
-     *     The default value is `"string"`, and unrecognized values will return a string.
      *   - **callback:**
-     *     The function to call when an image is finished creation. It has one argument, which is of the type specified by the value of the **returnType**.
+     *     The function to call when an image is finished creation.
+     *     It has one argument, which is of the type specified by the value of the **returnType** or SVG DOM.
      *     If provided, call the callback when finished instead of returning immediately. This can be useful if you need to wait for image assets to load.
      *     This also respects the **callbackTimeout**.
      *     This argument is necessary if the **returnType** is `"blob"`, however a callback can be used with any **returnType**.
@@ -11989,11 +12013,23 @@ export class Diagram {
      *   - **callbackTimeout:**
      *     If a **callback** is specified, the additional amount of time in milliseconds a call will wait before completeing. Right now, it will only wait if
      *     image assets in the Diagram are not yet loaded. Default is 300 (milliseconds).
+     *
+     * Additional image-specific arguments (not for SVG):
+     *   - **type:**
+     *     The optional MIME type of the image. Valid values are typically `"image/png"` and `"image/jpeg"`.
+     *     Some browsers allow `"image/webp"`. The default value is `"image/png"`, and unrecognized values will defer to the default.
+     *   - **returnType:**
+     *     The optional return type of the image data. Valid values are `"ImageData"`, `"Image"`, `"string"`, and `"blob"`.
+     *     The `"string"` option returns a base64 string representation of the image.
+     *     The `"ImageData"` option returns an `ImageData` object representation of the image.
+     *     The `"Image"` option returns an `HTMLImageElement` using `ImageData` as the `HTMLImageElement.src`.
+     *     The `"blob"` option requires that the **callback** property is also defined.
+     *     The default value is `"string"`, and unrecognized values will return a string.
      *   - **details:**
      *     The optional details to pass to the HTMLCanvasElement's toDataURL function.
      *     If the type is `"image/jpeg"` then this can be a number from `0` to `1`, inclusive, describing the desired jpeg quality.
      *
-     * @return {ImageData|string|null} An ImageData, or a base64-encoded string describing an image, or null if a callback is specified.
+     * @return {ImageData|string|null} An ImageData, or a base64-encoded string describing an image, or an HTMLImageElement, or null if a callback is specified.
      * @see #makeImage
      */
     makeImageData(options?: ImageRendererOptions): HTMLImageElement | ImageData | string | null;
@@ -12236,8 +12272,6 @@ export class Overview extends Diagram {
      * @param {Element|string} div A reference to a div or its ID as a string.
      */
     constructor(div?: Element | string);
-    private saveSnapshot;
-    private drawObserved;
     /**
      * Gets or sets the Diagram for which this Overview is
      * displaying a model and showing its viewport into that model.
@@ -13644,6 +13678,10 @@ export abstract class GraphObject {
      * Changes to the angle caused by orientation might not result in Changed events,
      * and any original value for the angle may be lost.
      *
+     * In the case of Graduated Panels, if this value is Link.None, Link.OrientAlong, or Link.OrientUpright,
+     * any TextBlock label #angle will be respected. Depending on this value, the effective TextBlock angle will be either
+     * fixed or relative to the slope of the path where it is rendered.
+     *
      * For examples of how to use this property, see <a href="../../intro/linkLabels.html">Link Labels</a>.
      * @see #segmentFraction
      * @see #segmentIndex
@@ -14017,6 +14055,12 @@ export abstract class GraphObject {
      * it will be normalized to be in that range.
      * Zero is along the positive X-axis (rightwards); 90 is along the positive Y-axis (downwards).
      * Default is 0.
+     *
+     * When set on a Graduated Panel's TextBlock label, this value will be be ignored if segmentOrientation is not
+     * Link.None, Link.OrientAlong, or Link.OrientUpright. OrientAlong and OrientUpright will use this angle
+     * relative to the slope of the main path.
+     *
+     * When set on a Link label, this value will be be ignored if segmentOrientation is not Link.None.
      * @see #scale
      * @see #stretch
      */
@@ -15064,10 +15108,6 @@ export abstract class GraphObject {
      */
     setProperties(props: ObjectData): void;
     /**
-     * Undocumented
-     */
-    trigger(trigger: AnimationTrigger): void;
-    /**
      * This static function builds an object given its class and additional arguments
      * providing initial properties or GraphObjects that become Panel elements.
      *
@@ -15207,32 +15247,32 @@ export abstract class GraphObject {
     static make<T extends Adornment>(// for specific named builders
     cls: ('ToolTip' | 'ContextMenu'), ...initializers: Array<string | (Partial<GraphObject> & {
         [p: string]: any;
-    }) | Binding | EnumValue | RowColumnDefinition | PanelLayout | Array<string | (Partial<GraphObject> & {
+    }) | Binding | AnimationTrigger | EnumValue | RowColumnDefinition | PanelLayout | Array<string | (Partial<GraphObject> & {
         [p: string]: any;
-    }) | Binding | EnumValue | RowColumnDefinition | PanelLayout>>): T;
+    }) | Binding | AnimationTrigger | EnumValue | RowColumnDefinition | PanelLayout>>): T;
     static make<T extends Panel>(// for specific named Panel builders
     cls: ('Button' | 'TreeExpanderButton' | 'SubGraphExpanderButton' | 'ContextMenuButton' | 'PanelExpanderButton' | 'CheckBoxButton' | 'CheckBox'), ...initializers: Array<string | (Partial<GraphObject> & {
         [p: string]: any;
-    }) | Binding | EnumValue | RowColumnDefinition | PanelLayout | Array<string | (Partial<GraphObject> & {
+    }) | Binding | AnimationTrigger | EnumValue | RowColumnDefinition | PanelLayout | Array<string | (Partial<GraphObject> & {
         [p: string]: any;
-    }) | Binding | EnumValue | RowColumnDefinition | PanelLayout>>): T;
+    }) | Binding | AnimationTrigger | EnumValue | RowColumnDefinition | PanelLayout>>): T;
     static make<T extends GraphObject>(cls: string, // for named Panel builders
     ...initializers: Array<string | (Partial<GraphObject> & {
         [p: string]: any;
-    }) | Binding | EnumValue | RowColumnDefinition | PanelLayout | Array<string | (Partial<GraphObject> & {
+    }) | Binding | AnimationTrigger | EnumValue | RowColumnDefinition | PanelLayout | Array<string | (Partial<GraphObject> & {
         [p: string]: any;
-    }) | Binding | EnumValue | RowColumnDefinition | PanelLayout>>): T;
+    }) | Binding | AnimationTrigger | EnumValue | RowColumnDefinition | PanelLayout>>): T;
     static make<CT extends ConstructorType<CT>>(cls: CT, ...initializers: Array<string | (Partial<InstanceType<CT>> & {
         [p: string]: any;
     } & (InstanceType<CT> extends Diagram ? DiagramEventsInterface & {
         Changed?: ChangedEventHandler;
         ModelChanged?: ChangedEventHandler;
-    } : {})) | MakeAllow<CT, GraphObject, Binding> | MakeAllow<CT, Panel, GraphObject> | MakeAllow<CT, Panel, RowColumnDefinition> | MakeAllow<CT, Panel, PanelLayout> | MakeAllow<CT, RowColumnDefinition, Binding> | MakeAllow<CT, Geometry, PathFigure> | MakeAllow<CT, PathFigure, PathSegment> | EnumValue | HTMLDivElement | Array<string | (Partial<InstanceType<CT>> & {
+    } : {})) | MakeAllow<CT, GraphObject, Binding> | MakeAllow<CT, GraphObject, AnimationTrigger> | MakeAllow<CT, Panel, GraphObject> | MakeAllow<CT, Panel, RowColumnDefinition> | MakeAllow<CT, Panel, PanelLayout> | MakeAllow<CT, RowColumnDefinition, Binding> | MakeAllow<CT, Geometry, PathFigure> | MakeAllow<CT, PathFigure, PathSegment> | EnumValue | HTMLDivElement | Array<string | (Partial<InstanceType<CT>> & {
         [p: string]: any;
     } & (InstanceType<CT> extends Diagram ? DiagramEventsInterface & {
         Changed?: ChangedEventHandler;
         ModelChanged?: ChangedEventHandler;
-    } : {})) | MakeAllow<CT, GraphObject, Binding> | MakeAllow<CT, Panel, GraphObject> | MakeAllow<CT, Panel, RowColumnDefinition> | MakeAllow<CT, Panel, PanelLayout> | MakeAllow<CT, RowColumnDefinition, Binding> | MakeAllow<CT, Geometry, PathFigure> | MakeAllow<CT, PathFigure, PathSegment> | EnumValue>>): InstanceType<CT>;
+    } : {})) | MakeAllow<CT, GraphObject, Binding> | MakeAllow<CT, GraphObject, AnimationTrigger> | MakeAllow<CT, Panel, GraphObject> | MakeAllow<CT, Panel, RowColumnDefinition> | MakeAllow<CT, Panel, PanelLayout> | MakeAllow<CT, RowColumnDefinition, Binding> | MakeAllow<CT, Geometry, PathFigure> | MakeAllow<CT, PathFigure, PathSegment> | EnumValue>>): InstanceType<CT>;
     /**
      * This static function defines a named function that GraphObject.make can use to build objects.
      * Once this is called one can use the name as the first argument for GraphObject.make.
@@ -15541,7 +15581,6 @@ export class Brush {
  * @unrestricted
  */
 export abstract class PanelLayout {
-    name: string;
     constructor();
     /**
      */
@@ -16241,10 +16280,6 @@ export class Panel extends GraphObject {
      * @since 1.4
      */
     itemIndex: number;
-    /**
-     * Undocumented
-     */
-    freezeBindings(): void;
     /**
      * Undocumented.
      * Make a deep copy of this Panel and allow it to be a template.
@@ -18247,6 +18282,8 @@ export class Part extends Panel {
      *
      * If this part is a Group, it also moves all of its members, recursively.
      * If this part is a Link, it also moves all of its label nodes.
+     *
+     * This method does not perform a transaction or start any animation.
      * @expose
      * @param {Point} newpos a new Point in document coordinates.
      * @param {boolean=} useLocation true if you want to set the #location instead of the position. False by default.
@@ -19346,6 +19383,9 @@ export class Node extends Part {
     getAvoidableRect(result: Rect): Rect;
     /**
      * Undocumented
+     * Starting with this node, walk up the chain of containingGroups to find a node that is visible.
+     * This can be overridden to find a tree-parent/ancestor if the reason that this node
+     * is not visible is because of a collapsed tree rather than a collapsed group.
      * @expose
      * @return {Node}
      */
@@ -19363,8 +19403,16 @@ export class Node extends Part {
      */
     readonly linksConnected: Iterator<Link>;
     /**
+     * Undocumented.
+     * Return a collection of Links that connect with this Node or any in its subtree, excluding any isTreeLink Links.
+     * For trees this is the analog of Group#findExternalLinksConnected for Groups.
+     * @return {Iterator.<Link>}
+     */
+    findExternalTreeLinksConnected(): Iterator<Link>;
+    /**
      * Returns an iterator over all of the Links that connect with this node in either direction,
      * perhaps limited to the given port id on this node.
+     * @expose
      * @param {string|null=} pid A port identifier string; if null the link's portId is ignored and all links are included in the search.
      * @return {Iterator.<Link>}
      */
@@ -19681,7 +19729,7 @@ export class Node extends Part {
      * If you want to do both, call `expandTree` before calling `collapseTree` to
      * collapse nodes expanded due to the #wasTreeExpanded flag.
      *
-     * This method does not perform a transaction.
+     * This method does not perform a transaction or start any animation.
      * You may want to call the CommandHandler#collapseTree command, which does perform a transaction
      * and raise a DiagramEvent.
      *
@@ -19712,7 +19760,7 @@ export class Node extends Part {
      * If you want to do both, call `expandTree` before calling `collapseTree` to
      * collapse nodes expanded due to the #wasTreeExpanded flag.
      *
-     * This method does not perform a transaction.
+     * This method does not perform a transaction or start any animation.
      * You may want to call the CommandHandler#expandTree command, which does perform a transaction
      * and raise a DiagramEvent.
      *
@@ -20073,6 +20121,8 @@ export class Group extends Node {
      * For those nested Groups that were expanded,
      * #wasSubGraphExpanded is set to true.
      *
+     * This method does not perform a transaction or start any animation.
+     *
      * To collapse trees made of Nodes and Links, use Node#collapseTree.
      */
     collapseSubGraph(): void;
@@ -20085,6 +20135,8 @@ export class Group extends Node {
      *
      * This sets #isSubGraphExpanded to true on this group and on all of the nested Groups.
      * This will expand a nested group only if its #wasSubGraphExpanded property was true.
+     *
+     * This method does not perform a transaction or start any animation.
      *
      * To expand trees made of Nodes and Links, use Node#expandTree.
      */
@@ -20118,6 +20170,8 @@ export class Group extends Node {
     subGraphExpandedChanged: ((thisGroup: Group) => void) | null;
     /**
      * Move this Group and all of its member parts, recursively.
+     *
+     * This method does not perform a transaction or start any animation.
      * @param {Point} newpos a new Point in document coordinates.
      * @param {boolean=} useLocation true if you want to set the #location instead of the position. False by default.
      */
@@ -22500,13 +22554,6 @@ export class Model {
      */
     cloneDeep<T>(obj: T): T;
     /**
-     * Undocumented
-     * @param {Model} newmodel
-     * @param {string=} classname for the written model, defaults to the name of the class of the model
-     * @return {string}
-     */
-    computeJsonDifference(newmodel: Model, classname?: string): string;
-    /**
      * Produce a JSON-format string representing the changes in the most recent Transaction.
      * This writes out JSON for a model, but recording only changes in the given Transaction,
      * with the addition of the "incremental" property to mark it as different from a complete model.
@@ -23002,12 +23049,14 @@ export class Model {
      *
      * For node data objects that have the same key value, this makes calls to #setDataProperty
      * to update the existing node data object.
-     * For new keys, this calls #addNodeData on a copy of the data to add a new node to the model.
+     * For new keys, this calls #cloneDeep to copy the data and then #addNodeData to add a new node to the model.
      * For existing nodes that have keys that are not present in the given Array,
      * this calls #removeNodeData to remove the existing node from the model.
      *
      * This method is typically used when GoJS is being used within an application that is maintaining state
      * related to the diagram model. When state is updated, this method can be called to keep the GoJS model synchronized.
+     * Any updates to the data should use new references since this method will use reference equality to check
+     * if a node data object needs to be updated.
      *
      * This method does not conduct a transaction.
      * @param {Array.<ObjectData>} arr
@@ -24223,12 +24272,14 @@ export class GraphLinksModel extends Model {
      *
      * For link data objects that have the same key value, this makes calls to #setDataProperty
      * to update the existing link data object.
-     * For new keys, this calls #addLinkData on a copy of the data to add a new link to the model.
+     * For new keys, this calls #cloneDeep to copy the data and then #addLinkData to add a new link to the model.
      * For existing links that have keys that are not present in the given Array,
      * this calls #removeLinkData to remove the existing link from the model.
      *
      * This method is typically used when GoJS is being used within an application that is maintaining state
      * related to the diagram model. When state is updated, this method can be called to keep the GoJS model synchronized.
+     * Any updates to the data should use new references since this method will use reference equality to check
+     * if a link data object needs to be updated.
      *
      * This method does not conduct a transaction.
      * @param {Array.<ObjectData>} arr
@@ -24946,6 +24997,15 @@ export class ForceDirectedLayout extends Layout {
      * @since 1.3
      */
     addComments(v: ForceDirectedVertex): void;
+    /**
+     * Move the vertex by its ForceDirectedVertex.forceX and ForceDirectedVertex.forceY.
+     * Return the square of the distance moved.
+     * This can be overridden in order to constrain the vertex's actual movement.
+     * @expose
+     * @param {ForceDirectedVertex} v
+     * @return {number} square of distance moved
+     */
+    moveVertex(v: ForceDirectedVertex): number;
     /**
      * Maybe move a vertex that #isFixed.
      * This is called each iteration on each such vertex.
