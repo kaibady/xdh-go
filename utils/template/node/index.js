@@ -1,4 +1,4 @@
-import { panel, node, tooltip } from '../../node-parts'
+import { panel, node, tooltip, animationTrigger } from '../../node-parts'
 import { handleNodeDefault } from './default'
 import figure from './figure/index'
 import label from './label/index'
@@ -165,6 +165,7 @@ export default function($, go, options) {
       }),
       ..._options.props._nodeOptions.parts
     ],
-    events: _options.events || {}
+    events: _options.events || {},
+    animationTrigger: animationTrigger($, go, _options.animationTrigger)
   })
 }

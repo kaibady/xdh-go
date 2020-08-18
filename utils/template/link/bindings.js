@@ -177,13 +177,15 @@ export function linkBinding($, go, _options) {
       }
     },
     opacity: {
+      type: 'ofObject',
       key: '',
-      handler(d) {
-        if (d.opacity) {
-          return d.opacity
-        } else {
-          return _options.props.opacity
-        }
+      handler(n) {
+        // if (d.opacity) {
+        //   return d.opacity
+        // } else {
+        //   return _options.props.opacity
+        // }
+        return bindToState(n, _options, 'opacity')
       }
     },
     fromShortLength: {

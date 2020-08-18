@@ -1,5 +1,6 @@
 import { horPanel, spotPanel, verPanel, panel } from './panel';
 import iconfont from './iconfont';
+import animationTrigger from './animationTrigger';
 import makePort from './makePort';
 import node from './node';
 import group from './group';
@@ -32,6 +33,7 @@ export {
   textBlock,
   picture,
   imageSet,
+  animationTrigger,
   // parts
   tooltip,
   tag,
