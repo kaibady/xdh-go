@@ -15,7 +15,7 @@ export function labelArrayBinding($, go, _options) {
     margin: {
       key: '',
       handler(t, n) {
-        let d = n.part.data
+        const d = n.part.data
         let margin
         if (t.margin !== undefined) {
           margin = t.margin
@@ -34,7 +34,7 @@ export function labelArrayBinding($, go, _options) {
     editable: {
       key: '',
       handler(t, n) {
-        let d = n.part.data
+        const d = n.part.data
         let editable
         if (t.editable !== undefined) {
           editable = t.editable
@@ -49,7 +49,7 @@ export function labelArrayBinding($, go, _options) {
     font: {
       key: '',
       handler(t, n) {
-        let d = n.part.data
+        const d = n.part.data
         let font
         if (t.font !== undefined) {
           font = t.font
@@ -65,7 +65,7 @@ export function labelArrayBinding($, go, _options) {
       type: 'ofObject',
       key: '',
       handler(t, o) {
-        let n = o.part
+        const n = o.part
         return bindToState(n, _options, 'labelColor', t)
       }
     }

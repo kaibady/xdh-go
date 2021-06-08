@@ -2,7 +2,7 @@ function computeDocumentBounds(model, go) {
   var b = new go.Rect()
   var ndata = model.nodeDataArray
   for (var i = 0; i < ndata.length; i++) {
-    var d = ndata[i]
+    let d = ndata[i]
     if (!d.bounds) continue
     let rect = d.bounds
     if (i === 0) {
@@ -42,7 +42,7 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
           model.addNodeData(parent) // so that link to parent appears
           var node = diagram.findNodeForData(n)
           if (node !== null) {
-            var link = node.findTreeParentLink()
+            let link = node.findTreeParentLink()
             if (link !== null) {
               // do this now to avoid delayed routing outside of transaction
               link.fromNode.ensureBounds()
@@ -60,7 +60,7 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
             model.addNodeData(n) // add N so that link to parent appears
             var child = diagram.findNodeForData(n)
             if (child !== null) {
-              var link = child.findTreeParentLink()
+              let link = child.findTreeParentLink()
               if (link !== null) {
                 // do this now to avoid delayed routing outside of transaction
                 link.fromNode.ensureBounds()
@@ -76,7 +76,7 @@ function onViewportChanged(e, myWholeModel, go, updateCounts) {
 
   if (model instanceof go.GraphLinksModel) {
     var ldata = myWholeModel.linkDataArray
-    for (var i = 0; i < ldata.length; i++) {
+    for (let i = 0; i < ldata.length; i++) {
       var l = ldata[i]
       var fromkey = myWholeModel.getFromKeyForLinkData(l)
       if (fromkey === undefined) continue
@@ -211,8 +211,8 @@ function getVirtualizedForceDirectedLayout(go) {
       }
       // create an edge for each link data
       var ldata = model.linkDataArray
-      for (var i = 0; i < ldata.length; i++) {
-        var d = ldata[i]
+      for (let i = 0; i < ldata.length; i++) {
+        let d = ldata[i]
         // now find corresponding vertexes
         var from = dataVertexMap.get(model.getFromKeyForLinkData(d))
         var to = dataVertexMap.get(model.getToKeyForLinkData(d))

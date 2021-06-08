@@ -103,7 +103,7 @@ export function tagBinding($, go, _options) {
     margin: {
       key: '',
       handler(d) {
-        if (d.tag && d.tag.margin) {
+        if (d.tag && d.tag.margin !== undefined) {
           if (typeof d.tag.margin === 'number') {
             return d.tag.margin;
           } else if (d.tag.margin instanceof Array) {
